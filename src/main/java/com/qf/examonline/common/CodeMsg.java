@@ -13,5 +13,10 @@ public class CodeMsg {
     @Value("${code.1001}")
     private String passwordEmpty;
 
-
+    @Value("${code.2000}")
+    private String execteSuccess;
+    @Value("${code.2001}")
+    private String execteFaile;
+    @Value("${code.2002}")
+    private String nameRepeat;
 }
