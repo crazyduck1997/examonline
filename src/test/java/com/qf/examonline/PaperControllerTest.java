@@ -4,6 +4,8 @@ package com.qf.examonline;
 import com.github.pagehelper.PageInfo;
 import com.qf.examonline.common.CodeMsg;
 import com.qf.examonline.common.ErrorCode;
+import com.qf.examonline.dao.PaperDao;
+import com.qf.examonline.entity.Paper;
 import com.qf.examonline.entity.Type;
 import com.qf.examonline.service.TypeService;
 import org.junit.Test;
@@ -22,6 +24,8 @@ public class PaperControllerTest {
     private TypeService typeService;
     @Autowired(required = false)
     private CodeMsg codeMsg;
+    @Autowired(required = false)
+    private PaperDao paperDao;
     @Test
 //    //查询所有种类测试
     public void findAllTypeTest(){
@@ -59,6 +63,11 @@ public class PaperControllerTest {
     public void findTypeCount(){
         Integer python = typeService.findTypeCount("e");
         System.out.println("总数量......"+python);
+    }
+    @Test
+    public void findAvgScore(){
+        List<Paper> avgScore = paperDao.findAvgScore(1);
+        System.out.println(avgScore);
     }
 
 }

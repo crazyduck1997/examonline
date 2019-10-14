@@ -8,6 +8,7 @@
     <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
     <result column="paper_status" property="paperStatus" jdbcType="INTEGER" />
     <result column="type_id" property="typeId" jdbcType="INTEGER" />
+    <result column="avgscore" property="avgscore" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_paper
@@ -36,5 +37,13 @@
   <select id="selectAll" resultMap="BaseResultMap" >
     select paper_id, paper_name, begin_time, end_time, paper_status,type_id
     from t_paper
+  </select>
+
+  <select id="findAvgScore" resultMap="BaseResultMap">
+    SELECT t_paper.paper_name,AVG(score) avgscore
+    from t_paper,t_score,t_type
+    where t_paper.paper_id = t_score.paper_id
+    and t_paper.type_id = #{typeId}
+    GROUP BY t_score.paper_id
   </select>
 </mapper>

@@ -5,7 +5,9 @@ import com.github.pagehelper.PageInfo;
 import com.qf.examonline.common.CodeMsg;
 import com.qf.examonline.common.ErrorCode;
 import com.qf.examonline.common.JsonBean;
+import com.qf.examonline.entity.Paper;
 import com.qf.examonline.entity.Type;
+import com.qf.examonline.service.PaperService;
 import com.qf.examonline.service.TypeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,7 +27,8 @@ public class PaperConreoller {
     private TypeService typeService;
     @Autowired
     private CodeMsg codeMsg;
-
+    @Autowired
+    private PaperService paperService;
     @ApiOperation("查询所有种类")
     @PostMapping("/faindAllType.do")
     public JsonBean findAllType(String typeName,Integer page,Integer limit){
@@ -76,10 +79,17 @@ public class PaperConreoller {
     }
 
     @ApiOperation(value = "删除一个种类",notes = "需要传入对应的种类的typeId")
-    @PostMapping("/deleteOneType")
+    @PostMapping("/deleteOneType.do")
     public JsonBean deleteOneType(Integer typeId){
         typeService.deleteOnePaperType(typeId);
         return new JsonBean(ErrorCode.SUCCESS,codeMsg.getExecteSuccess());
+    }
+
+    @ApiOperation(value = "查询一个类别中的科目平均成绩",notes = "需传入一个typeId")
+    @PostMapping("/findAvgScore.do")
+    public JsonBean findAvgScore(Integer typeId){
+        List<Paper> avgScoreList = paperService.findAvgScore(typeId);
+        return new JsonBean(ErrorCode.SUCCESS,avgScoreList);
     }
 
 }
