@@ -1,4 +1,4 @@
 package com.qf.examonline.service;
 
-public interface StudentService {
+public interface UserService {
 }

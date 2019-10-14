@@ -1,7 +1,7 @@
 package com.qf.examonline;
 
-import com.qf.examonline.dao.StudentDao;
-import com.qf.examonline.entity.Student;
+import com.qf.examonline.dao.UserDao;
+import com.qf.examonline.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,13 +15,13 @@ import java.util.List;
 public class test {
 
     @Resource
-    StudentDao studentDao;
+    UserDao userDao;
 
 
     @Test
     public void test1(){
-        List<Student> list = studentDao.selectAll();
-        for(Student s : list){
+        List<User> list = userDao.selectAll();
+        for(User s : list){
             System.out.println(s);
         }
     }
