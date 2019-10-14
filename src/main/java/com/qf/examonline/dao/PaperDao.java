@@ -13,4 +13,7 @@ public interface PaperDao {
     List<Paper> selectAll();
 
     int updateByPrimaryKey(Paper record);
+
+    // 查询平均分
+    public List<Paper> findAvgScore(Integer typeId);
 }

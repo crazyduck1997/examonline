@@ -1,7 +1,7 @@
 package com.qf.examonline.common;
 
 import com.qf.examonline.entity.User;
-import com.qf.examonline.service.UserService;
+import com.qf.examonline.service.LoginService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -18,7 +18,7 @@ public class MyRealm extends AuthorizingRealm {
 
     @Autowired
     @Lazy //使用redis缓存shiro，需要使用该注解
-    private UserService userService;
+    private LoginService loginService;
 
     //获取授权信息
     @Override
@@ -37,9 +37,7 @@ public class MyRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         String name = (String)authenticationToken.getPrincipal();
-        User user = userService.login(name);
-
-        System.out.println(1);
+        User user = loginService.login(name);
 
         SimpleAuthenticationInfo info = null;
         if(user == null){
