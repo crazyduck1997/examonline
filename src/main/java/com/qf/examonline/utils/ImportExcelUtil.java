@@ -1,9 +1,7 @@
 package com.qf.examonline.utils;
 
-import com.qf.examonline.dao.SelectQuestionsDao;
 import com.qf.examonline.entity.SelectQuestions;
 import org.apache.poi.ss.usermodel.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,7 +34,7 @@ public class ImportExcelUtil {
      * Excel数据转 list
      *
      * @param originUrl   Excel表的所在路径
-     * @param datePattern 日期格式 如"yyyy-MM-dd hh:mm:ss"
+     * @param //datePattern 日期格式 如"yyyy-MM-dd hh:mm:ss"
      * @param //filedsIndex 模板定义的属性名的行位置
      * @param //startRow    从第几行开始
      * @param //endRow      到第几行结束 (0表示所有行;正数表示到第几行结束;负数表示到倒数第几行结束)
@@ -45,10 +43,11 @@ public class ImportExcelUtil {
      * @return
      * @throws IOException
      */
-    public static <T> List<T> importExcel(String originUrl, String datePattern, Class<T> clazz) throws IOException {
+    public static <T> List<T> importExcel(String originUrl,Class<T> clazz) throws IOException {
         int startRow = 1;
         int endRow = 0;
         int filedsIndex = 0;
+        String datePattern = "yyyy-MM-dd HH:mm:ss";
         // 判断文件是否存在
         File file = new File(originUrl);
         if (!file.exists()) {
@@ -56,14 +55,14 @@ public class ImportExcelUtil {
         }
         InputStream fis = new FileInputStream(file);
 
-        return doImportExcel(fis, datePattern,clazz);
+        return doImportExcel(fis,clazz);
     }
 
     /**
      * Excel数据转 list
      *
      * @param inputStream Excel文件输入流
-     * @param datePattern 日期格式 如"yyyy-MM-dd hh:mm:ss"
+     * @param //datePattern 日期格式 如"yyyy-MM-dd hh:mm:ss"
      * @param //filedsIndex 模板定义的属性名的行位置
      * @param //startRow    从第几行开始
      * @param //endRow      到第几行结束 (0表示所有行;正数表示到第几行结束;负数表示到倒数第几行结束)
@@ -72,15 +71,15 @@ public class ImportExcelUtil {
      * @return
      * @throws IOException
      */
-    public static <T> List<T> importExcel(InputStream inputStream, String datePattern, Class<T> clazz) throws IOException {
-        return doImportExcel(inputStream, datePattern,clazz);
+    public static <T> List<T> importExcel(InputStream inputStream,  Class<T> clazz) throws IOException {
+        return doImportExcel(inputStream,clazz);
     }
 
     /**
      * 真正实现
      *
      * @param inputStream
-     * @param datePattern
+     * @param //datePattern
      * @param //filedsIndex
      * @param //startRow
      * @param //endRow
@@ -89,10 +88,11 @@ public class ImportExcelUtil {
      * @return
      * @throws IOException
      */
-    private static <T> List<T> doImportExcel(InputStream inputStream, String datePattern,Class<T> clazz) throws IOException {
+    private static <T> List<T> doImportExcel(InputStream inputStream,Class<T> clazz) throws IOException {
         int startRow = 1;
         int endRow = 0;
         int filedsIndex = 0;
+        String datePattern = "yyyy-MM-dd HH:mm:ss";
         Workbook wb;
         Sheet sheet;
         Row filedsRow = null;
@@ -323,7 +323,7 @@ public class ImportExcelUtil {
 
         List<SelectQuestions> linesList;
         try {
-            linesList = ImportExcelUtil.importExcel(originUrl, "yyyy-MM-dd HH:mm:ss",SelectQuestions.class);
+            linesList = ImportExcelUtil.importExcel(originUrl,SelectQuestions.class);
             for (SelectQuestions lists : linesList) {
 
             }

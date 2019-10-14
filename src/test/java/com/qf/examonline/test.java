@@ -30,7 +30,7 @@ public class test {
 
         List<SelectQuestions> linesList;
         try {
-            linesList = ImportExcelUtil.importExcel(originUrl, "yyyy-MM-dd HH:mm:ss",SelectQuestions.class);
+            linesList = ImportExcelUtil.importExcel(originUrl,SelectQuestions.class);
             int insert = selectQuestionsDao.insert(linesList);
             System.out.println(insert);
         } catch (IOException e) {

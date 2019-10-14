@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BooleanQuestions {
-    private Integer booId;
+public class SketchQuestions {
+    private Integer skeId;
 
-    private String booDesc;
+    private String skeAnswer;
 
-    private String booAnswer;
+    private String skeDesc;
 
 }

@@ -21,4 +21,10 @@ public class CodeMsg {
     private String nameRepeat;
     @Value("${code.2003}")
     private String typeNameEmpyy;
+
+    @Value("${tempUrl}")
+    private String tempUrl;
+
+    @Value("${isEmpty}")
+    private String isEmpty;
 }
