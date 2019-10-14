@@ -13,4 +13,6 @@ public interface StudentDao {
     List<Student> selectAll();
 
     int updateByPrimaryKey(Student record);
+
+    Student selectByUsername(String username);
 }

@@ -35,4 +35,10 @@
     select stu_id, stu_name, stu_password, suid , tea_id
     from t_stu
   </select>
+  <select id="selectByUsername" resultMap="BaseResultMap" parameterType="string" >
+    select stu_id, stu_name, stu_password, suid , tea_id
+    from t_stu
+    where stu_name = #{username,jdbcType=VARCHAR}
+  </select>
+
 </mapper>

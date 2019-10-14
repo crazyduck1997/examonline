@@ -13,4 +13,6 @@ public interface AdminDao {
     List<Admin> selectAll();
 
     int updateByPrimaryKey(Admin record);
+
+    Admin selectByUsername(String username);
 }

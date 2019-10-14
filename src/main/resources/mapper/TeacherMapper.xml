@@ -33,4 +33,9 @@
     select tea_id, tea_name, tea_pwd, tuid
     from t_tea
   </select>
+  <select id="selectByUsername" resultMap="BaseResultMap" parameterType="string" >
+    select tea_id, tea_name, tea_pwd, tuid
+    from t_tea
+    where tea_name = #{username,jdbcType=VARCHAR}
+  </select>
 </mapper>

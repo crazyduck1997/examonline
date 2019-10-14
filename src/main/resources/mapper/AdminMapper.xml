@@ -33,4 +33,9 @@
     select a_id, a_name, a_password, auid
     from t_admin
   </select>
+  <select id="selectByUsername" resultMap="BaseResultMap" parameterType="string" >
+    select a_id, a_name, a_password, auid
+    from t_admin
+    where a_name = #{username,jdbcType=VARCHAR}
+  </select>
 </mapper>

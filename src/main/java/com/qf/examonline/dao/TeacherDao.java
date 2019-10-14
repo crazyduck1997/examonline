@@ -1,6 +1,7 @@
 package com.qf.examonline.dao;
 
 import com.qf.examonline.entity.Teacher;
+
 import java.util.List;
 
 public interface TeacherDao {
@@ -13,4 +14,6 @@ public interface TeacherDao {
     List<Teacher> selectAll();
 
     int updateByPrimaryKey(Teacher record);
+
+    Teacher selectByUsername(String username);
 }
