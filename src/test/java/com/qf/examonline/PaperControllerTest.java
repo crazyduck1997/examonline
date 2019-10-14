@@ -37,4 +37,8 @@ public class PaperControllerTest {
         type.setTypeName("pyrhon1");
         typeService.updatePaperTypeName(type);
     }
+    @Test
+    public void deleteOneType(){
+        typeService.deleteOnePaperType(3);
+    }
 }
