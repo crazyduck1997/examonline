@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qf.examonline.dao.BooleanQuestionsDaor" >
+  <resultMap id="BaseResultMap" type="com.qf.examonline.entity.BooleanQuestions" >
+    <id column="boo_id" property="booId" jdbcType="INTEGER" />
+    <result column="boo_desc" property="booDesc" jdbcType="LONGVARCHAR" />
+    <result column="boo_answer" property="booAnswer" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_boolean_questions
+    where boo_id = #{booId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qf.examonline.entity.BooleanQuestions" >
+    insert into t_boolean_questions (boo_id, boo_desc, boo_answer
+      )
+    values (#{booId,jdbcType=INTEGER}, #{booDesc,jdbcType=LONGVARCHAR}, #{booAnswer,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.BooleanQuestions" >
+    update t_boolean_questions
+    set boo_desc = #{booDesc,jdbcType=LONGVARCHAR},
+      boo_answer = #{booAnswer,jdbcType=LONGVARCHAR}
+    where boo_id = #{booId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select boo_id, boo_desc, boo_answer
+    from t_boolean_questions
+    where boo_id = #{booId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select boo_id, boo_desc, boo_answer
+    from t_boolean_questions
+  </select>
+</mapper>

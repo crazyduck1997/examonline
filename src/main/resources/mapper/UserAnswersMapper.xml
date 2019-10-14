@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qf.examonline.dao.UserAnswersDao" >
+  <resultMap id="BaseResultMap" type="com.qf.examonline.entity.UserAnswers" >
+    <id column="cid" property="cid" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="paper_id" property="paperId" jdbcType="INTEGER" />
+    <result column="c_desc" property="cDesc" jdbcType="LONGVARCHAR" />
+    <result column="c_answer" property="cAnswer" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_user_answers
+    where cid = #{cid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qf.examonline.entity.UserAnswers" >
+    insert into t_user_answers (cid, uid, paper_id, 
+      c_desc, c_answer)
+    values (#{cid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{paperId,jdbcType=INTEGER}, 
+      #{cDesc,jdbcType=LONGVARCHAR}, #{cAnswer,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.UserAnswers" >
+    update t_user_answers
+    set uid = #{uid,jdbcType=INTEGER},
+      paper_id = #{paperId,jdbcType=INTEGER},
+      c_desc = #{cDesc,jdbcType=LONGVARCHAR},
+      c_answer = #{cAnswer,jdbcType=LONGVARCHAR}
+    where cid = #{cid,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select cid, uid, paper_id, c_desc, c_answer
+    from t_user_answers
+    where cid = #{cid,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select cid, uid, paper_id, c_desc, c_answer
+    from t_user_answers
+  </select>
+</mapper>

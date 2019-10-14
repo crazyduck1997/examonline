@@ -22,5 +22,7 @@ public class Paper {
 
     private Integer typeId;
 
+    private String paperUrl;
+
 
 }
