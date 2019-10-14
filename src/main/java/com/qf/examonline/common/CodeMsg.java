@@ -11,7 +11,13 @@ import org.springframework.stereotype.Component;
         ignoreResourceNotFound = false, encoding = "UTF-8", name = "codemsg.properties")
 public class CodeMsg {
     @Value("${code.1001}")
-    private String passwordEmpty;
+    private String loginSuccess;
+    @Value("${code.1002}")
+    private String loginFaile;
+    @Value("${code.1003}")
+    private String repeatUsername;
+    @Value("${code.1004}")
+    private String enableUsername;
 
     @Value("${code.2000}")
     private String execteSuccess;
