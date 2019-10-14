@@ -1,5 +1,6 @@
 package com.qf.examonline.service.impl;
 
+import com.qf.examonline.common.CodeMsg;
 import com.qf.examonline.dao.UserDao;
 import com.qf.examonline.entity.User;
 import com.qf.examonline.service.UserService;
@@ -13,6 +14,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired(required = false)
     UserDao userDao;
+
+    @Autowired
+    CodeMsg codeMsg;
 
 
     @Override
@@ -33,7 +37,7 @@ public class UserServiceImpl implements UserService {
     public void insert(User record) {
         User user = userDao.findUserByName(record.getUsername());
         if (user != null){
-            throw new RuntimeException("名字重复");
+            throw new RuntimeException(codeMsg.getNameRepeat());
         }
         userDao.insert(record);
     }
@@ -50,7 +54,7 @@ public class UserServiceImpl implements UserService {
     public void updateByPrimaryKey(User record) {
         User user = userDao.findUserByName(record.getUsername());
         if (user != null){
-            throw new RuntimeException("名字重复");
+            throw new RuntimeException(codeMsg.getNameRepeat());
         }
         userDao.updateByPrimaryKey(record);
     }
