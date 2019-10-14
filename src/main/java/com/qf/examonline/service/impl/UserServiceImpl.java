@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    //业务层：查询用户
+    //业务层：查用户
     @Override
     public List<User> selectAll() {
         List<User> users = userDao.selectAll();

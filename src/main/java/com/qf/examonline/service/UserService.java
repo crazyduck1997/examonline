@@ -19,7 +19,7 @@ public interface UserService {
     //修改用户
     public void updateByPrimaryKey(User record);
 
-    //删除用户
+    //删除用
     public void deleteByPrimaryKey(Integer uid);
 
 }

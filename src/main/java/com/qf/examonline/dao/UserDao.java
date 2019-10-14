@@ -17,6 +17,6 @@ public interface UserDao {
     User selectByUsername(String username);
 
     User findById(Integer uid);
-
+    //通过名字查询
     User findUserByName(String userName);
 }

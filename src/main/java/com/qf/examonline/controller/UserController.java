@@ -1,5 +1,7 @@
 package com.qf.examonline.controller;
 
+import com.qf.examonline.common.CodeMsg;
+import com.qf.examonline.common.ErrorCode;
 import com.qf.examonline.common.JsonBean;
 import com.qf.examonline.entity.User;
 import com.qf.examonline.service.UserService;
@@ -14,8 +16,11 @@ import java.util.List;
 @Api(tags = "用户管理")
 @Controller
 @CrossOrigin
-@RequestMapping("/UserController")
+@RequestMapping("/user")
 public class UserController {
+
+    @Autowired
+    CodeMsg codeMsg;
 
     @Autowired
     private UserService userService;
@@ -25,7 +30,7 @@ public class UserController {
     @ResponseBody
     public JsonBean selectUser(){
         List<User> users = userService.selectAll();
-        return new JsonBean(0,users);
+        return new JsonBean(ErrorCode.SUCCESS,users);
     }
 
     @ApiOperation(value = "添加用户")
@@ -34,9 +39,9 @@ public class UserController {
     public JsonBean insertUser(User user){
         try {
             userService.insert(user);
-            return new JsonBean(0,"添加成功");
+            return new JsonBean(ErrorCode.SUCCESS,codeMsg.getExecteSuccess());
         } catch (Exception e) {
-            return new JsonBean(1,"姓名重复");
+            return new JsonBean(ErrorCode.REPEAT_USERNAME,codeMsg.getNameRepeat());
         }
 
     }
@@ -46,7 +51,7 @@ public class UserController {
     @ResponseBody
     public JsonBean findUserById(Integer uid){
         User user = userService.findById(uid);
-        return new JsonBean(0,user);
+        return new JsonBean(ErrorCode.SUCCESS,user);
     }
 
     @ApiOperation(value = "修改用户")
@@ -55,9 +60,9 @@ public class UserController {
     public JsonBean updateUser(@RequestBody User user){
         try {
             userService.updateByPrimaryKey(user);
-            return new JsonBean(0,"修改成功");
+            return new JsonBean(ErrorCode.SUCCESS,codeMsg.getExecteSuccess());
         } catch (Exception e) {
-            return new JsonBean(1,"姓名重复");
+            return new JsonBean(ErrorCode.REPEAT_USERNAME,codeMsg.getNameRepeat());
         }
     }
 
@@ -66,7 +71,7 @@ public class UserController {
     @ResponseBody
     public JsonBean deleteUser(Integer uid){
         userService.deleteByPrimaryKey(uid);
-        return new JsonBean(0,"删除成功");
+        return new JsonBean(ErrorCode.SUCCESS,codeMsg.getExecteSuccess());
     }
 
 }
