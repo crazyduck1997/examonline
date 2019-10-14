@@ -7,24 +7,32 @@
     <result column="stu_id" property="stuId" jdbcType="INTEGER" />
     <result column="paper_id" property="paperId" jdbcType="INTEGER" />
   </resultMap>
+
+<!--  删除学生分数-->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_score
-    where sid = #{sid,jdbcType=INTEGER}
+    where sid = #{sid}
   </delete>
+
+
+<!--  添加学生分数-->
   <insert id="insert" parameterType="com.qf.examonline.entity.Score" >
-    insert into t_score (sid, score,stu_id,paper_id)
-    values (#{sid,jdbcType=INTEGER}, #{score,jdbcType=INTEGER}, #{stuId,jdbcType=INTEGER}, #{paperId,jdbcType=INTEGER})
+    insert into t_score (score,stu_id,paper_id)
+    values (#{score,jdbcType=INTEGER}, #{stuId,jdbcType=INTEGER}, #{paperId,jdbcType=INTEGER})
   </insert>
+
   <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.Score" >
     update t_score
     set score = #{score,jdbcType=INTEGER}
     where sid = #{sid,jdbcType=INTEGER}
   </update>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select sid, score,stu_id,paper_id
     from t_score
     where sid = #{sid,jdbcType=INTEGER}
   </select>
+
   <select id="selectAll" resultMap="BaseResultMap" >
     select sid, score,stu_id,paper_id
     from t_score
