@@ -6,6 +6,8 @@ import com.qf.examonline.common.JsonBean;
 import com.qf.examonline.service.BooleanQuestionService;
 import com.qf.examonline.service.SelectQuestionsService;
 import com.qf.examonline.service.SketchQuestionsService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,8 +31,7 @@ public class QuestionsController {
     @Autowired
     SketchQuestionsService sketchQuestionsService;
 
-
-
+    @ApiOperation(value = "添加到题库")
     @RequestMapping("/addSelectQuestions.do")
     public JsonBean addSelectQuestions(MultipartFile file){
         if(file.isEmpty()){
