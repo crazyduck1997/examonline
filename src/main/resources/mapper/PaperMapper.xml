@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qf.examonline.dao.PaperDao" >
+  <resultMap id="BaseResultMap" type="com.qf.examonline.entity.Paper" >
+    <id column="paper_id" property="paperId" jdbcType="INTEGER" />
+    <result column="paper_name" property="paperName" jdbcType="VARCHAR" />
+    <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="paper_status" property="paperStatus" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_paper
+    where paper_id = #{paperId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qf.examonline.entity.Paper" >
+    insert into t_paper (paper_id, paper_name, begin_time, 
+      end_time, paper_status)
+    values (#{paperId,jdbcType=INTEGER}, #{paperName,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP}, #{paperStatus,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.Paper" >
+    update t_paper
+    set paper_name = #{paperName,jdbcType=VARCHAR},
+      begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      paper_status = #{paperStatus,jdbcType=INTEGER}
+    where paper_id = #{paperId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select paper_id, paper_name, begin_time, end_time, paper_status
+    from t_paper
+    where paper_id = #{paperId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select paper_id, paper_name, begin_time, end_time, paper_status
+    from t_paper
+  </select>
+</mapper>

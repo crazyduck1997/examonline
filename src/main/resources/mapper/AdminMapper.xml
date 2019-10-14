@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qf.examonline.dao.AdminDao" >
+  <resultMap id="BaseResultMap" type="com.qf.examonline.entity.Admin" >
+    <id column="a_id" property="aId" jdbcType="INTEGER" />
+    <result column="a_name" property="aName" jdbcType="VARCHAR" />
+    <result column="a_password" property="aPassword" jdbcType="VARCHAR" />
+    <result column="auid" property="auid" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_admin
+    where a_id = #{aId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qf.examonline.entity.Admin" >
+    insert into t_admin (a_id, a_name, a_password, 
+      auid)
+    values (#{aId,jdbcType=INTEGER}, #{aName,jdbcType=VARCHAR}, #{aPassword,jdbcType=VARCHAR}, 
+      #{auid,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.Admin" >
+    update t_admin
+    set a_name = #{aName,jdbcType=VARCHAR},
+      a_password = #{aPassword,jdbcType=VARCHAR},
+      auid = #{auid,jdbcType=INTEGER}
+    where a_id = #{aId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select a_id, a_name, a_password, auid
+    from t_admin
+    where a_id = #{aId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select a_id, a_name, a_password, auid
+    from t_admin
+  </select>
+</mapper>

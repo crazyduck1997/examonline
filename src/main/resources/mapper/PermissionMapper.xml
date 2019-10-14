@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qf.examonline.dao.PermissionDao" >
+  <resultMap id="BaseResultMap" type="com.qf.examonline.entity.Permission" >
+    <id column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="pname" property="pname" jdbcType="VARCHAR" />
+    <result column="pdesc" property="pdesc" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="parentId" property="parentid" jdbcType="INTEGER" />
+    <result column="url" property="url" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_permission
+    where pid = #{pid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qf.examonline.entity.Permission" >
+    insert into t_permission (pid, pname, pdesc, 
+      type, parentId, url
+      )
+    values (#{pid,jdbcType=INTEGER}, #{pname,jdbcType=VARCHAR}, #{pdesc,jdbcType=VARCHAR}, 
+      #{type,jdbcType=INTEGER}, #{parentid,jdbcType=INTEGER}, #{url,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.Permission" >
+    update t_permission
+    set pname = #{pname,jdbcType=VARCHAR},
+      pdesc = #{pdesc,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      parentId = #{parentid,jdbcType=INTEGER},
+      url = #{url,jdbcType=LONGVARCHAR}
+    where pid = #{pid,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select pid, pname, pdesc, type, parentId, url
+    from t_permission
+    where pid = #{pid,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select pid, pname, pdesc, type, parentId, url
+    from t_permission
+  </select>
+</mapper>
