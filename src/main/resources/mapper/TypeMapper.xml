@@ -2,10 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.qf.examonline.dao.TypeDao" >
     <resultMap id="BaseResultMap" type="com.qf.examonline.entity.Type" >
-        <id column="sid" property="sid" jdbcType="INTEGER" />
-        <result column="score" property="score" jdbcType="INTEGER" />
-        <result column="stu_id" property="stuId" jdbcType="INTEGER" />
-        <result column="paper_id" property="paperId" jdbcType="INTEGER" />
+        <id property="typeId" column="type_id"/>
+        <result property="typeName" column="type_name"/>
     </resultMap>
 
+<!--    查询所有试卷类别-->
+    <select id="findAllType" resultMap="BaseResultMap">
+        select * from t_type
+    </select>
+<!--    添加新的试卷类别-->
+    <insert id="addNewPaperType">
+        insert into t_type(type_name) value(#{typeName})
+    </insert>
+<!--    删除一个试卷类别-->
+    <delete id="deleteOnePaperType">
+        delete from t_type where type_id = #{typeId}
+    </delete>
+<!--    修改试卷类别名称-->
+    <update id="updatePaperTypeName">
+        update t_type set type_name = #{typeName} where type_id = #{typeId}
+    </update>
 </mapper>
