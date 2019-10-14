@@ -19,4 +19,6 @@ public class CodeMsg {
     private String execteFaile;
     @Value("${code.2002}")
     private String nameRepeat;
+    @Value("${code.2003}")
+    private String typeNameEmpyy;
 }

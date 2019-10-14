@@ -9,6 +9,11 @@
 <!--    查询所有试卷类别-->
     <select id="findAllType" resultMap="BaseResultMap">
         select * from t_type
+        <where>
+            <if test="type_name != null and type_name != '' ">
+                type_name like upper ('%${typeName}%')
+            </if>
+        </where>
     </select>
 <!--    添加新的试卷类别-->
     <insert id="addNewPaperType">
@@ -22,4 +27,21 @@
     <update id="updatePaperTypeName">
         update t_type set type_name = #{typeName} where type_id = #{typeId}
     </update>
+<!--    根据名字查询一个种类-->
+    <select id="findOneTypeByTypeName" resultMap="BaseResultMap">
+        select type_name from t_type where type_name = upper (#{typeName})
+    </select>
+    <!--    根据typeId查询一个种类-->
+    <select id="findOneTypeByTypeId" resultMap="BaseResultMap">
+        select * from t_type where type_id = #{typeId}
+    </select>
+    <select id="findTypeCount" resultType="integer">
+        select count(*) from t_type
+        <where>
+            <if test="type_name != null and type_name !=''">
+                type_name like upper ('%${typeName}%')
+            </if>
+        </where>
+    </select>
+
 </mapper>
