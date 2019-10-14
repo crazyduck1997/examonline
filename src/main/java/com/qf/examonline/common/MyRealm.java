@@ -1,20 +1,18 @@
 package com.qf.examonline.common;
 
+import com.qf.examonline.entity.User;
+import com.qf.examonline.service.UserService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
-import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-
-import java.util.HashSet;
-import java.util.List;
 
 public class MyRealm extends AuthorizingRealm {
 
@@ -25,21 +23,21 @@ public class MyRealm extends AuthorizingRealm {
     //获取授权信息
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        //获取合法登录的用户的用户名
-        String name = (String) principalCollection.getPrimaryPrincipal();
-        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        //查询拥有的权限
-        List<String> perms = userService.findPermsByName(name);
-        //创建授权信息对象
-        info.setStringPermissions(new HashSet<>(perms));
-        return info;
+//        //获取合法登录的用户的用户名
+//        String name = (String) principalCollection.getPrimaryPrincipal();
+//        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+//        //查询拥有的权限
+//        List<String> perms = userService.login(name);
+//        //创建授权信息对象
+//        info.setStringPermissions(new HashSet<>(perms));
+        return null;
     }
 
     //获取认证信息
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         String name = (String)authenticationToken.getPrincipal();
-        User user = userService.findUserByName(name);
+        User user = userService.login(name);
 
         System.out.println(1);
 
