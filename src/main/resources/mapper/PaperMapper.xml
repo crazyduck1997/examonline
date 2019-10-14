@@ -7,6 +7,7 @@
     <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP" />
     <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
     <result column="paper_status" property="paperStatus" jdbcType="INTEGER" />
+    <result column="type_id" property="typeId" jdbcType="INTEGER" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_paper
@@ -14,25 +15,26 @@
   </delete>
   <insert id="insert" parameterType="com.qf.examonline.entity.Paper" >
     insert into t_paper (paper_id, paper_name, begin_time, 
-      end_time, paper_status)
+      end_time, paper_status,type_id)
     values (#{paperId,jdbcType=INTEGER}, #{paperName,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIMESTAMP}, 
-      #{endTime,jdbcType=TIMESTAMP}, #{paperStatus,jdbcType=INTEGER})
+      #{endTime,jdbcType=TIMESTAMP}, #{paperStatus,jdbcType=INTEGER},#{typeId,jdbcType=INTEGER})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.Paper" >
     update t_paper
     set paper_name = #{paperName,jdbcType=VARCHAR},
       begin_time = #{beginTime,jdbcType=TIMESTAMP},
       end_time = #{endTime,jdbcType=TIMESTAMP},
-      paper_status = #{paperStatus,jdbcType=INTEGER}
+      paper_status = #{paperStatus,jdbcType=INTEGER},
+      type_id = #{typeId,jdbcType=INTEGER}
     where paper_id = #{paperId,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select paper_id, paper_name, begin_time, end_time, paper_status
+    select paper_id, paper_name, begin_time, end_time, paper_status,type_id
     from t_paper
     where paper_id = #{paperId,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select paper_id, paper_name, begin_time, end_time, paper_status
+    select paper_id, paper_name, begin_time, end_time, paper_status,type_id
     from t_paper
   </select>
 </mapper>

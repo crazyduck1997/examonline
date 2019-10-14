@@ -4,14 +4,16 @@
   <resultMap id="BaseResultMap" type="com.qf.examonline.entity.Score" >
     <id column="sid" property="sid" jdbcType="INTEGER" />
     <result column="score" property="score" jdbcType="INTEGER" />
+    <result column="stu_id" property="stuId" jdbcType="INTEGER" />
+    <result column="paper_id" property="paperId" jdbcType="INTEGER" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_score
     where sid = #{sid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.qf.examonline.entity.Score" >
-    insert into t_score (sid, score)
-    values (#{sid,jdbcType=INTEGER}, #{score,jdbcType=INTEGER})
+    insert into t_score (sid, score,stu_id,paper_id)
+    values (#{sid,jdbcType=INTEGER}, #{score,jdbcType=INTEGER}, #{stuId,jdbcType=INTEGER}, #{paperId,jdbcType=INTEGER})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.Score" >
     update t_score
@@ -19,12 +21,12 @@
     where sid = #{sid,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select sid, score
+    select sid, score,stu_id,paper_id
     from t_score
     where sid = #{sid,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select sid, score
+    select sid, score,stu_id,paper_id
     from t_score
   </select>
 </mapper>

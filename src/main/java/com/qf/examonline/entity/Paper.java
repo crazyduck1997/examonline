@@ -9,6 +9,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Paper {
+
     private Integer paperId;
 
     private String paperName;
@@ -18,6 +19,8 @@ public class Paper {
     private Date endTime;
 
     private Integer paperStatus;
+
+    private Integer typeId;
 
 
 }

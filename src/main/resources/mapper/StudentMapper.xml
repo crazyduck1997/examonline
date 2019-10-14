@@ -6,6 +6,7 @@
     <result column="stu_name" property="stuName" jdbcType="VARCHAR" />
     <result column="stu_password" property="stuPassword" jdbcType="VARCHAR" />
     <result column="suid" property="suid" jdbcType="INTEGER" />
+    <result column="tea_id" property="teaId" jdbcType="INTEGER" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_stu
@@ -13,24 +14,25 @@
   </delete>
   <insert id="insert" parameterType="com.qf.examonline.entity.Student" >
     insert into t_stu (stu_id, stu_name, stu_password, 
-      suid)
+      suid,tea_id)
     values (#{stuId,jdbcType=INTEGER}, #{stuName,jdbcType=VARCHAR}, #{stuPassword,jdbcType=VARCHAR}, 
-      #{suid,jdbcType=INTEGER})
+      #{suid,jdbcType=INTEGER},#{teaId,jdbcType=INTEGER})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.Student" >
     update t_stu
     set stu_name = #{stuName,jdbcType=VARCHAR},
       stu_password = #{stuPassword,jdbcType=VARCHAR},
-      suid = #{suid,jdbcType=INTEGER}
+      suid = #{suid,jdbcType=INTEGER},
+      tea_id = #{teaId,jdbcType=INTEGER}
     where stu_id = #{stuId,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select stu_id, stu_name, stu_password, suid
+    select stu_id, stu_name, stu_password, suid , tea_id
     from t_stu
     where stu_id = #{stuId,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select stu_id, stu_name, stu_password, suid
+    select stu_id, stu_name, stu_password, suid , tea_id
     from t_stu
   </select>
 </mapper>

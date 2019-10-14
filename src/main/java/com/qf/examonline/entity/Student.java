@@ -16,5 +16,7 @@ public class Student {
 
     private Integer suid;
 
+    private Integer teaId;
+
 
 }

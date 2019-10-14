@@ -12,5 +12,9 @@ public class Score {
 
     private Integer score;
 
+    private Integer stuId;
+
+    private Integer paperId;
+
 
 }

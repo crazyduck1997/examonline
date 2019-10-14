@@ -7,12 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoleUser {
-    private Integer ruid;
+public class Type {
 
-    private Integer rid;
-
-    private Integer uid;
-
+    private Integer typeId;
+    private String typeName;
 
 }
