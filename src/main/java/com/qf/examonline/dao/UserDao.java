@@ -15,4 +15,8 @@ public interface UserDao {
     int updateByPrimaryKey(User record);
 
     User selectByUsername(String username);
+
+    User findById(Integer uid);
+
+    User findUserByName(String userName);
 }
