@@ -25,4 +25,5 @@ public class Paper {
     private String paperUrl;
 
 
+    private Integer avgscore;
 }
