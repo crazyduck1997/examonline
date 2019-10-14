@@ -43,5 +43,11 @@ public class PaperConreoller {
         return new JsonBean(0,"修改成功");
     }
 
+    @ApiOperation(value = "删除一个种类",notes = "需要传入对应的种类的typeId")
+    public JsonBean deleteOneType(Integer typeId){
+        typeService.deleteOnePaperType(typeId);
+        return new JsonBean(0,"删除成功");
+    }
+
 
 }
