@@ -43,6 +43,7 @@ public class ShiroConfig {
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         // authc:必须认证通过才可以访问;
         // anon: 匿名访问
+        filterChainDefinitionMap.put("*/swagger*","anon");
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/css/**", "anon");
         filterChainDefinitionMap.put("/login", "anon");
@@ -55,6 +56,8 @@ public class ShiroConfig {
 
         filterChainDefinitionMap.put("/admin/**", "authc");
         filterChainDefinitionMap.put("/user/**", "authc");
+
+
 
 
         //必须放在所有权限设置的最后，匹配的是不满足前面匹配条件的资源
