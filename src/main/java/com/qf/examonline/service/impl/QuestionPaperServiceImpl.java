@@ -1,17 +1,11 @@
 package com.qf.examonline.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.fasterxml.jackson.databind.util.JSONWrappedObject;
 import com.qf.examonline.common.CodeMsg;
 import com.qf.examonline.dao.PaperDao;
 import com.qf.examonline.dao.QuestionsPaperDao;
 import com.qf.examonline.entity.Paper;
-import com.qf.examonline.entity.SelectQuestions;
 import com.qf.examonline.service.QuestionPaperService;
-import org.apache.tomcat.util.json.JSONParser;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,7 +40,6 @@ public class QuestionPaperServiceImpl implements QuestionPaperService {
             System.out.println(paperName + "--" + typeId);
             paper.setPaperName(paperName);
             paper.setTypeId(typeId);
-
         } catch (Exception e) {
             e.printStackTrace();
         }

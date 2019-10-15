@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Max;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -83,7 +84,7 @@ public class QuestionsController {
         return new JsonBean(ErrorCode.SUCCESS,codeMsg.getExecteSuccess());
     }
 
-    @ApiOperation(value = "选择题目生成试卷")
+    @ApiOperation(value = "手动选择题目生成试卷")
     @RequestMapping("/addPaper.do")
     public JsonBean addPaper(@RequestBody Map<String,Object> map){
         if(map==null){
@@ -91,6 +92,12 @@ public class QuestionsController {
         }
         questionPaperService.addQuestions(map);
         return new JsonBean(ErrorCode.SUCCESS,codeMsg.getExecteSuccess());
+    }
+
+    @ApiOperation(value = "自动生成试卷")
+    @RequestMapping("/autoMakePaper.do")
+    public JsonBean autoMakePaper(){
+        return null;
     }
 
 
