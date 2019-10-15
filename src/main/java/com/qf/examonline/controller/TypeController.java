@@ -56,6 +56,7 @@ public class TypeController {
     }
 
     @ApiOperation("通过id查找type信息")
+    @PostMapping("/findTypeById.do")
     public JsonBean findTypeById(Integer typeId){
         Type type = typeService.findOneTypeByTypeId(typeId);
         return new JsonBean(ErrorCode.SUCCESS,type);
@@ -82,7 +83,6 @@ public class TypeController {
     @PostMapping("/deleteOneType.do")
     public JsonBean deleteOneType(Integer typeId){
         typeService.deleteOnePaperType(typeId);
-
         return new JsonBean(ErrorCode.SUCCESS,codeMsg.getExecteSuccess());
     }
 

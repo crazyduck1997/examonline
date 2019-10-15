@@ -41,6 +41,7 @@
     from t_paper
   </select>
 
+<!--  查询平均分-->
   <select id="findAvgScore" resultMap="BaseResultMap">
     SELECT t_paper.paper_name,AVG(score) avgscore
     from t_paper,t_score,t_type
@@ -48,4 +49,8 @@
     and t_paper.type_id = #{typeId}
     GROUP BY t_score.paper_id
   </select>
+<!--  当一个类别删除后将该类别的试卷隐藏-->
+  <update id="updatePaperStatus">
+    update t_paper set paper_status = 1 where type_id = #{typeId}
+  </update>
 </mapper>

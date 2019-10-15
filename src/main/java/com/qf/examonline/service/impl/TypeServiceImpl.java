@@ -3,6 +3,7 @@ package com.qf.examonline.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.qf.examonline.dao.PaperDao;
 import com.qf.examonline.dao.TypeDao;
 import com.qf.examonline.entity.Type;
 import com.qf.examonline.service.TypeService;
@@ -16,7 +17,8 @@ public class TypeServiceImpl implements TypeService {
 
     @Autowired(required = false)
     private TypeDao typeDao;
-
+    @Autowired(required = false)
+    private PaperDao paperDao;
 
 //    @Override
 //    //业务层：查询所有试卷种类
@@ -42,7 +44,10 @@ public class TypeServiceImpl implements TypeService {
     @Override
     //删除一个种类
     public void deleteOnePaperType(Integer typeId) {
+        //调用方法删除种类
         typeDao.deleteOnePaperType(typeId);
+        //调用方法修改对应试卷的状态
+        paperDao.updatePaperStatus(typeId);
     }
 
     @Override
