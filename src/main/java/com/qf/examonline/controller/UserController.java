@@ -1,5 +1,7 @@
 package com.qf.examonline.controller;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import com.qf.examonline.common.CodeMsg;
 import com.qf.examonline.common.ErrorCode;
 import com.qf.examonline.common.JsonBean;
@@ -7,10 +9,12 @@ import com.qf.examonline.entity.User;
 import com.qf.examonline.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Info;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Api(tags = "用户管理")
@@ -28,9 +32,15 @@ public class UserController {
     @ApiOperation(value = "查询用户")
     @PostMapping("/selectUser.do")
     @ResponseBody
-    public JsonBean selectUser(){
-        List<User> users = userService.selectAll();
-        return new JsonBean(ErrorCode.SUCCESS,users);
+    public JsonBean selectUser(String username,Integer page,Integer limit){
+
+        HashMap<String,Object> map = new HashMap<>();
+        PageInfo<User> userList = userService.selectAll(username,page,limit);
+        map.put("count",userService.fingCount(username));
+        map.put("data",userList);
+        return new JsonBean(ErrorCode.SUCCESS,map);
+//        List<User> users = userService.selectAll();
+//        return new JsonBean(ErrorCode.SUCCESS,users);
     }
 
     @ApiOperation(value = "添加用户")

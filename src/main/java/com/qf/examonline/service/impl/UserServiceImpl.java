@@ -1,5 +1,7 @@
 package com.qf.examonline.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.qf.examonline.common.CodeMsg;
 import com.qf.examonline.dao.UserDao;
 import com.qf.examonline.entity.User;
@@ -27,9 +29,11 @@ public class UserServiceImpl implements UserService {
 
     //业务层：查用户
     @Override
-    public List<User> selectAll() {
-        List<User> users = userDao.selectAll();
-        return users;
+    public PageInfo<User> selectAll(String username,Integer page,Integer limit) {
+        PageHelper.startPage(page,limit);
+        List<User> userList = userDao.selectAll(username);
+        PageInfo<User> pageInfo = new PageInfo<>(userList);
+        return pageInfo;
     }
 
     //业务层：添加用户
@@ -63,5 +67,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteByPrimaryKey(Integer uid) {
         userDao.deleteByPrimaryKey(uid);
+    }
+
+    @Override
+    public Integer fingCount(String username) {
+        Integer count = userDao.findCount(username);
+        return count;
     }
 }

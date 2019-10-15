@@ -1,9 +1,12 @@
 package com.qf.examonline;
 
+import com.github.pagehelper.PageInfo;
 import com.qf.examonline.dao.UserDao;
 import com.qf.examonline.entity.User;
+import com.qf.examonline.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -17,13 +20,14 @@ public class TestUser {
     @Resource
     UserDao userDao;
 
+    @Autowired
+    UserService userService;
+
 
     @Test
     public void test1(){
-        List<User> users = userDao.selectAll();
-        for(User user : users){
-            System.out.println(user);
-        }
+        PageInfo<User> pageInfo = userService.selectAll("", 1, 5);
+        System.out.println(pageInfo);
     }
 
     @Test
@@ -54,6 +58,11 @@ public class TestUser {
     public void test5(){
         User byId = userDao.findById(1);
         System.out.println(byId);
+    }
 
+    @Test
+    public void test6(){
+        Integer count = userDao.findCount("");
+        System.out.println(count);
     }
 }

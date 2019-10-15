@@ -51,4 +51,13 @@
   <select id="findUserByName" resultMap="BaseResultMap">
     select * from t_user where username = #{username}
   </select>
+
+  <select id="findCount" resultType="integer">
+    select count(*) from t_user
+    <where>
+      <if test="username != null and username !='' ">
+        username like upper ('%${username}%')
+      </if>
+    </where>
+  </select>
 </mapper>
