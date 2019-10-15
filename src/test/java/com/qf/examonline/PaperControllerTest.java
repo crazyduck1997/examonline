@@ -66,7 +66,7 @@ public class PaperControllerTest {
     }
     @Test
     public void findAvgScore(){
-        List<Paper> avgScore = paperDao.findAvgScore(1);
+        List<Paper> avgScore = paperDao.findAvgScore(8);
         System.out.println(avgScore);
     }
 
