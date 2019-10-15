@@ -1,5 +1,8 @@
 package com.qf.examonline.service.impl;
 
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.qf.examonline.dao.TypeDao;
 import com.qf.examonline.entity.Type;
 import com.qf.examonline.service.TypeService;
@@ -15,17 +18,25 @@ public class TypeServiceImpl implements TypeService {
     private TypeDao typeDao;
 
 
-    @Override
-    //业务层：查询所有试卷种类
-    public List<Type> findAllType() {
-        List<Type> typeList = typeDao.findAllType();
-        return typeList;
+//    @Override
+//    //业务层：查询所有试卷种类
+    public PageInfo<Type> findAllType(String typeName,Integer page, Integer limit) {
+        //设置查询的页码和记录数
+        PageHelper.startPage(page,limit);
+        List<Type> typeList = typeDao.findAllType(typeName);
+        PageInfo<Type> pageInfo = new PageInfo<>(typeList);
+        return pageInfo;
     }
+
 
     @Override
     //添加一个新的种类
     public void addNewPaperType(String typeName) {
-            typeDao.addNewPaperType(typeName);
+        Type type = typeDao.findOneTypeByTypeName(typeName);
+        if (type != null){
+            throw new RuntimeException("类别重复");
+        }
+        typeDao.addNewPaperType(typeName);
     }
 
     @Override
@@ -37,6 +48,22 @@ public class TypeServiceImpl implements TypeService {
     @Override
     //修改一个种类的名字
     public void updatePaperTypeName(Type type) {
-        typeDao.updatePaperTypeName(type);
+        Type type1 = typeDao.findOneTypeByTypeName(type.getTypeName());
+        if (type1 != null){
+            throw new RuntimeException("类别重复");
+        }
+        typeDao.updatePaperTypeName(type1);
+    }
+    @Override
+    ////通过id查询type
+    public Type findOneTypeByTypeId(Integer typeId) {
+        Type type = typeDao.findOneTypeByTypeId(typeId);
+        return type;
+    }
+
+    @Override
+    public Integer findTypeCount(String typeName) {
+        Integer count = typeDao.findTypeCount(typeName);
+        return count;
     }
 }

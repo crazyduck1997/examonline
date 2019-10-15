@@ -1,3 +1,4 @@
+/*
 package com.qf.examonline.config;
 
 
@@ -28,14 +29,14 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         // 未登陆情况下，访问需要登陆后才能访问资源时，跳转到指定资源（比如登陆页面）
-        shiroFilterFactoryBean.setLoginUrl("/login");
+        //shiroFilterFactoryBean.setLoginUrl("/login");
         // 当没有权限访问某些资源时，跳转到的资源
-        shiroFilterFactoryBean.setUnauthorizedUrl("/noPerms");
+        //shiroFilterFactoryBean.setUnauthorizedUrl("/noPerms");
 
         // 存放自定义的filter
         LinkedHashMap<String, Filter> filtersMap = new LinkedHashMap<>();
         //配置自定义登出 覆盖 logout 之前默认的LogoutFilter
-        filtersMap.put("logout", myLogoutFilter());
+        //filtersMap.put("logout", myLogoutFilter());
         shiroFilterFactoryBean.setFilters(filtersMap);
 
 
@@ -43,18 +44,26 @@ public class ShiroConfig {
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         // authc:必须认证通过才可以访问;
         // anon: 匿名访问
+        //swagger放行
+        filterChainDefinitionMap.put("/swagger-ui.html", "anon");
+        filterChainDefinitionMap.put("/swagger-resources", "anon");
+        filterChainDefinitionMap.put("/v2/api-docs", "anon");
+        filterChainDefinitionMap.put("/webjars/springfox-swagger-ui/**", "anon");
+
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/css/**", "anon");
-        filterChainDefinitionMap.put("/login", "anon");
+        //filterChainDefinitionMap.put("/login", "anon");
 
-        filterChainDefinitionMap.put("/logout", "logout");
+        //filterChainDefinitionMap.put("/logout", "logout");
 
         //访问指定资源需要的权限
         //perms[]权限
         //filterChainDefinitionMap.put("/user/list", "perms[role:list]");
 
-        filterChainDefinitionMap.put("/admin/**", "authc");
-        filterChainDefinitionMap.put("/user/**", "authc");
+        //filterChainDefinitionMap.put("/admin/**", "authc");
+        //filterChainDefinitionMap.put("/user/**", "authc");
+
+
 
 
         //必须放在所有权限设置的最后，匹配的是不满足前面匹配条件的资源
@@ -122,3 +131,4 @@ public class ShiroConfig {
         return myLogoutFilter;
     }
 }
+*/

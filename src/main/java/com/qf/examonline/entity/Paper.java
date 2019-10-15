@@ -22,5 +22,8 @@ public class Paper {
 
     private Integer typeId;
 
+    private String paperUrl;
 
+
+    private Integer avgscore;
 }

@@ -1,6 +1,11 @@
 package com.qf.examonline;
 
 
+import com.github.pagehelper.PageInfo;
+import com.qf.examonline.common.CodeMsg;
+import com.qf.examonline.common.ErrorCode;
+import com.qf.examonline.dao.PaperDao;
+import com.qf.examonline.entity.Paper;
 import com.qf.examonline.entity.Type;
 import com.qf.examonline.service.TypeService;
 import org.junit.Test;
@@ -17,11 +22,14 @@ public class PaperControllerTest {
 
     @Autowired
     private TypeService typeService;
-
+    @Autowired(required = false)
+    private CodeMsg codeMsg;
+    @Autowired(required = false)
+    private PaperDao paperDao;
     @Test
-    //查询所有种类测试
+//    //查询所有种类测试
     public void findAllTypeTest(){
-        List<Type> allType = typeService.findAllType();
+        PageInfo<Type> allType = typeService.findAllType("python",1, 2);
         System.out.println(allType);
     }
     @Test
@@ -33,8 +41,33 @@ public class PaperControllerTest {
     // 修改种类名字测试
     public void updateTypeName(){
         Type type = new Type();
-        type.setTypeId(3);
-        type.setTypeName("pyrhon1");
+        type.setTypeId(4);
+        type.setTypeName("Python");
         typeService.updatePaperTypeName(type);
     }
+    @Test
+    public void deleteOneType(){
+        typeService.deleteOnePaperType(3);
+    }
+
+    @Test
+   public void add(){
+        typeService.addNewPaperType("python");
+    }
+    @Test
+    public void findTypeById(){
+        Type type = typeService.findOneTypeByTypeId(1);
+        System.out.println(type);
+    }
+    @Test
+    public void findTypeCount(){
+        Integer python = typeService.findTypeCount("e");
+        System.out.println("总数量......"+python);
+    }
+    @Test
+    public void findAvgScore(){
+        List<Paper> avgScore = paperDao.findAvgScore(1);
+        System.out.println(avgScore);
+    }
+
 }

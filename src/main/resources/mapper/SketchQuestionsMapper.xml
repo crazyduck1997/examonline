@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qf.examonline.dao.SketchQuestionsDao" >
+  <resultMap id="BaseResultMap" type="com.qf.examonline.entity.SketchQuestions" >
+    <id column="ske_id" property="skeId" jdbcType="INTEGER" />
+    <result column="ske_answer" property="skeAnswer" jdbcType="VARCHAR" />
+    <result column="ske_desc" property="skeDesc" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_sketch_questions
+    where ske_id = #{skeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qf.examonline.entity.SketchQuestions" >
+    insert into t_sketch_questions (ske_answer, ske_desc
+      )
+    values
+    <foreach collection="list" item="item" index="index" separator="," >
+      ( #{item.skeAnswer,jdbcType=VARCHAR}, #{item.skeDesc,jdbcType=LONGVARCHAR})
+    </foreach>
+
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.SketchQuestions" >
+    update t_sketch_questions
+    set ske_answer = #{skeAnswer,jdbcType=VARCHAR},
+      ske_desc = #{skeDesc,jdbcType=LONGVARCHAR}
+    where ske_id = #{skeId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select ske_id, ske_answer, ske_desc
+    from t_sketch_questions
+    where ske_id = #{skeId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select ske_id, ske_answer, ske_desc
+    from t_sketch_questions
+  </select>
+</mapper>

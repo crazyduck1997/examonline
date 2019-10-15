@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.qf.examonline.dao.UserDao" >
-  <resultMap id="BaseResultMap" type="com.qf.examonline.entity.User" >
+  <resultMap id="BaseResultMap" type="User" >
     <id column="uid" property="uid" jdbcType="INTEGER" />
     <result column="username" property="username" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
@@ -12,16 +12,31 @@
     where uid = #{uid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.qf.examonline.entity.User" >
-    insert into t_user (uid, username, password,parent_id
+    insert into t_user (username, password,parent_id
       )
-    values (#{uid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}
+    values ( #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}
       ,#{parentId,jdbcType=INTEGER})
   </insert>
+  <select id="findById" resultMap="BaseResultMap" >
+    select * from t_user where uid = #{uid,jdbcType=INTEGER}
+  </select>
   <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.User" >
     update t_user
-    set username = #{username,jdbcType=VARCHAR},
+    set
+    <trim suffixOverrides=",">
+    <if test="uid != null">
+      uid = #{uid,jdbcType=VARCHAR},
+    </if>
+    <if test="username != null">
+      username = #{username,jdbcType=VARCHAR},
+    </if>
+    <if test="password != null">
       password = #{password,jdbcType=VARCHAR},
-      parent_id = #{parentId,jdbcType=INTEGER}
+    </if>
+    <if test="parentId != null">
+      parent_id = #{parentId,jdbcType=VARCHAR},
+    </if>
+    </trim>
     where uid = #{uid,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -32,5 +47,8 @@
   <select id="selectAll" resultMap="BaseResultMap" >
     select uid, username, password ,parent_id
     from t_user
+  </select>
+  <select id="findUserByName" resultMap="BaseResultMap">
+    select * from t_user where username = #{username}
   </select>
 </mapper>
