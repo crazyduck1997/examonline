@@ -89,6 +89,9 @@ public class PaperConreoller {
     @PostMapping("/findAvgScore.do")
     public JsonBean findAvgScore(Integer typeId){
         List<Paper> avgScoreList = paperService.findAvgScore(typeId);
+        if (avgScoreList.size() == 0){
+            return new JsonBean(ErrorCode.SUCCESS,"暂无成绩");
+        }
         return new JsonBean(ErrorCode.SUCCESS,avgScoreList);
     }
 
