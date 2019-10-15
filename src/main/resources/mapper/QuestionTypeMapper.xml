@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qf.examonline.dao.QuestionTypeDao" >
+  <resultMap id="BaseResultMap" type="com.qf.examonline.entity.QuestionType" >
+    <id column="qt_id" property="qtId" jdbcType="INTEGER" />
+    <result column="question_type" property="questionType" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_question_type
+    where qt_id = #{qtId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qf.examonline.entity.QuestionType" >
+    insert into t_question_type (qt_id, question_type)
+    values (#{qtId,jdbcType=INTEGER}, #{questionType,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.QuestionType" >
+    update t_question_type
+    set question_type = #{questionType,jdbcType=VARCHAR}
+    where qt_id = #{qtId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select qt_id, question_type
+    from t_question_type
+    where qt_id = #{qtId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select qt_id, question_type
+    from t_question_type
+  </select>
+</mapper>

@@ -3,6 +3,8 @@
 <mapper namespace="com.qf.examonline.dao.BooleanQuestionsDao" >
   <resultMap id="BaseResultMap" type="com.qf.examonline.entity.BooleanQuestions" >
     <id column="boo_id" property="booId" jdbcType="INTEGER" />
+    <result column="question_type" property="questionType" jdbcType="INTEGER" />
+    <result column="paper_type" property="paperType" jdbcType="INTEGER" />
     <result column="boo_desc" property="booDesc" jdbcType="LONGVARCHAR" />
     <result column="boo_answer" property="booAnswer" jdbcType="LONGVARCHAR" />
   </resultMap>
@@ -11,11 +13,13 @@
     where boo_id = #{booId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.qf.examonline.entity.BooleanQuestions" >
-    insert into t_boolean_questions (boo_desc, boo_answer
+    insert into t_boolean_questions (boo_desc, boo_answer,question_type,paper_type
       )
     values
     <foreach collection="list" item="item" index="index" separator="," >
-      (#{item.booDesc,jdbcType=LONGVARCHAR}, #{item.booAnswer,jdbcType=LONGVARCHAR})
+      (#{item.booDesc,jdbcType=LONGVARCHAR}, #{item.booAnswer,jdbcType=LONGVARCHAR},
+      2,#{item.paperType}
+      )
     </foreach>
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.BooleanQuestions" >
@@ -25,12 +29,12 @@
     where boo_id = #{booId,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select boo_id, boo_desc, boo_answer
+    select boo_id, question_type, paper_type, boo_desc, boo_answer
     from t_boolean_questions
     where boo_id = #{booId,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select boo_id, boo_desc, boo_answer
+    select boo_id, question_type, paper_type, boo_desc, boo_answer
     from t_boolean_questions
   </select>
 </mapper>

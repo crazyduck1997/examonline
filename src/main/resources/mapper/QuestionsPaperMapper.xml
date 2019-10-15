@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qf.examonline.dao.QuestionsPaperDao" >
+  <resultMap id="BaseResultMap" type="com.qf.examonline.entity.QuestionsPaper" >
+    <id column="qp_id" property="qpId" jdbcType="INTEGER" />
+    <result column="paper_id" property="paperId" jdbcType="INTEGER" />
+    <result column="question_id" property="questionId" jdbcType="INTEGER" />
+    <result column="question_type" property="questionType" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_questions_paper
+    where qp_id = #{qpId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qf.examonline.entity.QuestionsPaper" >
+    insert into t_questions_paper (qp_id, paper_id, question_id, 
+      question_type)
+    values (#{qpId,jdbcType=INTEGER}, #{paperId,jdbcType=INTEGER}, #{questionId,jdbcType=INTEGER}, 
+      #{questionType,jdbcType=VARCHAR})
+  </insert>
+
+
+  <insert id="addQuestions">
+    insert into t_questions_paper (paper_id, question_id,
+      question_type)
+    values
+    <foreach collection="list" item="questionId" index="index" separator="," >
+      (#{paperId,jdbcType=INTEGER},#{questionId,jdbcType=INTEGER},#{questionTypeId,jdbcType=INTEGER})
+    </foreach>
+  </insert>
+
+
+  <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.QuestionsPaper" >
+    update t_questions_paper
+    set paper_id = #{paperId,jdbcType=INTEGER},
+      question_id = #{questionId,jdbcType=INTEGER},
+      question_type = #{questionType,jdbcType=VARCHAR}
+    where qp_id = #{qpId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select qp_id, paper_id, question_id, question_type
+    from t_questions_paper
+    where qp_id = #{qpId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select qp_id, paper_id, question_id, question_type
+    from t_questions_paper
+  </select>
+</mapper>

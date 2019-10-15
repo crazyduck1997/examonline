@@ -30,9 +30,23 @@ public class BooleanQuestionsServiceImpl implements BooleanQuestionService {
         File dest = MultioartFileUp.upLoad(file, codeMsg.getTempUrl());
         List<BooleanQuestions> list = MultipartFileToFileUtil.change(dest, BooleanQuestions.class);
         int insert = booleanQuestionsDao.insert(list);
-        if(insert==0){
-            return ErrorCode.ERROR;
+        if(insert == 0){
+            throw new RuntimeException(codeMsg.getExecteFaile());
         }
-        return ErrorCode.SUCCESS;
+        return insert;
+
     }
+
+    @Override
+    public int addBooleanQuestion(List<BooleanQuestions> list) {
+        if(list==null){
+            throw new RuntimeException(codeMsg.getIsEmpty());
+        }
+        int insert = booleanQuestionsDao.insert(list);
+        if(insert == 0){
+            throw new RuntimeException(codeMsg.getExecteFaile());
+        }
+        return insert;
+    }
+
 }

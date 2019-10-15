@@ -4,6 +4,8 @@
   <resultMap id="BaseResultMap" type="com.qf.examonline.entity.SketchQuestions" >
     <id column="ske_id" property="skeId" jdbcType="INTEGER" />
     <result column="ske_answer" property="skeAnswer" jdbcType="VARCHAR" />
+    <result column="question_type" property="questionType" jdbcType="INTEGER" />
+    <result column="paper_type" property="paperType" jdbcType="INTEGER" />
     <result column="ske_desc" property="skeDesc" jdbcType="LONGVARCHAR" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -11,11 +13,12 @@
     where ske_id = #{skeId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.qf.examonline.entity.SketchQuestions" >
-    insert into t_sketch_questions (ske_answer, ske_desc
+    insert into t_sketch_questions (ske_answer, ske_desc , question_type , paper_type
       )
     values
     <foreach collection="list" item="item" index="index" separator="," >
-      ( #{item.skeAnswer,jdbcType=VARCHAR}, #{item.skeDesc,jdbcType=LONGVARCHAR})
+      ( #{item.skeAnswer,jdbcType=VARCHAR}, #{item.skeDesc,jdbcType=LONGVARCHAR},
+      3,#{intm.paperType,jdbcType=INTEGER})
     </foreach>
 
   </insert>
@@ -26,12 +29,12 @@
     where ske_id = #{skeId,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select ske_id, ske_answer, ske_desc
+    select ske_id, ske_answer, question_type, paper_type, ske_desc
     from t_sketch_questions
     where ske_id = #{skeId,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select ske_id, ske_answer, ske_desc
+    select ske_id, ske_answer, question_type, paper_type, ske_desc
     from t_sketch_questions
   </select>
 </mapper>
