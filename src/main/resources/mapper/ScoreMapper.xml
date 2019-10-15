@@ -1,15 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.qf.examonline.dao.ScoreDao" >
-  <resultMap id="BaseResultMap" type="com.qf.examonline.entity.Score" >
-    <id column="sid" property="sid" jdbcType="INTEGER" />
-    <result column="score" property="score" jdbcType="INTEGER" />
-    <result column="stu_id" property="stuId" jdbcType="INTEGER" />
-    <result column="paper_id" property="paperId" jdbcType="INTEGER" />
+
+  <resultMap id="BaseResultMap" type="com.qf.examonline.entity.User" >
+    <id column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+
+    <collection property="users"  ofType="com.qf.examonline.entity.User">
+      <id column="uid" property="cuid" jdbcType="INTEGER" />
+      <result column="cusername" property="username" jdbcType="VARCHAR" />
+      <result column="password" property="cpassword" jdbcType="VARCHAR" />
+      <result column="parent_id" property="cparentId" jdbcType="VARCHAR" />
+    </collection>
+
+    <collection property="scores" ofType="com.qf.examonline.entity.Score">
+      <id column="sid" property="sid" jdbcType="INTEGER" />
+      <result column="score" property="score" jdbcType="INTEGER" />
+      <result column="stu_id" property="stuId" jdbcType="INTEGER" />
+      <result column="paper_id" property="paperId" jdbcType="INTEGER" />
+    </collection>
+
+    <collection property="papers" ofType="com.qf.examonline.entity.Paper">
+      <id column="paper_id" property="paperId" jdbcType="INTEGER" />
+      <result column="paper_name" property="paperName" jdbcType="VARCHAR" />
+      <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP" />
+      <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+      <result column="paper_status" property="paperStatus" jdbcType="INTEGER" />
+      <result column="type_id" property="typeId" jdbcType="INTEGER" />
+    </collection>
+
+    <collection property="types" ofType="com.qf.examonline.entity.Type">
+      <id property="typeId" column="type_id"/>
+      <result property="typeName" column="type_name"/>
+    </collection>
   </resultMap>
 
 <!--  删除学生分数-->
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteBySid" parameterType="java.lang.Integer" >
     delete from t_score
     where sid = #{sid}
   </delete>
@@ -21,11 +50,38 @@
     values (#{score,jdbcType=INTEGER}, #{stuId,jdbcType=INTEGER}, #{paperId,jdbcType=INTEGER})
   </insert>
 
-  <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.Score" >
+  <!--  修改学生分数-->
+  <update id="update" parameterType="com.qf.examonline.entity.Score" >
     update t_score
-    set score = #{score,jdbcType=INTEGER}
-    where sid = #{sid,jdbcType=INTEGER}
+    set score = #{score}
+    where sid = #{sid}
   </update>
+
+  <!--  学生查看自己的分数-->
+  <select id="selectByUid" resultMap="BaseResultMap">
+    select u.username,s.score,p.paper_name,t.type_name from t_user u
+    LEFT JOIN t_score s
+    ON u.uid=s.stu_id
+    LEFT JOIN t_paper p
+    ON s.paper_id=p.paper_id
+    LEFT JOIN t_type t
+    ON p.type_id = t.type_id
+    WHERE u.uid=#{uid}
+  </select>
+
+  <!--老师查看自己学生的分数-->
+  <select id="selectByTeacher" resultMap="BaseResultMap">
+ select u.username,c.username cusername,s.score,p.paper_name,t.type_name FROM t_user u
+LEFT JOIN t_user c
+ON c.parent_id=u.uid
+LEFT JOIN t_score s
+ON s.stu_id=u.uid
+LEFT JOIN t_paper p
+ON p.paper_id=s.paper_id
+LEFT JOIN t_type t
+ON t.type_id=p.type_id
+WHERE c.parent_id=#{parent_id}
+  </select>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select sid, score,stu_id,paper_id
@@ -37,4 +93,7 @@
     select sid, score,stu_id,paper_id
     from t_score
   </select>
+
+
+
 </mapper>
