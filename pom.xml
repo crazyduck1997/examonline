@@ -141,6 +141,12 @@
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>1.2.5</version>
         </dependency>
+<!--        echart插件-->
+        <dependency>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>echarts</artifactId>
+            <version>4.0.4</version>
+        </dependency>
 
 
         <!-- poi相关 -->

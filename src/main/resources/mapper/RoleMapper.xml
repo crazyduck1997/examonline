@@ -10,8 +10,8 @@
     where rid = #{rid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="Role" >
-    insert into t_role (rid, rname)
-    values (#{rid,jdbcType=INTEGER}, #{rname,jdbcType=VARCHAR})
+    insert into t_role (rname)
+    values (#{rname,jdbcType=VARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="Role" >
     update t_role
@@ -26,5 +26,8 @@
   <select id="selectAll" resultMap="BaseResultMap" >
     select rid, rname
     from t_role
+  </select>
+  <select id="selectRoleByName" resultMap="BaseResultMap">
+    select rid,rname from t_role where rname = upper (#{rname})
   </select>
 </mapper>

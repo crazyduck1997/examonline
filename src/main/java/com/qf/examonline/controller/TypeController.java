@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 
-@Api(tags = "试卷管理")
+@Api(tags = "科目类型管理")
 @RestController
 @CrossOrigin
-@RequestMapping("/paperController")
-public class PaperConreoller {
+@RequestMapping("/typeController")
+public class TypeController {
 
     @Autowired
     private TypeService typeService;
@@ -29,7 +29,6 @@ public class PaperConreoller {
     private CodeMsg codeMsg;
     @Autowired
     private PaperService paperService;
-
     @ApiOperation("查询所有种类")
     @PostMapping("/faindAllType.do")
     public JsonBean findAllType(String typeName,Integer page,Integer limit){
@@ -76,12 +75,14 @@ public class PaperConreoller {
         } catch (Exception e) {
             return new JsonBean(ErrorCode.ERROR,codeMsg.getNameRepeat());
         }
+
     }
 
     @ApiOperation(value = "删除一个种类",notes = "需要传入对应的种类的typeId")
     @PostMapping("/deleteOneType.do")
     public JsonBean deleteOneType(Integer typeId){
         typeService.deleteOnePaperType(typeId);
+
         return new JsonBean(ErrorCode.SUCCESS,codeMsg.getExecteSuccess());
     }
 
