@@ -15,10 +15,13 @@
     delete from t_paper
     where paper_id = #{paperId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.qf.examonline.entity.Paper" >
-    insert into t_paper (paper_id, paper_name, begin_time, 
+  <insert id="insert" parameterType="com.qf.examonline.entity.Paper">
+    <selectKey keyProperty="paperId" order="AFTER" resultType="java.lang.Integer">
+      select LAST_INSERT_ID()
+    </selectKey>
+    insert into t_paper (paper_name, begin_time,
       end_time, paper_status,type_id,paper_url)
-    values (#{paperId,jdbcType=INTEGER}, #{paperName,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIMESTAMP}, 
+    values (#{paperName,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIMESTAMP},
       #{endTime,jdbcType=TIMESTAMP}, #{paperStatus,jdbcType=INTEGER},#{typeId,jdbcType=INTEGER},#{paperUrl,jdbcType=VARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.Paper" >
@@ -41,6 +44,7 @@
     from t_paper
   </select>
 
+<!--  查询平均分-->
   <select id="findAvgScore" resultMap="BaseResultMap">
     SELECT t_paper.paper_name,AVG(score) avgscore
     from t_paper,t_score,t_type
@@ -48,4 +52,8 @@
     and t_paper.type_id = #{typeId}
     GROUP BY t_score.paper_id
   </select>
+<!--  当一个类别删除后将该类别的试卷隐藏-->
+  <update id="updatePaperStatus">
+    update t_paper set paper_status = 1 where type_id = #{typeId}
+  </update>
 </mapper>
