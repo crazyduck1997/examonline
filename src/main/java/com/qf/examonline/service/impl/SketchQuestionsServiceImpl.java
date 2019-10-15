@@ -3,6 +3,7 @@ package com.qf.examonline.service.impl;
 import com.qf.examonline.common.CodeMsg;
 import com.qf.examonline.common.ErrorCode;
 import com.qf.examonline.dao.SketchQuestionsDao;
+import com.qf.examonline.entity.SelectQuestions;
 import com.qf.examonline.entity.SketchQuestions;
 import com.qf.examonline.service.SketchQuestionsService;
 import com.qf.examonline.utils.MultioartFileUp;
@@ -18,12 +19,10 @@ import java.util.List;
 public class SketchQuestionsServiceImpl implements SketchQuestionsService {
 
 
-
-
-   @Autowired
+    @Autowired
     SketchQuestionsDao sketchQuestionsDao;
 
-   @Autowired
+    @Autowired
     CodeMsg codeMsg;
 
     @Override
@@ -31,9 +30,23 @@ public class SketchQuestionsServiceImpl implements SketchQuestionsService {
         File dest = MultioartFileUp.upLoad(file, codeMsg.getTempUrl());
         List<SketchQuestions> list = MultipartFileToFileUtil.change(dest, SketchQuestions.class);
         int insert = sketchQuestionsDao.insert(list);
-        if(insert==0) {
-            return ErrorCode.ERROR;
+        if (insert == 0) {
+            throw new RuntimeException(codeMsg.getExecteFaile());
         }
-        return ErrorCode.SUCCESS;
+        return insert;
     }
+
+    @Override
+    public int addSketchQuestion(List<SketchQuestions> list) {
+        if(list==null){
+            throw new RuntimeException(codeMsg.getIsEmpty());
+        }
+        int insert = sketchQuestionsDao.insert(list);
+        if (insert == 0) {
+            throw new RuntimeException(codeMsg.getExecteFaile());
+        }
+        return insert;
+    }
+
+
 }

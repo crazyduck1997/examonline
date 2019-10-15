@@ -56,6 +56,7 @@
             <version>2.1.0</version>
         </dependency>
 
+
         <!-- 数据库相关 -->
         <dependency>
             <groupId>mysql</groupId>
@@ -153,6 +154,12 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin.external.google</groupId>
+            <artifactId>android-json</artifactId>
+            <version>0.0.20131108.vaadin1</version>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>

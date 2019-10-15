@@ -29,6 +29,7 @@ public class PaperConreoller {
     private CodeMsg codeMsg;
     @Autowired
     private PaperService paperService;
+
     @ApiOperation("查询所有种类")
     @PostMapping("/faindAllType.do")
     public JsonBean findAllType(String typeName,Integer page,Integer limit){
@@ -75,7 +76,6 @@ public class PaperConreoller {
         } catch (Exception e) {
             return new JsonBean(ErrorCode.ERROR,codeMsg.getNameRepeat());
         }
-
     }
 
     @ApiOperation(value = "删除一个种类",notes = "需要传入对应的种类的typeId")

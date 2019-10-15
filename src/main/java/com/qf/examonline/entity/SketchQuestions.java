@@ -14,4 +14,9 @@ public class SketchQuestions {
 
     private String skeDesc;
 
+    private Integer questionType;
+
+    private Integer paperType;
+
+
 }

@@ -25,16 +25,25 @@ public class SelectQuestionsServiceImpl implements SelectQuestionsService {
     CodeMsg codeMsg;
 
     @Override
-    public int insertSelectQuestions(MultipartFile file) {
+    public int insertQuestions(MultipartFile file) {
         File dest = MultioartFileUp.upLoad(file, codeMsg.getTempUrl());
         List<SelectQuestions> list = MultipartFileToFileUtil.change(dest, SelectQuestions.class);
         int insert = selectQuestionsDao.insert(list);
-            if(insert==0) {
-                return ErrorCode.ERROR;
-            }
-        return ErrorCode.SUCCESS;
+        if(insert == 0){
+            throw new RuntimeException(codeMsg.getExecteFaile());
+        }
+        return insert;
     }
 
-
-
+    @Override
+    public int addSelectQuestions(List<SelectQuestions> list) {
+        if(list==null){
+            throw new RuntimeException(codeMsg.getIsEmpty());
+        }
+        int insert = selectQuestionsDao.insert(list);
+        if(insert == 0){
+            throw new RuntimeException(codeMsg.getExecteFaile());
+        }
+        return insert;
+    }
 }

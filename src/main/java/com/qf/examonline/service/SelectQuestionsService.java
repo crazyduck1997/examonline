@@ -1,11 +1,16 @@
 package com.qf.examonline.service;
 
 
+import com.qf.examonline.entity.SelectQuestions;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public interface SelectQuestionsService {
 
-    public int insertSelectQuestions(MultipartFile file);
+    int insertQuestions(MultipartFile file);
+
+    int addSelectQuestions(List<SelectQuestions> list);
 
 
 
