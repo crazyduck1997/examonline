@@ -7,34 +7,47 @@
     <result column="paper_type" property="paperType" jdbcType="INTEGER" />
     <result column="boo_desc" property="booDesc" jdbcType="LONGVARCHAR" />
     <result column="boo_answer" property="booAnswer" jdbcType="LONGVARCHAR" />
+    <result column="boo_score" property="booScore" jdbcType="INTEGER" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_boolean_questions
     where boo_id = #{booId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.qf.examonline.entity.BooleanQuestions" >
-    insert into t_boolean_questions (boo_desc, boo_answer,question_type,paper_type
+    insert into t_boolean_questions (boo_desc, boo_answer,question_type,paper_type,boo_score
       )
     values
     <foreach collection="list" item="item" index="index" separator="," >
       (#{item.booDesc,jdbcType=LONGVARCHAR}, #{item.booAnswer,jdbcType=LONGVARCHAR},
-      2,#{item.paperType}
+      2,#{item.paperType},#{item.booScore}
       )
     </foreach>
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.BooleanQuestions" >
     update t_boolean_questions
-    set boo_desc = #{booDesc,jdbcType=LONGVARCHAR},
-      boo_answer = #{booAnswer,jdbcType=LONGVARCHAR}
+    set question_type = #{questionType,jdbcType=INTEGER},
+      paper_type = #{paperType,jdbcType=INTEGER},
+      boo_desc = #{booDesc,jdbcType=LONGVARCHAR},
+      boo_answer = #{booAnswer,jdbcType=LONGVARCHAR},
+      boo_score = #{booScore,jdbcType=INTEGER}
     where boo_id = #{booId,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select boo_id, question_type, paper_type, boo_desc, boo_answer
+    select boo_id, question_type, paper_type, boo_desc, boo_answer,boo_score
     from t_boolean_questions
     where boo_id = #{booId,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select boo_id, question_type, paper_type, boo_desc, boo_answer
+    select boo_id, question_type, paper_type, boo_desc, boo_answer,boo_score
     from t_boolean_questions
   </select>
+
+  <select id="findBooleanQuestions" resultType="BooleanQuestions" resultMap="BaseResultMap">
+    select * from t_boolean_questions where  paper_type = #{typeId} and question_type = #{questionType}
+  </select>
+
+  <select id="findBooleanQuestionsByRandom"  resultType="BooleanQuestions" resultMap="BaseResultMap">
+    SELECT * FROM t_boolean_questions where paper_type = #{typeId} ORDER BY  RAND() LIMIT #{booleanNum}
+  </select>
+
 </mapper>

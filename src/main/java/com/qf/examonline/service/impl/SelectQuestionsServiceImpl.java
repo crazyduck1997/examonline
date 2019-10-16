@@ -39,9 +39,7 @@ public class SelectQuestionsServiceImpl implements SelectQuestionsService {
 
     @Override
     public int addSelectQuestions(List<SelectQuestions> list) {
-        if(list==null){
-            throw new RuntimeException(codeMsg.getIsEmpty());
-        }
+
         int insert = selectQuestionsDao.insert(list);
         if(insert == 0){
             throw new RuntimeException(codeMsg.getExecteFaile());

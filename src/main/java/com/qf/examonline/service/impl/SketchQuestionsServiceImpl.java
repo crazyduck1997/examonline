@@ -40,8 +40,10 @@ public class SketchQuestionsServiceImpl implements SketchQuestionsService {
 
     @Override
     public int addSketchQuestion(List<SketchQuestions> list) {
-        if(list==null){
-            throw new RuntimeException(codeMsg.getIsEmpty());
+        for(SketchQuestions s : list){
+            if(s.getSkeDesc()==null || s.getPaperType()==null || s.getSkeAnswer()==null||s.getSkeScore()==null){
+                throw new RuntimeException(codeMsg.getIsEmpty());
+            }
         }
         int insert = sketchQuestionsDao.insert(list);
         if (insert == 0) {

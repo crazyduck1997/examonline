@@ -3,9 +3,10 @@
 <mapper namespace="com.qf.examonline.dao.UserAnswersDao" >
   <resultMap id="BaseResultMap" type="com.qf.examonline.entity.UserAnswers" >
     <id column="cid" property="cid" jdbcType="INTEGER" />
+    <result column="c_question_type" property="cQuestionType" jdbcType="INTEGER" />
     <result column="uid" property="uid" jdbcType="INTEGER" />
     <result column="paper_id" property="paperId" jdbcType="INTEGER" />
-    <result column="c_desc" property="cDesc" jdbcType="LONGVARCHAR" />
+    <result column="c_question_id" property="cQuestionId" jdbcType="INTEGER" />
     <result column="c_answer" property="cAnswer" jdbcType="LONGVARCHAR" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -13,26 +14,32 @@
     where cid = #{cid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.qf.examonline.entity.UserAnswers" >
-    insert into t_user_answers (cid, uid, paper_id, 
-      c_desc, c_answer)
-    values (#{cid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{paperId,jdbcType=INTEGER}, 
-      #{cDesc,jdbcType=LONGVARCHAR}, #{cAnswer,jdbcType=LONGVARCHAR})
+    insert into t_user_answers (c_question_type, uid,
+      paper_id,c_question_id,
+      c_answer)
+    values
+    <foreach collection="list" item="item" index="index" separator="," >
+      ( #{item.cQuestionType,jdbcType=INTEGER}, #{item.uid,jdbcType=INTEGER},
+      #{item.paperId,jdbcType=INTEGER},#{item.cQuestionId,jdbcType=INTEGER},
+      #{item.cAnswer,jdbcType=LONGVARCHAR})
+    </foreach>
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.UserAnswers" >
     update t_user_answers
-    set uid = #{uid,jdbcType=INTEGER},
+    set c_question_type = #{cQuestionType,jdbcType=INTEGER},
+      uid = #{uid,jdbcType=INTEGER},
       paper_id = #{paperId,jdbcType=INTEGER},
-      c_desc = #{cDesc,jdbcType=LONGVARCHAR},
+      c_question_id = #{cQuestionId,jdbcType=INTEGER},
       c_answer = #{cAnswer,jdbcType=LONGVARCHAR}
     where cid = #{cid,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select cid, uid, paper_id, c_desc, c_answer
+    select cid, c_question_type, uid, paper_id,c_question_id, c_answer
     from t_user_answers
     where cid = #{cid,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select cid, uid, paper_id, c_desc, c_answer
+    select cid, c_question_type, uid, paper_id,c_question_id, c_answer
     from t_user_answers
   </select>
 </mapper>

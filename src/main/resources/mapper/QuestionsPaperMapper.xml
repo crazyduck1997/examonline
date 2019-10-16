@@ -45,4 +45,11 @@
     select qp_id, paper_id, question_id, question_type
     from t_questions_paper
   </select>
+
+
+  <select id="selectByPaperId" resultMap="BaseResultMap" resultType="QuestionsPaper">
+    select qp_id, paper_id, question_id, question_type
+    from t_question_paper where paper_id = #{paperId}
+  </select>
+
 </mapper>

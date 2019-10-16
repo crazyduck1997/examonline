@@ -74,6 +74,7 @@ public class GlobalTransaction {
         txMap.put("update*", requiredTx);
         txMap.put("modify*", requiredTx);
         txMap.put("delete*", requiredTx);
+        txMap.put("commit*", requiredTx);
 
         NameMatchTransactionAttributeSource source = new NameMatchTransactionAttributeSource();
         source.setNameMap(txMap);

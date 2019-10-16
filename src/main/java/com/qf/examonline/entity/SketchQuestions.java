@@ -18,5 +18,7 @@ public class SketchQuestions {
 
     private Integer paperType;
 
+    private Integer skeScore;
+
 
 }

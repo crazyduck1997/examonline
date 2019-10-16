@@ -14,7 +14,7 @@ import java.util.List;
 @Api(tags = "分数管理")
 @CrossOrigin
 @RestController
-@RequestMapping("/scoreController")
+@RequestMapping("/score")
 public class ScoreController  {
 
     @Autowired

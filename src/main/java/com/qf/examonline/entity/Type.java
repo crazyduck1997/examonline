@@ -12,4 +12,7 @@ public class Type {
     private Integer typeId;
     private String typeName;
 
+
+
+
 }

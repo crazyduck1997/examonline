@@ -11,6 +11,7 @@
   <result column="select_c" property="selectC" jdbcType="LONGVARCHAR" />
   <result column="select_d" property="selectD" jdbcType="LONGVARCHAR" />
   <result column="select_answer" property="selectAnswer" jdbcType="LONGVARCHAR" />
+  <result column="select_score" property="selectScore" jdbcType="INTEGER"  />
 </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_select_questions
@@ -18,33 +19,44 @@
   </delete>
   <insert id="insert" parameterType="com.qf.examonline.entity.SelectQuestions" >
     insert into t_select_questions ( sq_desc, select_a,
-      select_b, select_c, select_d,select_answer,question_type,paper_type)
+      select_b, select_c, select_d,select_answer,question_type,paper_type,select_score)
     values
     <foreach collection="list" item="item" index="index" separator="," >
       ( #{item.sqDesc,jdbcType=LONGVARCHAR}, #{item.selectA,jdbcType=LONGVARCHAR},
       #{item.selectB,jdbcType=LONGVARCHAR}, #{item.selectC,jdbcType=LONGVARCHAR}, #{item.selectD,jdbcType=LONGVARCHAR},
-      #{item.selectAnswer,jdbcType=LONGVARCHAR},1,#{item.paperType,jdbcType=INTEGER})
+      #{item.selectAnswer,jdbcType=LONGVARCHAR},1,#{item.paperType,jdbcType=INTEGER},#{item.selectScore,jdbcType=INTEGER})
     </foreach>
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.SelectQuestions" >
     update t_select_questions
-    set sq_desc = #{sqDesc,jdbcType=LONGVARCHAR},
+    set question_type = #{questionType,jdbcType=INTEGER},
+      paper_type = #{paperType,jdbcType=INTEGER},
+      sq_desc = #{sqDesc,jdbcType=LONGVARCHAR},
       select_a = #{selectA,jdbcType=LONGVARCHAR},
       select_b = #{selectB,jdbcType=LONGVARCHAR},
       select_c = #{selectC,jdbcType=LONGVARCHAR},
       select_d = #{selectD,jdbcType=LONGVARCHAR},
-      select_answer = #{selectD,jdbcType=LONGVARCHAR}
+      select_answer = #{selectAnswer,jdbcType=LONGVARCHAR},
+      select_score = #{selectScore,jdbcType=INTEGER }
     where sq_id = #{sqId,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select sq_id, question_type, paper_type, sq_desc, select_a, select_b, select_c, select_d,
-    select_answer
+    select_answer,select_score
     from t_select_questions
     where sq_id = #{sqId,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
     select sq_id, question_type, paper_type, sq_desc, select_a, select_b, select_c, select_d,
-    select_answer
+    select_answer,select_score
     from t_select_questions
+  </select>
+
+  <select id="findSelectQuestions" resultType="SelectQuestions" resultMap="BaseResultMap">
+    select * from t_select_questions where  paper_type = #{typeId} and question_type = #{questionType}
+  </select>
+
+  <select id="findSelectQuestionsByRandom"  resultType="SelectQuestions" resultMap="BaseResultMap">
+    SELECT * FROM t_select_questions where paper_type = #{typeId} ORDER BY  RAND() LIMIT #{selectNum}
   </select>
 </mapper>
