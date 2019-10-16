@@ -48,7 +48,20 @@
     select uid, username, password ,parent_id
     from t_user
   </select>
-  <select id="findUserByName" resultMap="BaseResultMap">
+  <select id="findUserByName" parameterType="string" resultMap="BaseResultMap">
     select * from t_user where username = #{username}
+  </select>
+  <select id="findRolesByName" parameterType="string" resultType="string">
+    select rname from t_user u
+    inner join t_role_user ru on u.uid=ru.uid
+    inner join t_role r on ru.rid=r.rid
+    where u.username=#{username}
+  </select>
+  <select id="findPermsByName" parameterType="string" resultType="string">
+    select DISTINCT p.pdesc from t_user u
+    inner JOIN t_role_user ru on u.uid=ru.uid
+    inner JOIN t_perm_role pr on ru.rid=pr.rid
+    inner JOIN t_permission p on pr.pid=p.pid
+    where u.username=#{username} and p.pdesc!='' and p.pdesc is not null
   </select>
 </mapper>

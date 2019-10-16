@@ -17,6 +17,7 @@ public class MyLogoutFilter extends LogoutFilter {
         subject.logout();
 
         //获取登出后重定向到的地址
+//        String redirectUrl = getRedirectUrl(request,response,subject);
         String redirectUrl = getRedirectUrl(request,response,subject);
         //重定向
         issueRedirect(request,response,redirectUrl);
