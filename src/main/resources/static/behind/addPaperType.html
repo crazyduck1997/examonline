@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>试卷类型增加</title>
+		<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" >
+		<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<center>
+		<form class="layui-form" id="add-form" lay-filter="example" >	
+	<div class="layui-form-item" >
+		<label class="layui-form-label">学科</label>
+		<div class="layui-input-block">
+			<input type="text"  style="width:400px;" name="singleChoiceNum" lay-verify="title" autocomplete="off" class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item" >
+		<label class="layui-form-label">测试阶段</label>
+		<div class="layui-input-block">
+			<input type="text"  style="width:400px;" name="multiChoicNum" lay-verify="title" autocomplete="off" class="layui-input">
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<div class="layui-input-block">
+			<button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+			<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		</div>
+	</div>
+</form>
+</center>
+	</body>
+</html>
