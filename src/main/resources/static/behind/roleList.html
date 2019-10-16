@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../layui/css/layui.css"/>
+    <script type="text/javascript" src="../js/jquery-1.12.2.min.js"></script>
+    <script type="text/javascript" src="../layui/layui.js"></script>
+
+</head>
+<body>
+<!--<div class="jumbotron" style="height:40px;padding-top: 15px;padding-bottom: 15px; background-color: #9F9F9F">-->
+<!--    <div class="container" style="width: 80%; margin: 0 auto">-->
+<!--        <h1>角色管理</h1>-->
+<!--    </div>-->
+<!--</div>-->
+<blockquote class="layui-elem-quote quoteBox">
+    <form class="layui-form">
+        <div class="layui-inline">
+            <a class="layui-btn layui-btn-normal addVideo_btn" id="addVideo">添加</a>
+        </div>
+    </form>
+</blockquote>
+
+<table class="layui-hide" id="demo" lay-filter="test" align="center"></table>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
+<script type="text/javascript">
+    layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element', 'slider'], function () {
+        var laydate = layui.laydate //日期
+            /*, laypage = layui.laypage //分页*/
+            , layer = layui.layer //弹层
+            , table = layui.table //表格
+            , element = layui.element //元素操作
+            , index = layer.load(0);
+
+
+        //执行一个 table 实例
+        table.render({
+            elem: '#demo'
+            , id: "CourseTable"
+            /*, height: 420*/
+            , url: '/role/selectAllRoles.do' //数据接口
+            , title: '课程表'
+            // , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+            //     layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+            //     ,curr: 1 //设定初始在第 5 页
+            //     ,groups: 5 //只显示 1 个连续页码
+            //     , first: false //不显示首页
+            //     , last: false //不显示尾页
+            //     , limits: [5, 10, 20]
+            //
+            // } //开启分页
+            //, toolbar: 'default'//开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+            , cols: [[ //表头
+                //{checkbox: true, align: 'center', LAY_CHECKED: false, filter: 'test', fixed: 'left'}
+                 {field:'xuhao', title:'序号',  fixed: 'left', type:"numbers"}
+                , {field: 'rname', title: '角色', width: 440, sort: true, align: "center"}
+                , {fixed: 'right', width: 330, align: 'center', toolbar: '#barDemo'}
+            ]]
+            , done: function (res) {   //返回数据执行回调函数
+                layer.close(index); //返回数据关闭loading
+            }
+        });
+
+        //绑定按钮事件
+        $(document).on('click', '#addVideo', function () {
+            layer.open({
+                type: 2,
+                title: '添加角色',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['400px', '50%'],
+                content: 'addRole.html'
+            });
+        });
+
+
+        //监听行工具事件
+        table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                , layEvent = obj.event; //获得 lay-event 对应的值
+            switch (layEvent) {
+
+                case 'del':
+                    layer.confirm('删除 [角色]：' + data.rname, function (index) {
+                        obj.del();
+                        layer.close(index);
+                        //发送请求到后台
+                        $.ajax({
+                            type: "post",
+                            url: "/role/deleteOneRole.do",
+                            data: {rid: data.rid},
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.code == 0) {
+                                    layer.msg("删除成功!", {
+                                        icon: 6,
+                                        time: 500
+                                    }, function () {
+                                        table.reload('demo');// 重新加载页面,demo 表示父窗体table标签的id值
+                                    });
+                                } else {
+                                    alert(data.info)
+                                }
+                            }
+                        })
+                    });
+                    break;
+                case 'edit':
+                    layer.open({
+                        type: 2,
+                        title: '修改角色',
+                        shadeClose: true,
+                        shade: 0.8,
+                        area: ['400px', '50%'],
+                        content: 'updateRole.html?rid=' + data.rid
+                    });
+                    break;
+            }
+        });
+    })
+</script>
+</body>
+</html>
