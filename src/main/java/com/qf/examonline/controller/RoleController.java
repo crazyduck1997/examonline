@@ -8,6 +8,8 @@ import com.qf.examonline.entity.Role;
 import com.qf.examonline.service.RoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.spring.web.json.Json;
@@ -27,6 +29,7 @@ public class RoleController {
     @Autowired
     private CodeMsg codeMsg;
 
+    @RequiresRoles("管理员")
     @ApiOperation(value = "查询所有角色")
     @GetMapping("/selectAllRoles.do")
     public JsonBean selectAll(){
@@ -72,9 +75,6 @@ public class RoleController {
     @ApiOperation(value = "删除role",notes = "需要传入一个rid")
     @PostMapping("/deleteOneRole.do")
     public JsonBean deleteRoleByRid(String rid){
-
-        System.out.println("----drid---"+rid);
-
          roleService.deleteByPrimaryKey(Integer.valueOf(rid));
          return new JsonBean(ErrorCode.SUCCESS,codeMsg.getExecteSuccess());
     }
