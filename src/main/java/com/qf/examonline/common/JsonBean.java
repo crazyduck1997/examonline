@@ -6,13 +6,13 @@ import lombok.Data;
 public class JsonBean<T> {
 
 	private int code;//0:代表成功
-	private T info;
+	private T data;
 
 	public JsonBean() {
 	}
 
-	public JsonBean(int code, T info) {
+	public JsonBean(int code, T data) {
 		this.code = code;
-		this.info = info;
+		this.data = data;
 	}
 }

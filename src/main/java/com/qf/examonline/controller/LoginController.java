@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -23,11 +24,13 @@ public class LoginController {
     @Autowired
     CodeMsg codeMsg;
 
-    @RequestMapping("/login")
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
     @ResponseBody
     public JsonBean login(String username,String password){
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         Subject subject = SecurityUtils.getSubject();
+        String principal = (String) subject.getPrincipal();
+        System.out.println(principal);
         try {
             subject.login(token);
         } catch (Exception e) {
@@ -38,9 +41,9 @@ public class LoginController {
     }
     @RequestMapping("/register")
     @ResponseBody
-    public String register(String username,String password){
+    public JsonBean register(String username,String password){
         loginService.register(username, password);
-        return "success";
+        return new JsonBean<>(1,"注册成功");
     }
     @RequestMapping("/checkUser")
     @ResponseBody

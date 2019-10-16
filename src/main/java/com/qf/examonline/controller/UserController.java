@@ -7,8 +7,10 @@ import com.qf.examonline.entity.User;
 import com.qf.examonline.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,10 +28,13 @@ public class UserController {
     private UserService userService;
 
     @ApiOperation(value = "查询用户")
-    @PostMapping("/selectUser.do")
+    @GetMapping("/selectUser.do")
     @ResponseBody
-    public JsonBean selectUser(){
+    //@RequiresPermissions("score:list")
+    @RequiresRoles("管理员")
+    public JsonBean selectUser(Model model){
         List<User> users = userService.selectAll();
+        model.addAttribute("userList",users);
         return new JsonBean(ErrorCode.SUCCESS,users);
     }
 
@@ -43,9 +48,7 @@ public class UserController {
         } catch (Exception e) {
             return new JsonBean(ErrorCode.REPEAT_USERNAME,codeMsg.getNameRepeat());
         }
-
     }
-
     @ApiOperation(value = "根据id查询")
     @PostMapping("/findUserById.do")
     @ResponseBody
