@@ -14,4 +14,9 @@ public class BooleanQuestions {
 
     private String booAnswer;
 
+    private Integer questionType;
+
+    private Integer paperType;
+
+
 }

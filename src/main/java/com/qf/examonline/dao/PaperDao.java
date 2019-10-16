@@ -16,4 +16,6 @@ public interface PaperDao {
 
     // 查询平均分
     public List<Paper> findAvgScore(Integer typeId);
+    //删除一个种类时，修改其相关的试卷的状态
+    public void updatePaperStatus(Integer typeId);
 }

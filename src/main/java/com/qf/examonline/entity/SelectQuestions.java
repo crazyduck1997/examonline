@@ -22,5 +22,10 @@ public class SelectQuestions {
 
     private String selectAnswer;
 
+    private Integer questionType;
+
+    private Integer paperType;
+
+
 
 }
