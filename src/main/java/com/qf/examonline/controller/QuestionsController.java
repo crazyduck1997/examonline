@@ -3,17 +3,19 @@ package com.qf.examonline.controller;
 import com.qf.examonline.common.CodeMsg;
 import com.qf.examonline.common.ErrorCode;
 import com.qf.examonline.common.JsonBean;
-import com.qf.examonline.entity.BooleanQuestions;
-import com.qf.examonline.entity.SelectQuestions;
-import com.qf.examonline.entity.SketchQuestions;
-import com.qf.examonline.entity.UserAnswers;
+import com.qf.examonline.entity.*;
 import com.qf.examonline.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.poi.hssf.usermodel.HSSFName;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -39,22 +41,35 @@ public class QuestionsController {
     QuestionPaperService questionPaperService;
 
     @Autowired
+    QuestionTypeService questionTypeService;
+
+    @Autowired
     UserAnswerService userAnswerService;
 
 
     @ApiOperation(value = "导入excel到题库",notes = "1代表选择题，2代表判断题，其他代表简述题")
     @PostMapping("/importQuestions.do")
-    public JsonBean importSelectQuestions(MultipartFile file,String type){
+    public JsonBean importSelectQuestions(MultipartFile file){
         if(file.isEmpty()){
             new JsonBean(ErrorCode.ERROR,codeMsg.getIsEmpty());
         }
-        if(type.equals("1")){
-            //codeMsg问题
-            selectQuestionsService.insertQuestions(file);
-        }else if(type.equals("2")){
-            booleanQuestionService.insertBooleanQuestions(file);
-        }else {
-            sketchQuestionsService.insertSketchQuestions(file);
+        try {
+            XSSFWorkbook sheets = new XSSFWorkbook(file.getInputStream());
+            XSSFSheet sheetAt = sheets.getSheetAt(0);
+            System.out.println(sheetAt.getSheetName());
+            XSSFRow row = sheetAt.getRow(1);
+            XSSFCell cell = row.getCell(0);
+            if(cell.toString().trim().equals("1.0")){
+                selectQuestionsService.insertQuestions(file);
+            }else if(cell.toString().trim().equals("2.0")){
+                booleanQuestionService.insertBooleanQuestions(file);
+            }else if(cell.toString().trim().equals("3.0")){
+                sketchQuestionsService.insertSketchQuestions(file);
+            }else {
+                throw new RuntimeException(codeMsg.getExecteFaile());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
         }
         return new JsonBean(ErrorCode.SUCCESS,codeMsg.getExecteSuccess());
     }
@@ -115,6 +130,12 @@ public class QuestionsController {
         }
         userAnswerService.commitPaper(list);
         return new JsonBean(ErrorCode.SUCCESS,codeMsg.getExecteSuccess());
+    }
+
+    @GetMapping("/questionTypeList.do")
+    public JsonBean questionTypeList(){
+        List<QuestionType> list = questionTypeService.selectAll();
+        return new JsonBean(ErrorCode.SUCCESS,list);
     }
 
 
