@@ -25,4 +25,7 @@ public interface UserService {
 
     //查询总数
     public Integer fingCount(String username);
+
+    //修改密码
+    public String updatePassword(String password);
 }

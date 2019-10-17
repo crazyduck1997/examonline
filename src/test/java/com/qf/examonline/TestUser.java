@@ -65,4 +65,12 @@ public class TestUser {
         Integer count = userDao.findCount("");
         System.out.println(count);
     }
+
+    @Test
+    public void test7(){
+        User user = new User();
+        user.setUid(61);
+        user.setPassword("777");
+        userService.updateByPrimaryKey(user);
+    }
 }
