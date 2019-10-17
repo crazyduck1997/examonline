@@ -6,6 +6,7 @@ import com.qf.examonline.common.CodeMsg;
 import com.qf.examonline.dao.UserDao;
 import com.qf.examonline.entity.User;
 import com.qf.examonline.service.UserService;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +43,9 @@ public class UserServiceImpl implements UserService {
         if (user != null){
             throw new RuntimeException(codeMsg.getNameRepeat());
         }
+        //对密码进行加密操作
+        String s = md5Password(record.getPassword());
+        record.setPassword(s);
         userDao.insert(record);
     }
 
@@ -59,6 +63,10 @@ public class UserServiceImpl implements UserService {
         if (user != null){
             throw new RuntimeException(codeMsg.getNameRepeat());
         }
+
+        String s = updatePassword(record.getPassword());
+        System.out.println("修改后加密的密码"+s);
+        record.setPassword(s);
         userDao.updateByPrimaryKey(record);
     }
 
@@ -72,5 +80,25 @@ public class UserServiceImpl implements UserService {
     public Integer fingCount(String username) {
         Integer count = userDao.findCount(username);
         return count;
+    }
+
+    @Override
+    public void resetPassword(User user) {
+        //对重设的密码进行加密加密
+        String s = md5Password(user.getPassword());
+        user.setPassword(s);
+        userDao.resetPassword(user);
+    }
+
+
+    public String md5Password(String password){
+        String hex = new SimpleHash("md5", "123","haha", 1).toHex();
+        return hex;
+    }
+
+    @Override
+    public String updatePassword(String password) {
+        String up = new SimpleHash("md5", password,"haha", 1).toHex();
+        return up;
     }
 }

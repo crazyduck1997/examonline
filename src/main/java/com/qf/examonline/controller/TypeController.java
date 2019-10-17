@@ -32,8 +32,8 @@ public class TypeController {
     @Autowired
     private PaperService paperService;
     @ApiOperation("查询所有种类")
-    @PostMapping("/faindAllType.do")
-    public Map findAllType(String typeName, Integer page, Integer limit){
+    @GetMapping("/findAllType.do")
+    public Map findAllType(@RequestParam(required = false)String typeName,@RequestParam(required = false) Integer page,@RequestParam(required = false) Integer limit){
         HashMap<String, Object> map = new HashMap<>();
         List<Type> typeList = typeService.findAllType(typeName,page, limit);
         map.put("code",ErrorCode.SUCCESS);
@@ -67,9 +67,9 @@ public class TypeController {
 
     @ApiOperation("修改种类的名称")
     @PostMapping("/updateOneTypeNameByTypeId.do")
-    public JsonBean updateOneTypeByTypeId(@RequestBody Type type){
+    public JsonBean updateOneTypeByTypeId(Type type){
         String typeName = type.getTypeName();
-        if (typeName == null || type.equals("")){
+        if (typeName == null || typeName.equals("")){
             return new JsonBean(ErrorCode.ERROR,codeMsg.getTypeNameEmpyy());
         }
         try {
@@ -96,6 +96,13 @@ public class TypeController {
             return new JsonBean(ErrorCode.SUCCESS,"暂无成绩");
         }
         return new JsonBean(ErrorCode.SUCCESS,avgScoreList);
+    }
+
+
+    @PostMapping("/allType.do")
+    public JsonBean allType(){
+        List<Type> list = typeService.selectAllType();
+        return new JsonBean(ErrorCode.SUCCESS,list);
     }
 
 }

@@ -24,4 +24,6 @@ public class UserAnswers implements Serializable {
     private Integer cQuestionId;
 
 
+
+
 }

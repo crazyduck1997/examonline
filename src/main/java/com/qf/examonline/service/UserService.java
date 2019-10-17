@@ -25,4 +25,9 @@ public interface UserService {
 
     //查询总数
     public Integer fingCount(String username);
+    //管理员最高权限重置用户密码
+    void resetPassword(User user);
+
+    //修改密码
+    public String updatePassword(String password);
 }

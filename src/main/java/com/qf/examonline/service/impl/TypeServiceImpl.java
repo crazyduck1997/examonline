@@ -56,7 +56,7 @@ public class TypeServiceImpl implements TypeService {
         if (type1 != null){
             throw new RuntimeException("类别重复");
         }
-        typeDao.updatePaperTypeName(type1);
+        typeDao.updatePaperTypeName(type);
     }
     @Override
     ////通过id查询type
@@ -69,5 +69,11 @@ public class TypeServiceImpl implements TypeService {
     public Integer findTypeCount(String typeName) {
         Integer count = typeDao.findTypeCount(typeName);
         return count;
+    }
+
+    @Override
+    public List<Type> selectAllType() {
+        List<Type> allType = typeDao.findAllType(null);
+        return allType;
     }
 }
