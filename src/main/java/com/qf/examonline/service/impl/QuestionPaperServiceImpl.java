@@ -1,21 +1,18 @@
 package com.qf.examonline.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.fasterxml.jackson.databind.util.JSONWrappedObject;
 import com.qf.examonline.common.CodeMsg;
-import com.qf.examonline.dao.PaperDao;
-import com.qf.examonline.dao.QuestionsPaperDao;
+import com.qf.examonline.dao.*;
+import com.qf.examonline.entity.BooleanQuestions;
 import com.qf.examonline.entity.Paper;
 import com.qf.examonline.entity.SelectQuestions;
+import com.qf.examonline.entity.SketchQuestions;
 import com.qf.examonline.service.QuestionPaperService;
-import org.apache.tomcat.util.json.JSONParser;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,9 +26,23 @@ public class QuestionPaperServiceImpl implements QuestionPaperService {
     QuestionsPaperDao questionsPaperDao;
 
     @Autowired
+    SelectQuestionsDao selectQuestionsDao;
+
+    @Autowired
+    BooleanQuestionsDao booleanQuestionsDao;
+
+    @Autowired
+    SketchQuestionsDao sketchQuestionsDao;
+
+    @Autowired
     PaperDao paperDao;
 
 
+    /**
+     * 手动生成试卷
+     * @param map
+     * @return
+     */
     @Override
     public int addQuestions(Map<String, Object> map) {
         Object paper1 = map.get("paper");
@@ -43,10 +54,8 @@ public class QuestionPaperServiceImpl implements QuestionPaperService {
             JSONObject jsonObj = new JSONObject(string);
             String paperName = jsonObj.getString("paperName");
             int typeId = jsonObj.getInt("typeId");
-            System.out.println(paperName + "--" + typeId);
             paper.setPaperName(paperName);
             paper.setTypeId(typeId);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -59,9 +68,6 @@ public class QuestionPaperServiceImpl implements QuestionPaperService {
         }
         paperDao.insert(paper);
         if (selectList != null) {
-            for (Integer s : selectList) {
-                System.out.println(s);
-            }
             questionsPaperDao.addQuestions(paper.getPaperId(), selectList, 1);
         }
         if (booleanList != null) {
@@ -72,4 +78,75 @@ public class QuestionPaperServiceImpl implements QuestionPaperService {
         }
         return 1;
     }
+
+    /**
+     * 通过科目和题目类型获取题目
+     * @param typeId
+     * @param questionType
+     * @return
+     */
+    @Override
+    public List findQuestions(Integer typeId, Integer questionType) {
+        List list = null;
+        if (questionType == 1) {
+            list = selectQuestionsDao.findSelectQuestions(typeId, questionType);
+        } else if (questionType == 2) {
+            list = booleanQuestionsDao.findBooleanQuestions(typeId, questionType);
+        } else if (questionType == 3) {
+            list = sketchQuestionsDao.findSketchQuestions(typeId, questionType);
+        }
+        return list;
+    }
+
+
+    /**
+     * 自动生成试卷
+     * @param selectNum
+     * @param booleanNum
+     * @param sketchNum
+     * @param typeId
+     * @param paperName
+     */
+    @Override
+    public void insertAutoMakePaper(Integer selectNum, Integer booleanNum, Integer sketchNum, Integer typeId,String paperName) {
+        Paper paper = new Paper();
+        paper.setPaperName(paperName);
+        paper.setTypeId(typeId);
+        paperDao.insert(paper);
+        if(selectNum!=0 && selectNum!=null){
+            List<SelectQuestions> selectQuestionsList = selectQuestionsDao.findSelectQuestionsByRandom(typeId, selectNum);
+            if(selectQuestionsList.size()<selectNum){
+                throw new RuntimeException("选择题数量不足");
+            }
+            List<Integer> selectIds = new ArrayList<>();
+            for(SelectQuestions s : selectQuestionsList){
+                selectIds.add(s.getSqId());
+            }
+            questionsPaperDao.addQuestions(paper.getPaperId(),selectIds,1);
+        }
+        if(booleanNum!=0 && booleanNum!=null){
+            List<BooleanQuestions> booleanQuestionsList = booleanQuestionsDao.findBooleanQuestionsByRandom(typeId, booleanNum);
+            if(booleanQuestionsList.size()<booleanNum){
+                throw new RuntimeException("判断数量不足");
+            }
+            List<Integer> booleanIds = new ArrayList<>();
+            for(BooleanQuestions s : booleanQuestionsList){
+                booleanIds.add(s.getBooId());
+            }
+            questionsPaperDao.addQuestions(paper.getPaperId(),booleanIds,2);
+        }
+        if(sketchNum!=0 && sketchNum!=null){
+            List<SketchQuestions> sketchQuestionsList = sketchQuestionsDao.findSketchQuestionsByRandom(typeId, sketchNum);
+            if(sketchQuestionsList.size()<sketchNum){
+                throw new RuntimeException("简答数量不足");
+            }
+            List<Integer> sketchIds = new ArrayList<>();
+            for(SketchQuestions s : sketchQuestionsList){
+                sketchIds.add(s.getSkeId());
+            }
+            questionsPaperDao.addQuestions(typeId,sketchIds,3);
+        }
+    }
+
+
 }

@@ -7,6 +7,8 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LoginServiceImpl implements LoginService {
     @Autowired(required = false)
@@ -14,7 +16,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public User login(String username) {
-        return userDao.selectByUsername(username);
+        return userDao.findUserByName(username);
     }
 
     @Override
@@ -28,11 +30,20 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public boolean checkUser(String username) {
-        User user = userDao.selectByUsername(username);
+        User user = userDao.findUserByName(username);
         if (user == null){
             return true;
         }
         return false;
     }
 
+    @Override
+    public List<String> findRolesByName(String userName) {
+        return userDao.findRolesByName(userName);
+    }
+
+    @Override
+    public List<String> findPermsByName(String userName) {
+        return userDao.findPermsByName(userName);
+    }
 }

@@ -15,4 +15,9 @@ public interface BooleanQuestionsDao {
     List<BooleanQuestions> selectAll();
 
     int updateByPrimaryKey(BooleanQuestions record);
+
+    List<BooleanQuestions> findBooleanQuestions(@Param("typeId")Integer typeId,@Param("questionType")Integer questionType);
+
+    List<BooleanQuestions> findBooleanQuestionsByRandom(@Param("typeId")Integer typeId ,@Param("booleanNum") Integer booleanNum);
+
 }

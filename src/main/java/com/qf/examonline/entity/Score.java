@@ -16,5 +16,7 @@ public class Score {
 
     private Integer paperId;
 
+    private String commitRepeat;
+
 
 }

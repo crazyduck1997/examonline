@@ -26,6 +26,8 @@ public class SelectQuestions {
 
     private Integer paperType;
 
+    private Integer selectScore;
+
 
 
 }

@@ -18,5 +18,7 @@ public class BooleanQuestions {
 
     private Integer paperType;
 
+    private Integer booScore;
+
 
 }

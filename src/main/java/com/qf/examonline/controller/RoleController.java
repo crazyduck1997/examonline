@@ -10,7 +10,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.spring.web.json.Json;
 
 import java.util.List;
 
@@ -26,7 +25,7 @@ public class RoleController {
     private CodeMsg codeMsg;
 
     @ApiOperation(value = "查询所有角色")
-    @PostMapping("/selectAllRoles.do")
+    @GetMapping("/selectAllRoles.do")
     public JsonBean selectAll(){
         List<Role> roleList = roleService.selectAll();
         return new JsonBean(ErrorCode.SUCCESS,roleList);
@@ -55,7 +54,7 @@ public class RoleController {
 
     @ApiOperation(value = "修改角色",notes = "需传入一个角色对象")
     @PostMapping("/updateRole.do")
-    public JsonBean updateOneRole(@RequestBody Role role){
+    public JsonBean updateOneRole(Role role){
         if (role.getRname() == null || role.getRname().equals("")){
             return new JsonBean(ErrorCode.ERROR,codeMsg.getTypeNameEmpyy());
         }
@@ -69,8 +68,8 @@ public class RoleController {
 
     @ApiOperation(value = "删除role",notes = "需要传入一个rid")
     @PostMapping("/deleteOneRole.do")
-    public JsonBean deleteRoleByRid(Integer rid){
-         roleService.deleteByPrimaryKey(rid);
+    public JsonBean deleteRoleByRid(String rid){
+         roleService.deleteByPrimaryKey(Integer.valueOf(rid));
          return new JsonBean(ErrorCode.SUCCESS,codeMsg.getExecteSuccess());
     }
 

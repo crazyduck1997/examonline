@@ -20,7 +20,7 @@ import java.util.List;
 @Api(tags = "科目类型管理")
 @RestController
 @CrossOrigin
-@RequestMapping("/typeController")
+@RequestMapping("/type")
 public class TypeController {
 
     @Autowired

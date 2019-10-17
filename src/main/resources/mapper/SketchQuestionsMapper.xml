@@ -7,34 +7,47 @@
     <result column="question_type" property="questionType" jdbcType="INTEGER" />
     <result column="paper_type" property="paperType" jdbcType="INTEGER" />
     <result column="ske_desc" property="skeDesc" jdbcType="LONGVARCHAR" />
+    <result column="ske_score" property="skeScore" jdbcType="INTEGER"/>
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_sketch_questions
     where ske_id = #{skeId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.qf.examonline.entity.SketchQuestions" >
-    insert into t_sketch_questions (ske_answer, ske_desc , question_type , paper_type
+    insert into t_sketch_questions (ske_answer, ske_desc , question_type , paper_type,ske_score
       )
     values
     <foreach collection="list" item="item" index="index" separator="," >
       ( #{item.skeAnswer,jdbcType=VARCHAR}, #{item.skeDesc,jdbcType=LONGVARCHAR},
-      3,#{intm.paperType,jdbcType=INTEGER})
+      3,#{item.paperType,jdbcType=INTEGER},#{item.skeScore,jdbcType=INTEGER})
     </foreach>
 
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.SketchQuestions" >
     update t_sketch_questions
     set ske_answer = #{skeAnswer,jdbcType=VARCHAR},
-      ske_desc = #{skeDesc,jdbcType=LONGVARCHAR}
+      question_type = #{questionType,jdbcType=INTEGER},
+      paper_type = #{paperType,jdbcType=INTEGER},
+      ske_desc = #{skeDesc,jdbcType=LONGVARCHAR},
+      ske_score = #{skeScore,jdbcType=INTEGER}
     where ske_id = #{skeId,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select ske_id, ske_answer, question_type, paper_type, ske_desc
+    select ske_id, ske_answer, question_type, paper_type, ske_desc,ske_score
     from t_sketch_questions
     where ske_id = #{skeId,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select ske_id, ske_answer, question_type, paper_type, ske_desc
+    select ske_id, ske_answer, question_type, paper_type, ske_desc,ske_score
     from t_sketch_questions
   </select>
+
+  <select id="findSketchQuestions" resultType="SketchQuestions" resultMap="BaseResultMap">
+    select * from t_sketch_questions where  paper_type = #{typeId} and question_type = #{questionType}
+  </select>
+
+  <select id="findSketchQuestionsByRandom" resultType="SketchQuestions" resultMap="BaseResultMap">
+     SELECT * FROM t_sketch_questions where paper_type = #{typeId} ORDER BY  RAND() LIMIT #{sketchNum}
+  </select>
+
 </mapper>

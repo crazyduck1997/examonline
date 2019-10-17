@@ -20,7 +20,7 @@ public class TypeServiceImpl implements TypeService {
     @Autowired(required = false)
     private PaperDao paperDao;
 
-//    @Override
+       @Override
 //    //业务层：查询所有试卷种类
     public PageInfo<Type> findAllType(String typeName,Integer page, Integer limit) {
         //设置查询的页码和记录数

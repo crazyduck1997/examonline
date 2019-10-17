@@ -1,8 +1,11 @@
 package com.qf.examonline;
 
+import com.qf.examonline.dao.BooleanQuestionsDao;
 import com.qf.examonline.dao.SelectQuestionsDao;
+import com.qf.examonline.dao.SketchQuestionsDao;
 import com.qf.examonline.dao.UserDao;
 import com.qf.examonline.entity.SelectQuestions;
+import com.qf.examonline.entity.SketchQuestions;
 import com.qf.examonline.entity.User;
 import com.qf.examonline.utils.ImportExcelUtil;
 import org.junit.Test;
@@ -24,6 +27,13 @@ public class test {
 
     @Resource
     SelectQuestionsDao selectQuestionsDao;
+
+    @Resource
+    BooleanQuestionsDao booleanQuestionsDao;
+
+    @Resource
+    SketchQuestionsDao sketchQuestionsDao;
+
     @Test
     public void test1(){
         String originUrl = "D:\\XY\\test.xls";
@@ -38,5 +48,20 @@ public class test {
             e.printStackTrace();
         }
     }
+    @Test
+    public void test2(){
+        List<SketchQuestions> list = sketchQuestionsDao.findSketchQuestionsByRandom(1, 3);
+        for(SketchQuestions s : list){
+            System.out.println(s);
+        }
+    }
+
+
+    @Test
+    public void test3(){
+        String s = String.valueOf(1) + String.valueOf(2);
+        System.out.println(String.valueOf(1)+String.valueOf(2)+"asd");
+    }
+
 
 }

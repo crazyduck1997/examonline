@@ -15,4 +15,9 @@ public interface SketchQuestionsDao {
     List<SketchQuestions> selectAll();
 
     int updateByPrimaryKey(SketchQuestions record);
+
+    List<SketchQuestions> findSketchQuestions(@Param("typeId")Integer typeId,@Param("questionType")Integer questionType);
+
+    List<SketchQuestions> findSketchQuestionsByRandom(@Param("typeId")Integer typeId ,@Param("sketchNum") Integer sketchNum);
+
 }
