@@ -6,6 +6,7 @@ import com.qf.examonline.common.CodeMsg;
 import com.qf.examonline.dao.UserDao;
 import com.qf.examonline.entity.User;
 import com.qf.examonline.service.UserService;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +60,10 @@ public class UserServiceImpl implements UserService {
         if (user != null){
             throw new RuntimeException(codeMsg.getNameRepeat());
         }
+
+        String s = updatePassword(record.getPassword());
+        System.out.println("修改后加密的密码"+s);
+        record.setPassword(s);
         userDao.updateByPrimaryKey(record);
     }
 
@@ -72,5 +77,11 @@ public class UserServiceImpl implements UserService {
     public Integer fingCount(String username) {
         Integer count = userDao.findCount(username);
         return count;
+    }
+
+    @Override
+    public String updatePassword(String password) {
+        String up = new SimpleHash("md5", password,"haha", 1).toHex();
+        return up;
     }
 }

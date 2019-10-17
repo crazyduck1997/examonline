@@ -27,4 +27,7 @@ public interface UserDao {
 
     //查询总数量
     Integer findCount(String username);
+
+    //修改密码
+    public String updatePassword(String password);
 }
