@@ -6,8 +6,15 @@
     <result column="pname" property="pname" jdbcType="VARCHAR" />
     <result column="pdesc" property="pdesc" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="INTEGER" />
-    <result column="parentId" property="parentid" jdbcType="INTEGER" />
     <result column="url" property="url" jdbcType="LONGVARCHAR" />
+    <collection property="childs" ofType="com.qf.examonline.entity.Permission">
+      <id column="sid" property="pid" jdbcType="INTEGER" />
+      <result column="parentId" property="parentid" jdbcType="INTEGER" />
+      <result column="sname" property="pname" jdbcType="VARCHAR" />
+      <result column="pdesc" property="pdesc" jdbcType="VARCHAR" />
+      <result column="type" property="type" jdbcType="INTEGER" />
+      <result column="url" property="url" jdbcType="LONGVARCHAR" />
+    </collection>
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_permission
@@ -38,5 +45,14 @@
   <select id="selectAll" resultMap="BaseResultMap" >
     select pid, pname, pdesc, type, parentId, url
     from t_permission
+  </select>
+  <select id="findMenuByName" parameterType="string" resultMap="BaseResultMap">
+    select pp.pid, pp.pname, ps.pid sid, ps.pname sname, ps.pdesc, ps.type, ps.url
+    from t_permission pp
+    inner join t_permission ps on pp.pid = ps.parentId
+    inner join t_perm_role rp on pp.pid = rp.pid
+    inner join t_role_user ur on rp.rid = ur.rid
+    inner join t_user u on ur.uid = u.uid
+    where u.username=#{username}
   </select>
 </mapper>

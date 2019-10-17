@@ -45,8 +45,12 @@
     where uid = #{uid,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select uid, username, password ,parent_id
-    from t_user
+    select * from t_user
+    <where>
+      <if test="username != null and username != '' ">
+        username like upper ('%${username}%')
+      </if>
+    </where>
   </select>
   <select id="findUserByName" parameterType="string" resultMap="BaseResultMap">
     select * from t_user where username = #{username}
@@ -63,5 +67,14 @@
     inner JOIN t_perm_role pr on ru.rid=pr.rid
     inner JOIN t_permission p on pr.pid=p.pid
     where u.username=#{username} and p.pdesc!='' and p.pdesc is not null
+  </select>
+
+  <select id="findCount" resultType="integer">
+    select count(*) from t_user
+        <where>
+          <if test="username != null and username != '' ">
+            username like upper ('%${username}%')
+          </if>
+        </where>
   </select>
 </mapper>

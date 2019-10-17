@@ -16,46 +16,46 @@
       <li class="layui-nav-item">
         <a href="javascript:;">
           <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-          <span id="span"></span>
+          <span id="username"></span>
         </a>
         <dl class="layui-nav-child">
           <dd><a href="">基本资料</a></dd>
           <dd><a href="">安全设置</a></dd>
         </dl>
       </li>
-      <li class="layui-nav-item"><a href="/logout">退了</a></li>
+      <li class="layui-nav-item"><a href="/logout">退出</a></li>
     </ul>
   </div>
   
   <div class="layui-side layui-bg-black">
     <div class="layui-side-scroll">
       <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-      <ul class="layui-nav layui-nav-tree"  lay-filter="test">
-        <li class="layui-nav-item layui-nav-itemed">
-          <a class="" href="javascript:;">系统管理</a>
-          <dl class="layui-nav-child">
-            <dd><a href="userRegulate.html" target="myframe">用户管理</a></dd>
-            <dd><a href="roleList.html" target="myframe">角色管理</a></dd>
-            <dd><a href="javascript:;" target="myframe">权限管理</a></dd>
-          </dl>
-        </li>
-        <li class="layui-nav-item">
-          <a href="javascript:;">试题管理</a>
-          <dl class="layui-nav-child">
-            <dd><a href="papertype.html" target="myframe">试题分类管理</a></dd>
-            <dd><a href="questionsManage.html" target="myframe">试题管理</a></dd>
-            <dd><a href="uploadQuestions.html" target="myframe">试题导入</a></dd>
-            <dd><a href="hbulidPaper.html" target="myframe">生成试卷</a></dd>
-          </dl>
-        </li><li class="layui-nav-item">
-          <a href="javascript:;">成绩管理</a>
-          <dl class="layui-nav-child">
-            <dd><a href="javascript:;" target="myframe">判卷</a></dd>
-            <dd><a href="javascript:;" target="myframe">考生成绩查询</a></dd>
-          </dl>
-        </li>
-        <li class="layui-nav-item"><a href="javascript:;" target="myframe">统计管理</a></li>
-        <li class="layui-nav-item"><a href="javascript:;" target="myframe">考生信息管理</a></li>
+      <ul id="menu" class="layui-nav layui-nav-tree"  lay-filter="test">
+<!--        <li class="layui-nav-item layui-nav-itemed">-->
+<!--          <a class="" href="javascript:;">系统管理</a>-->
+<!--          <dl class="layui-nav-child">-->
+<!--            <dd><a href="userList.html" target="myframe">用户管理</a></dd>-->
+<!--            <dd><a href="roleRegulate.html" target="myframe">角色管理</a></dd>-->
+<!--            <dd><a href="javascript:;" target="myframe">权限管理</a></dd>-->
+<!--          </dl>-->
+<!--        </li>-->
+<!--        <li class="layui-nav-item">-->
+<!--          <a href="javascript:;">试题管理</a>-->
+<!--          <dl class="layui-nav-child">-->
+<!--            <dd><a href="papertype.html" target="myframe">试题分类管理</a></dd>-->
+<!--            <dd><a href="questionsManage.html" target="myframe">试题管理</a></dd>-->
+<!--            <dd><a href="uploadQuestions.html" target="myframe">试题导入</a></dd>-->
+<!--            <dd><a href="" target="myframe">生成试卷</a></dd>-->
+<!--          </dl>-->
+<!--        </li><li class="layui-nav-item">-->
+<!--          <a href="javascript:;">成绩管理</a>-->
+<!--          <dl class="layui-nav-child">-->
+<!--            <dd><a href="javascript:;" target="myframe">判卷</a></dd>-->
+<!--            <dd><a href="javascript:;" target="myframe">考生成绩查询</a></dd>-->
+<!--          </dl>-->
+<!--        </li>-->
+<!--        <li class="layui-nav-item"><a href="" target="myframe">统计管理</a></li>-->
+<!--        <li class="layui-nav-item"><a href="" target="myframe">考生信息管理</a></li>-->
       </ul>
     </div>
   </div>
@@ -71,12 +71,56 @@
   </div>
 </div>
 <script src="../layui/layui.js"></script>
+<script src="../js/jquery-1.12.2.min.js"></script>
 <script>
 //JavaScript代码区域
-layui.use('element', function(){
+layui.use(['element','layer','jquery'], function(){
   var element = layui.element;
-  
+  $.ajax({
+    type: "get",
+    url: "/getUsername",
+    dataType: "json",
+    success: function (data) {
+      if (data.code == 1) {
+        $("#username").html(data.data);
+      } else {
+        alert(data.data);
+      }
+      // 重新渲染
+      element.render();
+    }
+  })
 });
+</script>
+<script>
+  //JavaScript代码区域
+  layui.use('element', function () {
+    var element = layui.element;
+    $.ajax({
+      type: "get",
+      url: "/listMenu",
+      dataType: "json",
+      success: function (data) {
+        if (data.code == 1) {
+          var infos = data.data;
+          $(infos).each(function () {
+            var html = '<li class="layui-nav-item">';
+            html += '<a class="" href="javascript:;">' + this.pname + '</a>';
+            html += '<dl class="layui-nav-child">';
+            var childs = this.childs;
+            $(childs).each(function () {
+              html += '  <dd><a href="' + this.url + '" target="myframe">' + this.pname + '</a></dd>';
+            });
+            html += '</dl>';
+            html += '</li>';
+            $("#menu").append($(html));
+          });
+          // 重新渲染
+          element.render();
+        }
+      }
+    })
+  });
 </script>
 </body>
 </html>

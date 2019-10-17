@@ -1,6 +1,7 @@
 package com.qf.examonline.controller;
 
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.qf.examonline.common.CodeMsg;
 import com.qf.examonline.common.ErrorCode;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Api(tags = "试卷管理")
 @RestController
@@ -32,13 +34,13 @@ public class PaperConreoller {
 
     @ApiOperation("查询所有种类")
     @PostMapping("/faindAllType.do")
-    public JsonBean findAllType(String typeName,Integer page,Integer limit){
+    public Map findAllType(String typeName, Integer page, Integer limit){
         HashMap<String, Object> map = new HashMap<>();
-        PageInfo<Type> typeList = typeService.findAllType(typeName,page, limit);
-
-        map.put("count",typeService.findTypeCount(typeName));
+        List<Type> typeList = typeService.findAllType(typeName,page, limit);
+        map.put("code",ErrorCode.SUCCESS);
+        map.put("count",((Page)typeList).getTotal());
         map.put("data",typeList);
-        return new JsonBean(ErrorCode.SUCCESS,map);
+        return map;
     }
 
     @ApiOperation("添加新的科目种类")

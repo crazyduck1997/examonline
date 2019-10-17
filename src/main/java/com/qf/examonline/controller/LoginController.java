@@ -3,7 +3,9 @@ package com.qf.examonline.controller;
 import com.qf.examonline.common.CodeMsg;
 import com.qf.examonline.common.ErrorCode;
 import com.qf.examonline.common.JsonBean;
+import com.qf.examonline.entity.Permission;
 import com.qf.examonline.service.LoginService;
+import com.qf.examonline.service.PermissionService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -14,23 +16,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 @Controller
 @CrossOrigin
 public class LoginController {
 
     @Autowired
-    LoginService loginService;
+    private LoginService loginService;
 
     @Autowired
-    CodeMsg codeMsg;
+    private CodeMsg codeMsg;
+
+    @Autowired(required = false)
+    private PermissionService permissionService;
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     @ResponseBody
     public JsonBean login(String username,String password){
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         Subject subject = SecurityUtils.getSubject();
-        String principal = (String) subject.getPrincipal();
-        System.out.println(principal);
         try {
             subject.login(token);
         } catch (Exception e) {
@@ -53,5 +58,20 @@ public class LoginController {
             return new JsonBean(ErrorCode.REPEAT_USERNAME,codeMsg.getRepeatUsername());
         }
         return new JsonBean(ErrorCode.ENABLE_USERNAME,codeMsg.getEnableUsername());
+    }
+    @RequestMapping("/getUsername")
+    @ResponseBody
+    public JsonBean getUsername(){
+        Subject subject = SecurityUtils.getSubject();
+        String username = (String) subject.getPrincipal();
+        return new JsonBean(1,username);
+    }
+    @RequestMapping("/listMenu")
+    @ResponseBody
+    public JsonBean listMenu(){
+        Subject subject = SecurityUtils.getSubject();
+        String username = (String) subject.getPrincipal();
+        List<Permission> menu = permissionService.findMenuByName(username);
+        return new JsonBean(1,menu);
     }
 }

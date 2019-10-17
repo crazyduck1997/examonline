@@ -46,5 +46,4 @@ public class LoginServiceImpl implements LoginService {
     public List<String> findPermsByName(String userName) {
         return userDao.findPermsByName(userName);
     }
-
 }

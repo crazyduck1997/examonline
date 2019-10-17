@@ -29,7 +29,7 @@ public class PaperControllerTest {
     @Test
 //    //查询所有种类测试
     public void findAllTypeTest(){
-        PageInfo<Type> allType = typeService.findAllType("python",1, 2);
+        List<Type> allType = typeService.findAllType("python",1, 2);
         System.out.println(allType);
     }
     @Test

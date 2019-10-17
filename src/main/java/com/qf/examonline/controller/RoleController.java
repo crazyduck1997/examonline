@@ -29,7 +29,6 @@ public class RoleController {
     @Autowired
     private CodeMsg codeMsg;
 
-    @RequiresRoles("管理员")
     @ApiOperation(value = "查询所有角色")
     @GetMapping("/selectAllRoles.do")
     public JsonBean selectAll(){

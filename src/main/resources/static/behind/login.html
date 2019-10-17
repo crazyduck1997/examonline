@@ -46,7 +46,7 @@
         form.on('submit(login)',function (data) {
              console.log(data.field);
             $.ajax({
-                url:'http://localhost:8080/login',
+                url:'/login',
                 data:data.field,
                 dataType:'json',
                 type:'post',
