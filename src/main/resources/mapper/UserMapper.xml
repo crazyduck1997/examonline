@@ -77,4 +77,9 @@
           </if>
         </where>
   </select>
+
+<!--  管理员最高权限重置密码-->
+  <update id="resetPassword">
+    update t_user set password = #{password} where uid = #{uid}
+  </update>
 </mapper>

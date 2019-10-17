@@ -1,34 +1,70 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>用户增加</title>
-		<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" >
-		<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
-	</head>
-	<body>
-		<center>
-		<form class="layui-form" id="add-form" lay-filter="example" >	
-	<div class="layui-form-item" >
-		<label class="layui-form-label">用户名</label>
-		<div class="layui-input-block">
-			<input type="text"  style="width:400px;" name="singleChoiceNum" lay-verify="title" autocomplete="off" class="layui-input">
+<head>
+	<meta charset="UTF-8">
+	<title>用户增加</title>
+	<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" >
+	<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+<center>
+	<form class="layui-form" id="add-form" lay-filter="example" action="" method="post">
+		<div class="layui-form-item" >
+			<label class="layui-form-label">用户名</label>
+			<div class="layui-input-block">
+				<input type="text"  style="width:400px;" name="username" lay-verify="title" autocomplete="off" class="layui-input">
+			</div>
 		</div>
-	</div>
-	<div class="layui-form-item" >
-		<label class="layui-form-label">角色</label>
-		<div class="layui-input-block">
-			<input type="text"  style="width:400px;" name="multiChoicNum" lay-verify="title" autocomplete="off" class="layui-input">
+		<div class="layui-form-item" >
+			<label class="layui-form-label">密码</label>
+			<div class="layui-input-block">
+				<input type="text"  style="width:400px;" name="password" lay-verify="title" autocomplete="off" class="layui-input">
+			</div>
 		</div>
-	</div>
-	
-	<div class="layui-form-item">
-		<div class="layui-input-block">
-			<button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
-			<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="formDemo">保存</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			</div>
 		</div>
-	</div>
-</form>
+	</form>
 </center>
-	</body>
+</body>
+<script>
+	layui.use(['form', 'laydate','layer'], function () {
+		var form = layui.form
+				, laydate = layui.laydate
+				,layer = layui.layer
+				,$ = layui.jquery;
+		var index = parent.layer.getFrameIndex(window.name);
+		//InitForm();
+
+		//form.render();
+
+		//监听提交
+		form.on('submit(formDemo)', function (data) {
+			$.ajax({
+				type: "post",
+				url: "/user/insertUser.do",
+				data: data.field,
+				dataType: "json",
+				success: function (data) {
+					if (data.code == 0) {
+						layer.msg("添加成功", {icon: 6, time: 1000},
+								function () {
+									var t = parent.layui.table;
+									var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+									parent.layer.close(index); //再执行关闭
+									t.reload('CourseTable');
+								});
+					}else {
+						layer.alert("名字重复",{icon: 2,time:1000});
+					}
+				}
+			});
+			return false;
+		});
+	});
+</script>
 </html>

@@ -27,4 +27,6 @@ public interface UserDao {
 
     //查询总数量
     Integer findCount(String username);
+    // 管理员最高权限重置密码
+    void resetPassword(User user);
 }

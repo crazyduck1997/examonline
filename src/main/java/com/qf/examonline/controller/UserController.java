@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.spring.web.json.Json;
 
 import java.util.HashMap;
 import java.util.List;
@@ -62,6 +63,14 @@ public class UserController {
     public JsonBean findUserById(Integer uid){
         User user = userService.findById(uid);
         return new JsonBean(ErrorCode.SUCCESS,user);
+    }
+
+    @ApiOperation("管理员最高权限重置用户密码")
+    @PostMapping("/resetPassword.do")
+    @ResponseBody
+    public JsonBean resetPassword(User user){
+        userService.resetPassword(user);
+        return new JsonBean(ErrorCode.SUCCESS,codeMsg.getExecteSuccess());
     }
 
     @ApiOperation(value = "修改用户")
