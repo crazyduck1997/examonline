@@ -56,7 +56,6 @@ public class QuestionsController {
         try {
             XSSFWorkbook sheets = new XSSFWorkbook(file.getInputStream());
             XSSFSheet sheetAt = sheets.getSheetAt(0);
-            System.out.println(sheetAt.getSheetName());
             XSSFRow row = sheetAt.getRow(1);
             XSSFCell cell = row.getCell(0);
             if(cell.toString().trim().equals("1.0")){
@@ -132,6 +131,7 @@ public class QuestionsController {
         return new JsonBean(ErrorCode.SUCCESS,codeMsg.getExecteSuccess());
     }
 
+    @ApiOperation(value = "题目类型")
     @GetMapping("/questionTypeList.do")
     public JsonBean questionTypeList(){
         List<QuestionType> list = questionTypeService.selectAll();

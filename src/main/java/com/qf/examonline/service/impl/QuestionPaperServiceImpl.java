@@ -116,7 +116,7 @@ public class QuestionPaperServiceImpl implements QuestionPaperService {
         if(selectNum!=0 && selectNum!=null){
             List<SelectQuestions> selectQuestionsList = selectQuestionsDao.findSelectQuestionsByRandom(typeId, selectNum);
             if(selectQuestionsList.size()<selectNum){
-                throw new RuntimeException("选择题数量不足");
+                throw new RuntimeException("题库中选择题数量不足，请添加");
             }
             List<Integer> selectIds = new ArrayList<>();
             for(SelectQuestions s : selectQuestionsList){
@@ -127,7 +127,7 @@ public class QuestionPaperServiceImpl implements QuestionPaperService {
         if(booleanNum!=0 && booleanNum!=null){
             List<BooleanQuestions> booleanQuestionsList = booleanQuestionsDao.findBooleanQuestionsByRandom(typeId, booleanNum);
             if(booleanQuestionsList.size()<booleanNum){
-                throw new RuntimeException("判断数量不足");
+                throw new RuntimeException("题库中判断题数量不足，请添加");
             }
             List<Integer> booleanIds = new ArrayList<>();
             for(BooleanQuestions s : booleanQuestionsList){
@@ -138,13 +138,13 @@ public class QuestionPaperServiceImpl implements QuestionPaperService {
         if(sketchNum!=0 && sketchNum!=null){
             List<SketchQuestions> sketchQuestionsList = sketchQuestionsDao.findSketchQuestionsByRandom(typeId, sketchNum);
             if(sketchQuestionsList.size()<sketchNum){
-                throw new RuntimeException("简答数量不足");
+                throw new RuntimeException("题库中简答题数量不足，请添加");
             }
             List<Integer> sketchIds = new ArrayList<>();
             for(SketchQuestions s : sketchQuestionsList){
                 sketchIds.add(s.getSkeId());
             }
-            questionsPaperDao.addQuestions(typeId,sketchIds,3);
+            questionsPaperDao.addQuestions(paper.getPaperId(),sketchIds,3);
         }
     }
 

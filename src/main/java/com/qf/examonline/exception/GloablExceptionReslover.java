@@ -15,7 +15,7 @@ public class GloablExceptionReslover {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public JsonBean exception(Exception e){
-        return new JsonBean(0,e.getMessage());
+        return new JsonBean(1,e.getMessage());
     }
 
     @ExceptionHandler(AuthorizationException.class)
