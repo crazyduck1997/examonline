@@ -15,7 +15,7 @@ public interface TypeService {
     //修改试卷类别的名称(根据试卷的id来修改)
     public void updatePaperTypeName(Type type);
 
-//    //通过名字查询type信息
+    //通过名字查询type信息
     public Type findOneTypeByTypeId(Integer typeId);
 
     //查询总的信息数量
