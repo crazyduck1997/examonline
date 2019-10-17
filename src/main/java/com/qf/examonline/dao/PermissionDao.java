@@ -16,4 +16,6 @@ public interface PermissionDao {
     int updateByPrimaryKey(Permission record);
     //通过名字查询菜单
     List<Permission> findMenuByName(String userName);
+
+    List<Permission> list(String pname);
 }

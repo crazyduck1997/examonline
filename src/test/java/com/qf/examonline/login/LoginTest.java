@@ -40,4 +40,13 @@ public class LoginTest {
         List<Permission> menuByName = permissionDao.findMenuByName("校长");
         System.out.println(menuByName);
     }
+    @Test
+    public void permissionList(){
+//        User user = new User();
+//        user.setUsername("wangwu");
+//        user.setPassword("123");
+        List<Permission> zhang = permissionDao.list("管理");
+        System.out.println(zhang);
+
+    }
 }

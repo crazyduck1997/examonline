@@ -36,6 +36,7 @@ public class LoginController {
     public JsonBean login(String username,String password){
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         Subject subject = SecurityUtils.getSubject();
+        List<String> roles = loginService.findRolesByName(username);
         try {
             subject.login(token);
         } catch (Exception e) {

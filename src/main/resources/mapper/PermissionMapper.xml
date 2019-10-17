@@ -55,4 +55,13 @@
     inner join t_user u on ur.uid = u.uid
     where u.username=#{username}
   </select>
+  <select id="list" parameterType="string" resultMap="BaseResultMap">
+    select pid, pname, pdesc, type, parentId, url
+    from t_permission
+    <where>
+      <if test="pname != null and pname !=''" >
+        pname like '%${pname}%';
+      </if>
+    </where>
+  </select>
 </mapper>

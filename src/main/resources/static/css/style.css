@@ -1,6 +1,6 @@
 @charset "utf-8";
 body{
-    background: url(../img/login1.jpg) no-repeat top left;
+    background: url(../img/login.jpg) no-repeat top left;
     background-size: cover;
 }
 .layui-header {

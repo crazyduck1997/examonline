@@ -52,7 +52,6 @@
                 type:'post',
                 success:function (data) {
                     if (data.code == 1001){
-						alert(data.info)
                         location.href = "index.html";
                     }else{
                         layer.msg(data.info);
