@@ -1,5 +1,6 @@
 package com.qf.examonline.controller;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.qf.examonline.common.CodeMsg;
 import com.qf.examonline.common.ErrorCode;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Api(tags = "用户管理")
 @Controller
@@ -34,12 +36,13 @@ public class UserController {
     @ResponseBody
     //@RequiresPermissions("score:list")
     @RequiresRoles("管理员")
-    public JsonBean selectUser(String username, Integer page, Integer limit){
-        PageInfo<User> userPageInfo = userService.selectAll(username, page, limit);
+    public Map selectUser(String username, Integer page, Integer limit){
+        List<User> userPageInfo = userService.selectAll(username, page, limit);
         HashMap<String, Object> map = new HashMap<>();
-        map.put("count",userService.fingCount(username));
+        map.put("code",0);
+        map.put("count",((Page)userPageInfo).getTotal());
         map.put("data",userPageInfo);
-        return new JsonBean(ErrorCode.SUCCESS,map);
+        return map;
     }
 
     @ApiOperation(value = "添加用户")

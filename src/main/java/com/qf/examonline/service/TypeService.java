@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TypeService {
     //查询所有试卷类别
-    public PageInfo<Type> findAllType(String typeName,Integer page, Integer limit);
+    public List<Type> findAllType(String typeName,Integer page, Integer limit);
     //添加新的试卷类别
     public void addNewPaperType(String typeName);
     //删除一个试卷类别

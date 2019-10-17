@@ -29,11 +29,10 @@ public class UserServiceImpl implements UserService {
 
     //业务层：查用户
     @Override
-    public PageInfo<User> selectAll(String username,Integer page,Integer limit) {
+    public List<User> selectAll(String username,Integer page,Integer limit) {
         PageHelper.startPage(page,limit);
         List<User> userList = userDao.selectAll(username);
-        PageInfo<User> pageInfo = new PageInfo<>(userList);
-        return pageInfo;
+        return userList;
     }
 
     //业务层：添加用户

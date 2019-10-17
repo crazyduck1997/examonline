@@ -24,11 +24,11 @@ public class TestUser {
     UserService userService;
 
 
-    @Test
-    public void test1(){
-        PageInfo<User> pageInfo = userService.selectAll("", 1, 5);
-        System.out.println(pageInfo);
-    }
+  //  @Test
+//    public void test1(){
+//        PageInfo<User> pageInfo = userService.selectAll("", 1, 5);
+//        System.out.println(pageInfo);
+//    }
 
     @Test
     public void test2(){

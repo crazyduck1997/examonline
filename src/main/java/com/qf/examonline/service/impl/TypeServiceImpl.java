@@ -22,12 +22,11 @@ public class TypeServiceImpl implements TypeService {
 
        @Override
 //    //业务层：查询所有试卷种类
-    public PageInfo<Type> findAllType(String typeName,Integer page, Integer limit) {
+    public List<Type> findAllType(String typeName,Integer page, Integer limit) {
         //设置查询的页码和记录数
         PageHelper.startPage(page,limit);
         List<Type> typeList = typeDao.findAllType(typeName);
-        PageInfo<Type> pageInfo = new PageInfo<>(typeList);
-        return pageInfo;
+        return typeList;
     }
 
 
