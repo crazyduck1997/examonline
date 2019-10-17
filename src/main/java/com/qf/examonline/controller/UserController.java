@@ -65,7 +65,7 @@ public class UserController {
         return new JsonBean(ErrorCode.SUCCESS,user);
     }
 
-    @ApiOperation("管理员最高权限重置用户密码")
+    @ApiOperation(value = "管理员最高权限重置用户密码")
     @PostMapping("/resetPassword.do")
     @ResponseBody
     public JsonBean resetPassword(User user){

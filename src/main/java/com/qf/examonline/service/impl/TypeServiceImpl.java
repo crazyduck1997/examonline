@@ -56,7 +56,7 @@ public class TypeServiceImpl implements TypeService {
         if (type1 != null){
             throw new RuntimeException("类别重复");
         }
-        typeDao.updatePaperTypeName(type1);
+        typeDao.updatePaperTypeName(type);
     }
     @Override
     ////通过id查询type

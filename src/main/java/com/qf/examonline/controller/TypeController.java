@@ -67,9 +67,9 @@ public class TypeController {
 
     @ApiOperation("修改种类的名称")
     @PostMapping("/updateOneTypeNameByTypeId.do")
-    public JsonBean updateOneTypeByTypeId(@RequestBody Type type){
+    public JsonBean updateOneTypeByTypeId(Type type){
         String typeName = type.getTypeName();
-        if (typeName == null || type.equals("")){
+        if (typeName == null || typeName.equals("")){
             return new JsonBean(ErrorCode.ERROR,codeMsg.getTypeNameEmpyy());
         }
         try {
