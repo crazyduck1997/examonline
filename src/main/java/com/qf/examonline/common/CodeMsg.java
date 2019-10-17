@@ -33,4 +33,7 @@ public class CodeMsg {
 
     @Value("${isEmpty}")
     private String isEmpty;
+
+    @Value("${commitRepeat}")
+    private String commitRepeat;
 }

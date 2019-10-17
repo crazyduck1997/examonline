@@ -100,14 +100,17 @@
     </select>
 
     <select id="selectByPrimaryKey" resultMap="ResultMap" parameterType="java.lang.Integer" >
-    select sid, score, stu_id, paper_id, commit_time, update_time
+    select sid, score, stu_id, paper_id, commit_time, update_time,commit_repeat
     from t_score
     where sid = #{sid,jdbcType=INTEGER}
   </select>
     <select id="selectAll" resultMap="ResultMap" >
-    select sid, score, stu_id, paper_id, commit_time, update_time
+    select sid, score, stu_id, paper_id, commit_time, update_time,commit_repeat
     from t_score
   </select>
-
+    <select id="selectByCommit" resultMap="ResultMap">
+        select sid, score, stu_id, paper_id, commit_time, update_time,commit_repeat
+         from t_score where commit_repeat = #{commitRepeat}
+    </select>
 
 </mapper>

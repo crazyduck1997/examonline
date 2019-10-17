@@ -29,4 +29,7 @@ public interface UserDao {
     Integer findCount(String username);
     // 管理员最高权限重置密码
     void resetPassword(User user);
+
+    //修改密码
+    public String updatePassword(String password);
 }

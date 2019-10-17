@@ -63,6 +63,10 @@ public class UserServiceImpl implements UserService {
         if (user != null){
             throw new RuntimeException(codeMsg.getNameRepeat());
         }
+
+        String s = updatePassword(record.getPassword());
+        System.out.println("修改后加密的密码"+s);
+        record.setPassword(s);
         userDao.updateByPrimaryKey(record);
     }
 
@@ -90,5 +94,11 @@ public class UserServiceImpl implements UserService {
     public String md5Password(String password){
         String hex = new SimpleHash("md5", "123","haha", 1).toHex();
         return hex;
+    }
+
+    @Override
+    public String updatePassword(String password) {
+        String up = new SimpleHash("md5", password,"haha", 1).toHex();
+        return up;
     }
 }

@@ -70,4 +70,10 @@ public class TypeServiceImpl implements TypeService {
         Integer count = typeDao.findTypeCount(typeName);
         return count;
     }
+
+    @Override
+    public List<Type> selectAllType() {
+        List<Type> allType = typeDao.findAllType(null);
+        return allType;
+    }
 }

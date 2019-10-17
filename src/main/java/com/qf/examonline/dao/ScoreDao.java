@@ -26,5 +26,7 @@ public interface ScoreDao {
 
     List<Score> selectAll();
 
+    Score selectByCommit(String commitRepeat);
+
 
 }

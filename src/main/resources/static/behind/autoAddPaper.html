@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../layui/css/layui.css"/>
+</head>
+<body>
+<form class="layui-form" action="" lay-filter="example">
+
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">选择框</label>
+        <div class="layui-input-block">
+            <select name="typeId" id="sel" lay-filter="aihao">
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">选择题数量</label>
+        <div class="layui-input-block">
+            <input type="text" name="selectNum" lay-verify="title" autocomplete="off" placeholder="选择题数量" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">判断题数量</label>
+        <div class="layui-input-block">
+            <input type="text" name="booleanNum" lay-verify="title" autocomplete="off" placeholder="判断题数量" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">简答题数量</label>
+        <div class="layui-input-block">
+            <input type="text" name="sketchNum" lay-verify="title" autocomplete="off" placeholder="简答题数量" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">试卷名</label>
+        <div class="layui-input-block">
+            <input type="text" name="paperName" lay-verify="title" autocomplete="off" placeholder="试卷名" class="layui-input">
+        </div>
+    </div>
+
+
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">立即提交</button>
+        </div>
+    </div>
+</form>
+<script type="text/javascript" src="../js/jquery-1.12.2.min.js"></script>
+<script type="text/javascript" src="../layui/layui.js"></script>
+<script>
+
+    $(function () {
+        $.ajax({
+            type: "post",
+            url: "/type/allType.do",
+            dataType: "json",
+            success:function (data) {
+                var sel = $("#sel");
+               var typeList = data.data;
+               var op = "";
+               sel.empty();
+               $.each(typeList,function (index, item) {
+                   op +='<option value="'+item.typeId+'">'+item.typeName+'</option>';
+               })
+                sel.append(op)
+
+                layui.use(['form', 'laydate','layer'], function () {
+                    var form = layui.form
+                        , laydate = layui.laydate
+                        ,layer = layui.layer
+                        ,$ = layui.jquery;
+                    var index = parent.layer.getFrameIndex(window.name);
+                    //InitForm();
+
+                    //form.render();
+
+                    //监听提交
+                    form.on('submit(formDemo)', function (data) {
+                        $.ajax({
+                            type: "post",
+                            url: "/questions/autoMakePaper.do",
+                            data: data.field,
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.code == 0) {
+                                    layer.msg("添加成功", {icon: 6, time: 1000},
+                                        function () {
+                                            var t = parent.layui.table;
+                                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                            parent.layer.close(index); //再执行关闭
+                                            t.reload('CourseTable');
+                                        });
+                                }else {
+                                    alert(data.data);
+                                }
+                            }
+                        });
+                        return false;
+                    });
+                });
+            }
+        })
+    })
+
+
+
+
+
+    //Demo
+
+</script>
+</body>
+</html>

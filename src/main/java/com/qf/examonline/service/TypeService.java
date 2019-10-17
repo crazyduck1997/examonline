@@ -20,4 +20,7 @@ public interface TypeService {
 
     //查询总的信息数量
     public Integer findTypeCount(String typeName);
+
+    //查询所有的试卷类别，不开启分页
+    List<Type> selectAllType();
 }

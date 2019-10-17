@@ -93,4 +93,11 @@ public class UserController {
         return new JsonBean(ErrorCode.SUCCESS,codeMsg.getExecteSuccess());
     }
 
+    @ApiOperation(value = "修改密码")
+    @PostMapping("/updatePassword.do")
+    @ResponseBody
+    public JsonBean updatePassword(User record){
+        userService.updateByPrimaryKey(record);
+        return new JsonBean(ErrorCode.SUCCESS,codeMsg.getExecteSuccess());
+    }
 }
