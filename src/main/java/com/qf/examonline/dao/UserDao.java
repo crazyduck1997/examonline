@@ -11,7 +11,7 @@ public interface UserDao {
 
     User selectByPrimaryKey(Integer uid);
 
-    List<User> selectAll();
+    List<User> selectAll(String username);
 
     int updateByPrimaryKey(User record);
 
@@ -24,4 +24,7 @@ public interface UserDao {
     List<String> findRolesByName(String userName);
     //通过名字查询权限
     List<String> findPermsByName(String userName);
+
+    //查询总数量
+    Integer findCount(String username);
 }

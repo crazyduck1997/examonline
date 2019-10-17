@@ -9,7 +9,7 @@ public interface UserService {
     User login(String username);
 
     //查询用户
-    public PageInfo<User> selectAll(String typeName, Integer page, Integer limit);
+    public PageInfo<User> selectAll(String username, Integer page, Integer limit);
 
     //添加用户
     public void insert(User record);

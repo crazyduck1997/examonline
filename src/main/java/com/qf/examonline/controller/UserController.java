@@ -1,5 +1,6 @@
 package com.qf.examonline.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.qf.examonline.common.CodeMsg;
 import com.qf.examonline.common.ErrorCode;
 import com.qf.examonline.common.JsonBean;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Api(tags = "用户管理")
@@ -32,10 +34,12 @@ public class UserController {
     @ResponseBody
     //@RequiresPermissions("score:list")
     @RequiresRoles("管理员")
-    public JsonBean selectUser(Model model){
-        List<User> users = userService.selectAll();
-        model.addAttribute("userList",users);
-        return new JsonBean(ErrorCode.SUCCESS,users);
+    public JsonBean selectUser(String username, Integer page, Integer limit){
+        PageInfo<User> userPageInfo = userService.selectAll(username, page, limit);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("count",userService.fingCount(username));
+        map.put("data",userPageInfo);
+        return new JsonBean(ErrorCode.SUCCESS,map);
     }
 
     @ApiOperation(value = "添加用户")
@@ -60,7 +64,7 @@ public class UserController {
     @ApiOperation(value = "修改用户")
     @PostMapping("/updateUser.do")
     @ResponseBody
-    public JsonBean updateUser(@RequestBody User user){
+    public JsonBean updateUser(User user){
         try {
             userService.updateByPrimaryKey(user);
             return new JsonBean(ErrorCode.SUCCESS,codeMsg.getExecteSuccess());
