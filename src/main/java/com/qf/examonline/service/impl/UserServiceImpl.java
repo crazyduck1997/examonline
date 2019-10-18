@@ -43,6 +43,9 @@ public class UserServiceImpl implements UserService {
         if (user != null){
             throw new RuntimeException(codeMsg.getNameRepeat());
         }
+        //对密码进行加密操作
+        String s = md5Password(record.getPassword());
+        record.setPassword(s);
         userDao.insert(record);
     }
 
@@ -77,6 +80,20 @@ public class UserServiceImpl implements UserService {
     public Integer fingCount(String username) {
         Integer count = userDao.findCount(username);
         return count;
+    }
+
+    @Override
+    public void resetPassword(User user) {
+        //对重设的密码进行加密加密
+        String s = md5Password(user.getPassword());
+        user.setPassword(s);
+        userDao.resetPassword(user);
+    }
+
+
+    public String md5Password(String password){
+        String hex = new SimpleHash("md5", "123","haha", 1).toHex();
+        return hex;
     }
 
     @Override

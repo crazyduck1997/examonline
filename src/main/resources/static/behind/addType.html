@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../layui/css/layui.css"/>
+</head>
+<body>
+<form class="layui-form" action="" lay-filter="example">
+    <!--    <input type="hidden" name="id" lay-verify="id" class="layui-input">-->
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">科目</label>
+        <div class="layui-input-block">
+            <input type="text" placeholder="请输入科目" class="layui-input" name="typeName"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">保存</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<script type="text/javascript" src="../js/jquery-1.12.2.min.js"></script>
+<script type="text/javascript" src="../layui/layui.js"></script>
+<script>
+    //Demo
+    layui.use(['form', 'laydate','layer'], function () {
+        var form = layui.form
+            , laydate = layui.laydate
+            ,layer = layui.layer
+            ,$ = layui.jquery;
+        var index = parent.layer.getFrameIndex(window.name);
+        //InitForm();
+
+        //form.render();
+
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            $.ajax({
+                type: "post",
+                url: "/type/addNewType.do",
+                data: data.field,
+                dataType: "json",
+                success: function (data) {
+                    if (data.code == 0) {
+                        layer.msg("添加成功", {icon: 6, time: 1000},
+                            function () {
+                                var t = parent.layui.table;
+                                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                parent.layer.close(index); //再执行关闭
+                                t.reload('CourseTable');
+                            });
+                    }else {
+                        layer.alert("名字重复",{icon: 2,time:1000});
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>
