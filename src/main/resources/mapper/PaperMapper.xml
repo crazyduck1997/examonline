@@ -10,8 +10,9 @@
     <result column="type_id" property="typeId" jdbcType="INTEGER" />
     <result column="avgscore" property="avgscore" />
     <result column="paper_url" property="paperUrl"></result>
+
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from t_paper
     where paper_id = #{paperId,jdbcType=INTEGER}
   </delete>
@@ -20,26 +21,43 @@
       select LAST_INSERT_ID()
     </selectKey>
     insert into t_paper (paper_name, begin_time,
-      end_time, paper_status,type_id,paper_url)
+    end_time, paper_status,type_id,paper_url)
     values (#{paperName,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIMESTAMP},
-      #{endTime,jdbcType=TIMESTAMP}, #{paperStatus,jdbcType=INTEGER},#{typeId,jdbcType=INTEGER},#{paperUrl,jdbcType=VARCHAR})
+    #{endTime,jdbcType=TIMESTAMP},
+    #{paperStatus,jdbcType=INTEGER},#{typeId,jdbcType=INTEGER},#{paperUrl,jdbcType=VARCHAR})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.Paper" >
+  <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.Paper">
     update t_paper
-    set paper_name = #{paperName,jdbcType=VARCHAR},
-      begin_time = #{beginTime,jdbcType=TIMESTAMP},
-      end_time = #{endTime,jdbcType=TIMESTAMP},
-      paper_status = #{paperStatus,jdbcType=INTEGER},
-      type_id = #{typeId,jdbcType=INTEGER},
-      paper_url = #{paperUrl,jdbcType=VARCHAR}
+    set
+    <trim suffixOverrides=",">
+      <if test="paperName != null">
+        paper_name = #{paperName,jdbcType=VARCHAR},
+      </if>
+      <if test="beginTime != null">
+        begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paperStatus != null">
+        paper_status = #{paperStatus,jdbcType=INTEGER},
+      </if>
+      <if test="typeId != null">
+        type_id = #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="paperUrl != null">
+        paper_url = #{paperUrl,jdbcType=VARCHAR}
+      </if>
+    </trim>
     where paper_id = #{paperId,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     select paper_id, paper_name, begin_time, end_time, paper_status,type_id,paper_url
     from t_paper
     where paper_id = #{paperId,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
+
+  <select id="selectAll" resultMap="BaseResultMap">
     select paper_id, paper_name, begin_time, end_time, paper_status,type_id,paper_url
     from t_paper
   </select>
@@ -52,8 +70,17 @@
     and t_paper.type_id = #{typeId}
     GROUP BY t_score.paper_id
   </select>
-<!--  当一个类别删除后将该类别的试卷隐藏-->
+
+  <update id="updateUrlById" parameterType="map">
+    update t_paper set paper_url ={url} where type_id =#{typeId}
+
+  </update>
+
+  <!--  当一个类别删除后将该类别的试卷隐藏-->
   <update id="updatePaperStatus">
     update t_paper set paper_status = 1 where type_id = #{typeId}
   </update>
+
+
+
 </mapper>

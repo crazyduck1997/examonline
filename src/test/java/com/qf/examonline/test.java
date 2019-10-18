@@ -34,6 +34,8 @@ public class test {
     @Resource
     SketchQuestionsDao sketchQuestionsDao;
 
+
+
     @Test
     public void test1(){
         String originUrl = "D:\\XY\\test.xls";
@@ -63,5 +65,10 @@ public class test {
         System.out.println(String.valueOf(1)+String.valueOf(2)+"asd");
     }
 
+    @Test
+    public void test4(){
+        User userByName = userDao.findUserByName("1");
+        System.out.println(userByName);
+    }
 
 }
