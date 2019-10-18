@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<span id="test">
+
+</span>
+
+
+<script type="text/javascript" src="../js/jquery-1.12.2.min.js"></script>
+</body>
+<script>
+    $(function () {
+        var paperId = window.location.search.substring(9)
+        $.ajax({
+            type: "post",
+            url: "/paper/getPaper.do",
+            data: {"paperId": paperId},
+            dataType: "json",
+            success: function (data) {
+                if(data.code == 0){
+                    var test = $("#test");
+                    var selectList = data.data['selectList'];
+                    var booleanList = data.data['booleanList'];
+                    var sketchList = data.data['sketchList'];
+                    var op = "";
+                    $.each(selectList, function (index, item) {
+                        op += '<form>' +
+                            '<label class="layui-form-label">单选</label>' +
+                            '    <div class="layui-input-block">' +
+                            '<div><span value="' + item.questionId + '">' + index + ':' + item.sqDesc + '</span></div>' +
+                            '<div><input type="radio" name="selectAnswer" value="A">' + item.selectA + '</div>' +
+                            '<div><input type="radio" name="selectAnswer" value="B">' + item.selectB + '</div>' +
+                            '<div><input type="radio" name="selectAnswer" value="C">' + item.selectC + '</div>' +
+                            '<div><input type="radio" name="selectAnswer" value="D">' + item.selectD + '</div>' +
+                            '    </div>' +
+                            '</form>';
+                    });
+                    $.each(booleanList, function (index, item) {
+                        op += '<form>' +
+                            '<label class="layui-form-label">判断</label>' +
+                            '    <div class="layui-input-block">' +
+                            '<div><span value="' + item.questionId + '">' + index + ':' + item.booDesc + '</span></div>' +
+                            '<div><input type="radio" name="booleanAnswer" value="对">对</div>' +
+                            '<div><input type="radio" name="booleanAnswer" value="错">错</div>' +
+                            '    </div>' +
+                            '</form>';
+                    });
+                    $.each(sketchList, function (index, item) {
+                        op += '<form>' +
+                            '<label class="layui-form-label">简答</label>' +
+                            '    <div class="layui-input-block">' +
+                            '<div><span value="' + item.questionId + '">' + index + ':' + item.skeDesc + '</span></div>' +
+                            '<div><input type="text" name="skeAnswer"></div>' +
+                            '    </div>' +
+                            '</form>';
+                    });
+                    test.append(op);
+                }else {
+                    alert(data.data)
+                }
+
+            }
+        });
+        return false;
+    });
+
+
+</script>
+
+
+</html>

@@ -1,6 +1,8 @@
 package com.qf.examonline.dao;
 
 import com.qf.examonline.entity.Paper;
+import io.lettuce.core.dynamic.annotation.Param;
+
 import java.util.List;
 
 public interface PaperDao {
@@ -13,6 +15,11 @@ public interface PaperDao {
     List<Paper> selectAll();
 
     int updateByPrimaryKey(Paper record);
+
+
+
+    // 更新生成的静态页面的url
+    public void updateUrlById(@Param("typeId") Integer typeId, @Param("url") String url);
 
     // 查询平均分
     public List<Paper> findAvgScore(Integer typeId);

@@ -26,4 +26,6 @@ public class Paper {
 
 
     private Integer avgscore;
+
+
 }

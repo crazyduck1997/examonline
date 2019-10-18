@@ -2,6 +2,8 @@ package com.qf.examonline.mq;
 
 import com.qf.examonline.dao.*;
 import com.qf.examonline.entity.*;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,9 @@ public class StockConsumer {
     @Autowired
     ScoreDao scoreDao;
 
+    @Autowired
+    UserDao userDao;
+
 
     @RabbitHandler
     public void receiver(List<UserAnswers> list) {
@@ -45,7 +50,9 @@ public class StockConsumer {
         //试卷id
         Integer paperId = userAnswers.getPaperId();
         //学生id
-        Integer uid = userAnswers.getUid();
+        Subject subject = SecurityUtils.getSubject();
+        String username =(String) subject.getPrincipal();
+        User user = userDao.selectByUsername(username);
         //循环获取提交的答案
         for(int i = 0;i<list.size();i++){
             UserAnswers answers = list.get(i);
@@ -70,10 +77,9 @@ public class StockConsumer {
         Score score = new Score();
         score.setPaperId(paperId);
         score.setScore(sum);
-        score.setStuId(uid);
-        score.setCommitRepeat(String.valueOf(uid)+String.valueOf(paperId));
+        score.setStuId(user.getUid());
+        score.setCommitRepeat(String.valueOf(user.getUid())+paperId);
         scoreDao.insert(score);
-
     }
 }
 
