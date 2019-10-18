@@ -7,6 +7,8 @@ import com.qf.examonline.entity.Permission;
 import com.qf.examonline.service.LoginService;
 import com.qf.examonline.service.PermissionService;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +41,10 @@ public class LoginController {
         List<String> roles = loginService.findRolesByName(username);
         try {
             subject.login(token);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new JsonBean(ErrorCode.LOGIN_FAILE, codeMsg.getLoginFaile());
+        } catch (UnknownAccountException e) {
+            return new JsonBean(ErrorCode.LOGIN_FAILE, "账号不存在");
+        }catch (IncorrectCredentialsException e) {
+            return new JsonBean(ErrorCode.LOGIN_FAILE,"密码错误");
         }
         return new JsonBean(ErrorCode.LOGIN_SUCCESS,codeMsg.getLoginSuccess());
     }

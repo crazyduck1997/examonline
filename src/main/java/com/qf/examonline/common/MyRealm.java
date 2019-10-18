@@ -2,10 +2,7 @@ package com.qf.examonline.common;
 
 import com.qf.examonline.entity.User;
 import com.qf.examonline.service.LoginService;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -48,7 +45,7 @@ public class MyRealm extends AuthorizingRealm {
 
         SimpleAuthenticationInfo info = null;
         if(user == null){
-            info = new SimpleAuthenticationInfo("", "",this.getName());
+            throw new UnknownAccountException();
         }
         //身份认证信息对象
         //第一个参数，用户的身份信息、用户名

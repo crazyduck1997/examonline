@@ -60,7 +60,7 @@
     from t_permission
     <where>
       <if test="pname != null and pname !=''" >
-        pname like '%${pname}%';
+        pname like '%${pname}%'
       </if>
     </where>
   </select>
