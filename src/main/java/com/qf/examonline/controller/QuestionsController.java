@@ -165,4 +165,37 @@ public class QuestionsController {
         System.out.println("修改成功"+selectQuestions);
         return new JsonBean(ErrorCode.SUCCESS,codeMsg.getExecteSuccess());
     }
+
+    @ApiOperation(value = "修改判断题")
+    @PostMapping("/updateBooleanQuestions.do")
+    public JsonBean updateBooleanQuestions(BooleanQuestions booleanQuestions){
+        booleanQuestionService.updateBoolean(booleanQuestions);
+        System.out.println("修改成功"+booleanQuestions);
+        return new JsonBean(ErrorCode.SUCCESS,codeMsg.getExecteSuccess());
+    }
+
+    @ApiOperation(value = "修改判断题")
+    @PostMapping("/updateSketchQuestions.do")
+    public JsonBean updateSketchQuestions(SketchQuestions sketchQuestions){
+        sketchQuestionsService.updateSketchQuestion(sketchQuestions);
+        System.out.println("修改成功"+sketchQuestions);
+        return new JsonBean(ErrorCode.SUCCESS,codeMsg.getExecteSuccess());
+    }
+
+    @ApiOperation(value = "根据id查询")
+    @PostMapping("/findQu.do")
+    public JsonBean findQu(Integer questionId,Integer questionType){
+        if(questionType == 1){
+            SelectQuestions byId = selectQuestionsService.findById(questionId);
+            return new JsonBean(0,byId);
+        }else if(questionType == 2){
+            BooleanQuestions byId = booleanQuestionService.findById(questionId);
+            return new JsonBean(0,byId);
+        }else if(questionType == 3){
+            SketchQuestions byId = sketchQuestionsService.findById(questionId);
+            return new JsonBean(0,byId);
+        }
+        return new JsonBean(1,codeMsg.getExecteFaile());
+    }
+
 }

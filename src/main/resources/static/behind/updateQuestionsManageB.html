@@ -66,6 +66,23 @@
 <script>
 
     $(function () {
+        $.ajax({
+            type: "post",
+            url: "/type/allType.do",
+            dataType: "json",
+            success: function (data) {
+                var boo = $("#boo");
+                var typeList = data.data;
+                var op = "";
+                boo.empty();
+                $.each(typeList, function (index, item) {
+                    op += '<option value="' + item.typeId + '">' + item.typeName + '</option>';
+                });
+                boo.append(op)
+            }
+        });
+
+
         var booId = window.location.search.substring(4);
         $.ajax({
             type: "post",
@@ -98,7 +115,7 @@
                     form.on('submit(formDemo)', function (data) {
                         $.ajax({
                             type: "post",
-                            url: "/questions/updateSelectQuestions.do",
+                            url: "/questions/updateBooleanQuestions.do",
                             data: data.field,
                             dataType: "json",
                             /* contentType : 'application/json',*/

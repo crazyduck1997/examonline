@@ -64,7 +64,7 @@ public class QuestionTest {
     public void test3(){
         BooleanQuestions booleanQuestions = new BooleanQuestions();
         booleanQuestions.setBooId(24);
-        booleanQuestions.setBooAnswer("错");
+        booleanQuestions.setBooAnswer("对");
         booleanQuestionService.updateBoolean(booleanQuestions);
         System.out.println(booleanQuestions);
     }

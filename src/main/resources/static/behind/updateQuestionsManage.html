@@ -15,7 +15,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">选择框</label>
         <div class="layui-input-block">
-            <select name="paperType" id="paperType" id="sel" lay-filter="aihao">
+            <select name="paperType" id="sel" lay-filter="aihao">
             </select>
         </div>
     </div>
@@ -84,6 +84,7 @@
 <script>
 
     $(function () {
+        var sqId = window.location.search.substring(4);
         $.ajax({
             type: "post",
             url: "/type/allType.do",
@@ -95,11 +96,12 @@
                 sel.empty();
                 $.each(typeList, function (index, item) {
                     op += '<option value="' + item.typeId + '">' + item.typeName + '</option>';
-                })
+                });
                 sel.append(op)
             }
         });
-        var sqId = window.location.search.substring(4);
+
+
                 $.ajax({
                     type: "post",
                     url: "/questions/findQu.do",
