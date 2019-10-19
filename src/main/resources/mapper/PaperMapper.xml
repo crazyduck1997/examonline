@@ -6,10 +6,10 @@
     <result column="paper_name" property="paperName" jdbcType="VARCHAR" />
     <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP" />
     <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
     <result column="paper_status" property="paperStatus" jdbcType="INTEGER" />
     <result column="type_id" property="typeId" jdbcType="INTEGER" />
     <result column="avgscore" property="avgscore" />
-    <result column="paper_url" property="paperUrl"></result>
 
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -21,10 +21,10 @@
       select LAST_INSERT_ID()
     </selectKey>
     insert into t_paper (paper_name, begin_time,
-    end_time, paper_status,type_id,paper_url)
+    end_time, paper_status,type_id,time)
     values (#{paperName,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIMESTAMP},
     #{endTime,jdbcType=TIMESTAMP},
-    #{paperStatus,jdbcType=INTEGER},#{typeId,jdbcType=INTEGER},#{paperUrl,jdbcType=VARCHAR})
+    #{paperStatus,jdbcType=INTEGER},#{typeId,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.Paper">
     update t_paper
@@ -45,20 +45,20 @@
       <if test="typeId != null">
         type_id = #{typeId,jdbcType=INTEGER},
       </if>
-      <if test="paperUrl != null">
-        paper_url = #{paperUrl,jdbcType=VARCHAR}
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
       </if>
     </trim>
     where paper_id = #{paperId,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-    select paper_id, paper_name, begin_time, end_time, paper_status,type_id,paper_url
+    select paper_id, paper_name, begin_time, end_time, paper_status,type_id,time
     from t_paper
     where paper_id = #{paperId,jdbcType=INTEGER}
   </select>
 
   <select id="selectAll" resultMap="BaseResultMap">
-    select paper_id, paper_name, begin_time, end_time, paper_status,type_id,paper_url
+    select paper_id, paper_name, begin_time, end_time, paper_status,type_id,time
     from t_paper
   </select>
 
@@ -71,10 +71,6 @@
     GROUP BY t_score.paper_id
   </select>
 
-  <update id="updateUrlById" parameterType="map">
-    update t_paper set paper_url ={url} where type_id =#{typeId}
-
-  </update>
 
   <!--  当一个类别删除后将该类别的试卷隐藏-->
   <update id="updatePaperStatus">
