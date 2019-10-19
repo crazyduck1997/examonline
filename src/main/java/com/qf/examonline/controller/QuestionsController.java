@@ -5,10 +5,12 @@ import com.qf.examonline.common.ErrorCode;
 import com.qf.examonline.common.JsonBean;
 import com.qf.examonline.entity.*;
 import com.qf.examonline.service.*;
+import com.qf.examonline.utils.TimeUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.poi.hssf.usermodel.HSSFName;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ import springfox.documentation.spring.web.json.Json;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -108,11 +113,13 @@ public class QuestionsController {
 
     @ApiOperation(value = "自动生成试卷")
     @PostMapping("/autoMakePaper.do")
-    public JsonBean autoMakePaper(@RequestParam(required = false) Integer selectNum, @RequestParam(required = false) Integer booleanNum, @RequestParam(required = false) Integer sketchNum, Integer typeId, String paperName) {
+    public JsonBean autoMakePaper(@RequestParam(required = false) Integer selectNum, @RequestParam(required = false) Integer booleanNum, @RequestParam(required = false) Integer sketchNum, String beginTime,String endTime, Integer typeId, String paperName) {
+        Date begin = TimeUtil.dateFormate(beginTime);
+        Date end = TimeUtil.dateFormate(endTime);
         if (selectNum == 0 && sketchNum == 0 && booleanNum == 0) {
             throw new RuntimeException("未选择题目");
         }
-        questionPaperService.insertAutoMakePaper(selectNum, booleanNum, sketchNum, typeId, paperName);
+        questionPaperService.insertAutoMakePaper(selectNum, booleanNum, sketchNum, typeId, paperName,begin,end);
         return new JsonBean(ErrorCode.SUCCESS, codeMsg.getExecteSuccess());
     }
 
@@ -125,11 +132,8 @@ public class QuestionsController {
 
     @ApiOperation(value = "学生提交试卷/自动判卷(选择判断)")
     @PostMapping("/commitPaper.do")
-    public JsonBean commitPaper(@RequestBody List<UserAnswers> list) {
-        if (list == null) {
-            throw new RuntimeException(codeMsg.getIsEmpty());
-        }
-        userAnswerService.commitPaper(list);
+    public JsonBean commitPaper(Integer paperId) {
+        userAnswerService.commitPaper(paperId);
         return new JsonBean(ErrorCode.SUCCESS, codeMsg.getExecteSuccess());
     }
 

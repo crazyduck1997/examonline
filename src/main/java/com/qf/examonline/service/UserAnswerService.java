@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface UserAnswerService {
 
-    void commitPaper(List<UserAnswers> list);
+    void commitPaper(Integer paperId);
 
     void commitSelect(Integer questionId,String answer,Integer questionType);
 

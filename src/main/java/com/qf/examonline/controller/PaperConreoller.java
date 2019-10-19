@@ -6,6 +6,7 @@ import com.qf.examonline.common.CodeMsg;
 import com.qf.examonline.common.ErrorCode;
 import com.qf.examonline.common.JsonBean;
 import com.qf.examonline.entity.Paper;
+import com.qf.examonline.entity.QuestionVo;
 import com.qf.examonline.service.PaperService;
 import com.qf.examonline.service.TypeService;
 import io.swagger.annotations.Api;
@@ -72,16 +73,25 @@ public class PaperConreoller {
         return new JsonBean(1,paper);
     }
 
-    @ApiOperation(value = "所有试卷")
+    @ApiOperation(value = "所有测试卷子")
     @GetMapping("/allPaper.do")
     public JsonBean allPaper(){
         List<Paper> list = paperService.allPapers();
         return new JsonBean(0,list);
     }
 
+    @ApiOperation(value = "所有考试")
+    @GetMapping("/paperVo.do")
+    public JsonBean paperVo(){
+        List<QuestionVo> list = paperService.selectVo();
+        return new JsonBean(0,list);
+    }
+
+
     @ApiOperation(value ="开始考试" )
     @PostMapping("/getPaper.do")
     public JsonBean getPaper(Integer paperId){
+        System.out.println(paperId);
         Map map = paperService.examStatus(paperId);
         return new JsonBean(0,map);
     }

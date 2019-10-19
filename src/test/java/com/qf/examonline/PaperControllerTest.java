@@ -6,6 +6,7 @@ import com.qf.examonline.common.CodeMsg;
 import com.qf.examonline.common.ErrorCode;
 import com.qf.examonline.dao.PaperDao;
 import com.qf.examonline.entity.Paper;
+import com.qf.examonline.entity.QuestionVo;
 import com.qf.examonline.entity.Type;
 import com.qf.examonline.service.TypeService;
 import org.junit.Test;
@@ -68,6 +69,14 @@ public class PaperControllerTest {
     public void findAvgScore(){
         List<Paper> avgScore = paperDao.findAvgScore(8);
         System.out.println(avgScore);
+    }
+
+    @Test
+    public void test(){
+        List<QuestionVo> avgScore = paperDao.selectVo();
+        for(QuestionVo p: avgScore){
+            System.out.println(p);
+        }
     }
 
 }

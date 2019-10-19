@@ -11,13 +11,14 @@
 
 
 <script type="text/javascript" src="../js/jquery-1.12.2.min.js"></script>
+<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
 </body>
 <script>
     $(function () {
         var paperId = window.location.search.substring(9)
         $.ajax({
             type: "post",
-            url: "/paper/getPaper.do",
+            url: "/paper/bigenTest.do",
             data: {"paperId": paperId},
             dataType: "json",
             success: function (data) {
@@ -28,7 +29,7 @@
                     var sketchList = data.data['sketchList'];
                     var op = "";
                     $.each(selectList, function (index, item) {
-                        op += '<form id="' + item.sqId + item.questionType + '" onsubmit="return false">' +
+                        op += '<form onsubmit="return false">' +
                             '<label class="layui-form-label">单选</label>' +
                             '    <div class="layui-input-block">' +
                             '<div><input readonly name="questionId" hidden value="' + item.sqId + '">' + index + ':' + item.sqDesc + '</input></div>' +
@@ -37,61 +38,46 @@
                             '<div><input type="radio" name="answer" value="C">' + item.selectC + '</div>' +
                             '<div><input type="radio" name="answer" value="D">' + item.selectD + '</div>' +
                             '<div><input type="text" hidden name="questionType" value="' + item.questionType + '"></div>' +
-                            '<div><button value="' + item.sqId + '" name="' + item.questionType + '" onclick="save(this.value,this.name)">保存</button></div>' +
+                            '<div><button value="' + item.selectAnswer + '" onclick="getAnswer(this.value)">查看答案</button></div>' +
                             '    </div>' +
                             '</form>';
                     });
                     $.each(booleanList, function (index, item) {
-                        op += '<form id="' + item.booId + item.questionType + '" onsubmit="return false">' +
+                        op += '<form  onsubmit="return false">' +
                             '<label class="layui-form-label">判断</label>' +
                             '    <div class="layui-input-block">' +
                             '<div><input readonly name="questionId" hidden value="' + item.booId + '">' + index + ':' + item.booDesc + '</input></div>' +
                             '<div><input type="radio" name="answer" value="对">对</div>' +
                             '<div><input type="radio" name="answer" value="错">错</div>' +
                             '<div><input type="text" hidden name="questionType" value="' + item.questionType + '"></div>' +
-                            '<div><button value="' + item.booId + '" name= "' + item.questionType + '" onclick="save(this.value,this.name)">保存</button></div>' +
+                            '<div><button value="' + item.booAnswer + '"  onclick="getAnswer(this.value)">查看答案</button></div>' +
                             '    </div>' +
                             '</form>';
                     });
                     $.each(sketchList, function (index, item) {
-                        op += '<form id="' + item.skeId + item.questionType + '" onsubmit="return false">' +
+                        op += '<form onsubmit="return false">' +
                             '<label class="layui-form-label">简答</label>' +
                             '    <div class="layui-input-block">' +
                             '<div><input readonly name="questionId" hidden value="' + item.skeId + '">' + index + ':' + item.skeDesc + '</input></div>' +
                             '<div><input type="text" name="answer"></div>' +
                             '<div><input type="text" hidden name="questionType" value="'+item.questionType+'"></div>' +
-                            '<div><button value="' + item.skeId + '" name="' + item.questionType + '" onclick="save(this.value,this.name)">保存</button></div>' +
+                            '<div><button data-method="offset"  class="layui-btn layui-btn-normal" value="' + item.skeAnswer + '"  onclick="getAnswer(this.value)">查看答案</button></div>' +
                             '    </div>' +
                             '</form>';
                     });
-                    op += '<div><button id="commit">提交</div>'
                     test.append(op);
                 }else {
                     alert(data.data)
                 }
-
             }
         });
         return false;
     });
 
-    function save(questionId,questionType) {
-        var form = $("#"+questionId+questionType+"");
-        $.ajax({
-            type:"post",
-            data:form.serialize(),
-            url:"/questions/saveQuestion.do",
-            dataType:"json",
-            success:function (data) {
-                alert(data.data)
-            }
+    function getAnswer(answer) {
+        alert("正确答案为:"+answer)
 
-        })
     };
-    /*function commit() {
-
-    }
-*/
 
 </script>
 

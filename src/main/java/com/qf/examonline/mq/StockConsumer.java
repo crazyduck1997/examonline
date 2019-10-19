@@ -2,23 +2,26 @@ package com.qf.examonline.mq;
 
 import com.qf.examonline.dao.*;
 import com.qf.examonline.entity.*;
+import io.swagger.models.auth.In;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 @Component
-@RabbitListener(queues = "queue.commit")
+
 public class StockConsumer {
 
 
     @Autowired
-    StringRedisTemplate stringRedisTemplate;
+    RedisTemplate myRedisTemplate;
 
     @Autowired
     PaperDao paperDao;
@@ -41,35 +44,33 @@ public class StockConsumer {
     @Autowired
     UserDao userDao;
 
-
+    //map会导致序列化失败
+    @RabbitListener(queues = "queue.commit")
     @RabbitHandler
-    public void receiver(List<UserAnswers> list) {
-        UserAnswers userAnswers = list.get(0);
+    public void receiver(Integer uid) {
+        Map map =(Map) myRedisTemplate.opsForValue().get(String.valueOf(uid));
+        Paper paper =(Paper) map.get("paper");
+        Integer paperId = paper.getPaperId();
         //初始化分数
         Integer sum = 0;
-        //试卷id
-        Integer paperId = userAnswers.getPaperId();
-        //学生id
-        Subject subject = SecurityUtils.getSubject();
-        String username =(String) subject.getPrincipal();
-        User user = userDao.selectByUsername(username);
+        List<SelectQuestions> selectList = (List)map.get("selectList");
+        List<BooleanQuestions> booleanList = (List)map.get("booleanList");
         //循环获取提交的答案
-        for(int i = 0;i<list.size();i++){
-            UserAnswers answers = list.get(i);
-            Integer questionId = answers.getCQuestionId();
-            Integer questionType = answers.getCQuestionType();
+        for(int i = 0;i<selectList.size();i++){
+            SelectQuestions answer = selectList.get(i);
+            Integer questionId = answer.getSqId();
             //答案类型进行判断
-            if(questionType==1){
                 SelectQuestions selectQuestions = selectQuestionsDao.selectByPrimaryKey(questionId);
                 //对答案进行校验
-                if(selectQuestions.getSelectAnswer().trim().equalsIgnoreCase(answers.getCAnswer().trim())){
-                    sum = sum+selectQuestions.getSelectScore();
+                if(selectQuestions.getSelectAnswer().trim().equalsIgnoreCase(answer.getSelectAnswer().trim())){
+                    sum += selectQuestions.getSelectScore();
                 }
-            }else if(questionType == 2){
-                BooleanQuestions booleanQuestions = booleanQuestionsDao.selectByPrimaryKey(questionId);
-                if(booleanQuestions.getBooAnswer().trim().equals(answers.getCAnswer().trim())){
-                    sum = sum + booleanQuestions.getBooScore();
-                }
+        }
+        for(int i =0; i<booleanList.size();i++){
+            BooleanQuestions answer = booleanList.get(i);
+            BooleanQuestions booleanQuestions = booleanQuestionsDao.selectByPrimaryKey(answer.getBooId());
+            if(booleanQuestions.getBooAnswer().trim().equals(answer.getBooAnswer().trim())){
+                sum += booleanQuestions.getBooScore();
             }
 
         }
@@ -77,8 +78,8 @@ public class StockConsumer {
         Score score = new Score();
         score.setPaperId(paperId);
         score.setScore(sum);
-        score.setStuId(user.getUid());
-        score.setCommitRepeat(String.valueOf(user.getUid())+paperId);
+        score.setStuId(uid);
+        score.setCommitRepeat(String.valueOf(uid)+paperId);
         scoreDao.insert(score);
     }
 }
