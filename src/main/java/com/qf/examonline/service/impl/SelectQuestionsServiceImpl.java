@@ -46,4 +46,10 @@ public class SelectQuestionsServiceImpl implements SelectQuestionsService {
         }
         return insert;
     }
+
+    @Override
+    public int insertSelect(SelectQuestions selectQuestions) {
+        selectQuestionsDao.addSelect(selectQuestions);
+        return 0;
+    }
 }

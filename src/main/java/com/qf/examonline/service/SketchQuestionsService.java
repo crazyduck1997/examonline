@@ -10,4 +10,6 @@ public interface SketchQuestionsService {
     public int insertSketchQuestions(MultipartFile file);
 
     int addSketchQuestion(List<SketchQuestions> list);
+
+    int insertSketch(SketchQuestions sketchQuestions);
 }

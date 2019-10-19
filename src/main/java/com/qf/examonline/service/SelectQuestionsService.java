@@ -12,6 +12,8 @@ public interface SelectQuestionsService {
 
     int addSelectQuestions(List<SelectQuestions> list);
 
+    int insertSelect(SelectQuestions selectQuestions);
+
 
 
 }

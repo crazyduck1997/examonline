@@ -54,4 +54,10 @@ public class BooleanQuestionsServiceImpl implements BooleanQuestionService {
         return insert;
     }
 
+    @Override
+    public int insertBoolean(BooleanQuestions booleanQuestions) {
+        booleanQuestionsDao.insertBoolean(booleanQuestions);
+        return 0;
+    }
+
 }

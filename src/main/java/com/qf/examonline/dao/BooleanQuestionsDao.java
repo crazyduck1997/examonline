@@ -20,4 +20,5 @@ public interface BooleanQuestionsDao {
 
     List<BooleanQuestions> findBooleanQuestionsByRandom(@Param("typeId")Integer typeId ,@Param("booleanNum") Integer booleanNum);
 
+    int insertBoolean(BooleanQuestions booleanQuestions);
 }
