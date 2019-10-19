@@ -50,4 +50,10 @@
     SELECT * FROM t_boolean_questions where paper_type = #{typeId} ORDER BY  RAND() LIMIT #{booleanNum}
   </select>
 
+  <insert id="insertBoolean" parameterType="BooleanQuestions">
+    insert into t_boolean_questions (boo_desc, boo_answer,question_type,paper_type,boo_score)
+    values(#{booDesc,jdbcType=LONGVARCHAR}, #{booAnswer,jdbcType=LONGVARCHAR},
+      2,#{paperType},#{booScore})
+  </insert>
+
 </mapper>

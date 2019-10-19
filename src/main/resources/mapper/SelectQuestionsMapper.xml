@@ -59,4 +59,13 @@
   <select id="findSelectQuestionsByRandom"  resultType="SelectQuestions" resultMap="BaseResultMap">
     SELECT * FROM t_select_questions where paper_type = #{typeId} ORDER BY  RAND() LIMIT #{selectNum}
   </select>
+
+
+  <insert id="addSelect" parameterType="SelectQuestions" >
+    insert into t_select_questions ( sq_desc, select_a,
+      select_b, select_c, select_d,select_answer,question_type,paper_type,select_score)
+    values(#{sqDesc,jdbcType=LONGVARCHAR}, #{selectA,jdbcType=LONGVARCHAR},
+      #{selectB,jdbcType=LONGVARCHAR}, #{selectC,jdbcType=LONGVARCHAR}, #{selectD,jdbcType=LONGVARCHAR},
+      #{selectAnswer,jdbcType=LONGVARCHAR},1,#{paperType,jdbcType=INTEGER},#{selectScore,jdbcType=INTEGER})
+  </insert>
 </mapper>

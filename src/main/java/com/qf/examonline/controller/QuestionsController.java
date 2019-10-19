@@ -82,22 +82,22 @@ public class QuestionsController {
 
     @ApiOperation(value = "添加选择题")
     @PostMapping("/addSelectQuestions.do")
-    public JsonBean addSelectQuestions(@RequestBody List<SelectQuestions> list) {
-        selectQuestionsService.addSelectQuestions(list);
+    public JsonBean addSelectQuestions(SelectQuestions selectQuestions) {
+        selectQuestionsService.insertSelect(selectQuestions);
         return new JsonBean(ErrorCode.SUCCESS, codeMsg.getExecteSuccess());
     }
 
     @ApiOperation(value = "添加判断题")
     @PostMapping("/addBooleanQuestions.do")
-    public JsonBean addBooleanQuestions(@RequestBody List<BooleanQuestions> list) {
-        booleanQuestionService.addBooleanQuestion(list);
+    public JsonBean addBooleanQuestions(BooleanQuestions booleanQuestions) {
+        booleanQuestionService.insertBoolean(booleanQuestions);
         return new JsonBean(ErrorCode.SUCCESS, codeMsg.getExecteSuccess());
     }
 
     @ApiOperation(value = "添加简答题")
     @PostMapping("/addSketchQuestions.do")
-    public JsonBean addSketchQuestions(@RequestBody List<SketchQuestions> list) {
-        sketchQuestionsService.addSketchQuestion(list);
+    public JsonBean addSketchQuestions(SketchQuestions sketchQuestions) {
+        sketchQuestionsService.insertSketch(sketchQuestions);
         return new JsonBean(ErrorCode.SUCCESS, codeMsg.getExecteSuccess());
     }
 

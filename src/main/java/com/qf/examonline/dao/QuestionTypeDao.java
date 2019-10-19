@@ -19,4 +19,14 @@ public interface QuestionTypeDao {
 
     //试题管理
     List<QuestionVo> findAllQuertions();
+
+    //试题管理 - 添加
+    void insertQuestionVo(QuestionVo questionVo);
+
+    //试题管理 - 修改
+    void updateQuestionVo(QuestionVo questionVo);
+
+    //试题管理 - 删除
+    void deleteQuestionVo(String name);
+
 }

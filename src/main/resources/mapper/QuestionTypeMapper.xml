@@ -82,4 +82,8 @@
         from t_sketch_questions q , t_question_type t where q.question_type = t.qt_id
   </select>
 
+  <insert id="insertQuestionVo" parameterType="com.qf.examonline.entity.QuestionVo" >
+
+  </insert>
+
 </mapper>

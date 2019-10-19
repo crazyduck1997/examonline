@@ -20,4 +20,5 @@ public interface SketchQuestionsDao {
 
     List<SketchQuestions> findSketchQuestionsByRandom(@Param("typeId")Integer typeId ,@Param("sketchNum") Integer sketchNum);
 
+    int insertSketch(SketchQuestions sketchQuestions);
 }
