@@ -16,6 +16,8 @@ public interface SelectQuestionsDao {
 
     int updateByPrimaryKey(SelectQuestions record);
 
+    int addSelect(SelectQuestions selectQuestions);
+
     List<SelectQuestions> findSelectQuestions(@Param("typeId")Integer typeId,@Param("questionType")Integer questionType);
 
     List<SelectQuestions> findSelectQuestionsByRandom(@Param("typeId")Integer typeId ,@Param("selectNum") Integer selectNum);

@@ -11,4 +11,6 @@ public interface BooleanQuestionService {
     public int insertBooleanQuestions(MultipartFile file);
 
     int addBooleanQuestion(List<BooleanQuestions> list);
+
+    int insertBoolean(BooleanQuestions booleanQuestions);
 }

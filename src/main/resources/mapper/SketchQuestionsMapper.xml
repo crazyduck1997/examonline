@@ -50,4 +50,10 @@
      SELECT * FROM t_sketch_questions where paper_type = #{typeId} ORDER BY  RAND() LIMIT #{sketchNum}
   </select>
 
+  <insert id="insertSketch" parameterType="SketchQuestions">
+    insert into t_sketch_questions (ske_answer, ske_desc , question_type , paper_type,ske_score)
+    values ( #{skeAnswer,jdbcType=VARCHAR}, #{skeDesc,jdbcType=LONGVARCHAR},
+      3,#{paperType,jdbcType=INTEGER},#{skeScore,jdbcType=INTEGER})
+  </insert>
+
 </mapper>

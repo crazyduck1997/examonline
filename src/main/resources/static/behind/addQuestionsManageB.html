@@ -15,65 +15,38 @@
     <div class="layui-form-item">
         <label class="layui-form-label">选择框</label>
         <div class="layui-input-block">
-            <select name="paperType" id="sel" lay-filter="aihao">
+            <select name="paperType" id="boo" lay-filter="aihao">
             </select>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">题目</label>
         <div class="layui-input-block">
-            <input type="text" style="width:400px;" name="sqDesc" lay-verify="title" autocomplete="off"
-                   class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">选项A</label>
-        <div class="layui-input-block">
-            <input type="text" style="width:400px;" name="selectA" lay-verify="title" autocomplete="off"
-                   class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">选项B</label>
-        <div class="layui-input-block">
-            <input type="text" style="width:400px;" name="selectB" lay-verify="title" autocomplete="off"
-                   class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">选项C</label>
-        <div class="layui-input-block">
-            <input type="text" style="width:400px;" name="selectC" lay-verify="title" autocomplete="off"
-                   class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">选项D</label>
-        <div class="layui-input-block">
-            <input type="text" style="width:400px;" name="selectD" lay-verify="title" autocomplete="off"
+            <input type="text" style="width:400px;" name="booDesc" lay-verify="title" autocomplete="off"
                    class="layui-input">
         </div>
     </div>
     <div hidden class="layui-form-item">
         <label class="layui-form-label"></label>
         <div class="layui-input-block">
-            <input type="text" style="width:400px;" name="questionType" value="1" lay-verify="title" autocomplete="off"
+            <input type="text" style="width:400px;" name="questionType" value="2" lay-verify="title" autocomplete="off"
                    class="layui-input">
         </div>
     </div>
+
+
+
     <div class="layui-form-item">
         <label class="layui-form-label">答案</label>
         <div class="layui-input-block">
-            A<input type="radio" name="selectAnswer" value="A">
-            B<input type="radio" name="selectAnswer" value="B">
-            C<input type="radio" name="selectAnswer" value="C">
-            D<input type="radio" name="selectAnswer" value="D">
+            对<input type="radio" name="booAnswer" value="对">
+            错<input type="radio" name="booAnswer" value="错">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">分值</label>
         <div class="layui-input-block">
-            <input type="text" style="width:400px;" name="selectScore" lay-verify="title" autocomplete="off"
+            <input type="text" style="width:400px;" name="booScore" lay-verify="title" autocomplete="off"
                    class="layui-input">
         </div>
     </div>
@@ -106,14 +79,14 @@
             url: "/type/allType.do",
             dataType: "json",
             success: function (data) {
-                var sel = $("#sel");
+                var boo = $("#boo");
                 var typeList = data.data;
                 var op = "";
-                sel.empty();
+                boo.empty();
                 $.each(typeList, function (index, item) {
                     op += '<option value="' + item.typeId + '">' + item.typeName + '</option>';
                 })
-                sel.append(op)
+                boo.append(op)
 
                 layui.use(['form', 'laydate', 'layer'], function () {
                     var form = layui.form
@@ -129,10 +102,10 @@
                     form.on('submit(formDemo)', function (data) {
                         $.ajax({
                             type: "post",
-                            url: "/questions/addSelectQuestions.do",
+                            url: "/questions/addBooleanQuestions.do",
                             data: data.field,
                             dataType: "json",
-                           /* contentType : 'application/json',*/
+                            /* contentType : 'application/json',*/
                             success: function (data) {
                                 if (data.code == 0) {
                                     layer.msg("添加成功", {icon: 6, time: 1000},

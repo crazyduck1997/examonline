@@ -52,5 +52,11 @@ public class SketchQuestionsServiceImpl implements SketchQuestionsService {
         return insert;
     }
 
+    @Override
+    public int insertSketch(SketchQuestions sketchQuestions) {
+        sketchQuestionsDao.insertSketch(sketchQuestions);
+        return 0;
+    }
+
 
 }
