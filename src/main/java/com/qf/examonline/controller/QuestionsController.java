@@ -148,4 +148,11 @@ public class QuestionsController {
     }
 
 
+    @ApiOperation(value = "试题管理")
+    @GetMapping("/findAllQuertions.do")
+    public JsonBean findAllQuertions(){
+        List<QuestionVo> allQuertions = questionTypeService.findAllQuertions();
+        return new JsonBean(ErrorCode.SUCCESS,allQuertions);
+    }
+
 }
