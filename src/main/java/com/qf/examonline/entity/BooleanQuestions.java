@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BooleanQuestions {
+public class BooleanQuestions implements Serializable {
     private Integer booId;
 
     private String booDesc;

@@ -29,22 +29,6 @@
             <input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
         </div>
     </div>
-
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">日期选择</label>
-            <div class="layui-input-block">
-                <input type="text" name="date" id="date1" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-inline">
-            <label class="layui-form-label">日期选择</label>
-            <div class="layui-input-block">
-                <input type="text" name="date" id="date2" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-    </div>
-
 </form>
 
 
@@ -113,6 +97,7 @@
                                 , cols: [[ //表头
                                     {field:'xuhao', title:'序号',  fixed: 'left', width: 60, type: 'numbers'},
                                     {field: 'paperName', title: '试卷名', width: 450,align : 'center'},
+                                    {field: 'type', title: '试卷名', width: 450,align : 'center'},
                                     // {field: 'role', title: '角色', width: 450,align : 'center'},
                                     {fixed: 'right', width: 428, align: 'center', toolbar: '#barDemo'}
                                 ]]

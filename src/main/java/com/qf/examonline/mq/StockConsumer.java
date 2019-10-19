@@ -2,11 +2,13 @@ package com.qf.examonline.mq;
 
 import com.qf.examonline.dao.*;
 import com.qf.examonline.entity.*;
+import io.swagger.models.auth.In;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -14,12 +16,12 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-@RabbitListener(queues = "queue.commit")
+
 public class StockConsumer {
 
 
     @Autowired
-    StringRedisTemplate stringRedisTemplate;
+    RedisTemplate myRedisTemplate;
 
     @Autowired
     PaperDao paperDao;
@@ -42,12 +44,13 @@ public class StockConsumer {
     @Autowired
     UserDao userDao;
 
-
+    //map会导致序列化失败
+    @RabbitListener(queues = "queue.commit")
     @RabbitHandler
-    public void receiver(Map map) {
-
-        Integer paperId =(Integer) map.get("paperId");
-        Integer uid = (Integer)map.get("uid");
+    public void receiver(Integer uid) {
+        Map map =(Map) myRedisTemplate.opsForValue().get(String.valueOf(uid));
+        Paper paper =(Paper) map.get("paper");
+        Integer paperId = paper.getPaperId();
         //初始化分数
         Integer sum = 0;
         List<SelectQuestions> selectList = (List)map.get("selectList");
