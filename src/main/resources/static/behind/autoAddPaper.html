@@ -39,13 +39,19 @@
     <div class="layui-form-item">
         <label class="layui-form-label">试卷名</label>
         <div class="layui-input-block">
-            <input type="text" name="paperName" lay-verify="title" autocomplete="off" placeholder="试卷名" class="layui-input">
+            <input type="text" name="paperName" lay-verify="title" required lay-verify="required" autocomplete="off" placeholder="试卷名" class="layui-input">
         </div>
     </div>
     <div class="layui-inline">
-        <label class="layui-form-label">日期时间范围</label>
+        <label class="layui-form-label">开始时间</label>
         <div class="layui-input-inline">
-            <input type="text" class="layui-input" id="test10" placeholder=" - ">
+            <input type="text" name="beginTime" class="layui-input" id="beginTime" placeholder=" - ">
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">结束时间</label>
+        <div class="layui-input-inline">
+            <input type="text" name="endTime"  class="layui-input" id="endTime" placeholder=" - ">
         </div>
     </div>
 
@@ -83,6 +89,20 @@
                     //InitForm();
 
                     //form.render();
+                    //日期时间范围
+                    //日期时间选择器
+                    laydate.render({
+                        elem: '#beginTime'
+                        ,type: 'datetime'
+                        ,trigger: 'click'
+                    });
+                    laydate.render({
+                        elem: '#endTime'
+                        ,type: 'datetime'
+                        ,trigger: 'click'
+                    });
+
+
 
                     //监听提交
                     form.on('submit(formDemo)', function (data) {

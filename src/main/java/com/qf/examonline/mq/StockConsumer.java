@@ -11,6 +11,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 @Component
 @RabbitListener(queues = "queue.commit")
@@ -43,33 +44,30 @@ public class StockConsumer {
 
 
     @RabbitHandler
-    public void receiver(List<UserAnswers> list) {
-        UserAnswers userAnswers = list.get(0);
+    public void receiver(Map map) {
+
+        Integer paperId =(Integer) map.get("paperId");
+        Integer uid = (Integer)map.get("uid");
         //初始化分数
         Integer sum = 0;
-        //试卷id
-        Integer paperId = userAnswers.getPaperId();
-        //学生id
-        Subject subject = SecurityUtils.getSubject();
-        String username =(String) subject.getPrincipal();
-        User user = userDao.selectByUsername(username);
+        List<SelectQuestions> selectList = (List)map.get("selectList");
+        List<BooleanQuestions> booleanList = (List)map.get("booleanList");
         //循环获取提交的答案
-        for(int i = 0;i<list.size();i++){
-            UserAnswers answers = list.get(i);
-            Integer questionId = answers.getCQuestionId();
-            Integer questionType = answers.getCQuestionType();
+        for(int i = 0;i<selectList.size();i++){
+            SelectQuestions answer = selectList.get(i);
+            Integer questionId = answer.getSqId();
             //答案类型进行判断
-            if(questionType==1){
                 SelectQuestions selectQuestions = selectQuestionsDao.selectByPrimaryKey(questionId);
                 //对答案进行校验
-                if(selectQuestions.getSelectAnswer().trim().equalsIgnoreCase(answers.getCAnswer().trim())){
-                    sum = sum+selectQuestions.getSelectScore();
+                if(selectQuestions.getSelectAnswer().trim().equalsIgnoreCase(answer.getSelectAnswer().trim())){
+                    sum += selectQuestions.getSelectScore();
                 }
-            }else if(questionType == 2){
-                BooleanQuestions booleanQuestions = booleanQuestionsDao.selectByPrimaryKey(questionId);
-                if(booleanQuestions.getBooAnswer().trim().equals(answers.getCAnswer().trim())){
-                    sum = sum + booleanQuestions.getBooScore();
-                }
+        }
+        for(int i =0; i<booleanList.size();i++){
+            BooleanQuestions answer = booleanList.get(i);
+            BooleanQuestions booleanQuestions = booleanQuestionsDao.selectByPrimaryKey(answer.getBooId());
+            if(booleanQuestions.getBooAnswer().trim().equals(answer.getBooAnswer().trim())){
+                sum += booleanQuestions.getBooScore();
             }
 
         }
@@ -77,8 +75,8 @@ public class StockConsumer {
         Score score = new Score();
         score.setPaperId(paperId);
         score.setScore(sum);
-        score.setStuId(user.getUid());
-        score.setCommitRepeat(String.valueOf(user.getUid())+paperId);
+        score.setStuId(uid);
+        score.setCommitRepeat(String.valueOf(uid)+paperId);
         scoreDao.insert(score);
     }
 }

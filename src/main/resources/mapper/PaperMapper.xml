@@ -6,7 +6,7 @@
     <result column="paper_name" property="paperName" jdbcType="VARCHAR" />
     <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP" />
     <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
-    <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="time" property="time" jdbcType="INTEGER" />
     <result column="paper_status" property="paperStatus" jdbcType="INTEGER" />
     <result column="type_id" property="typeId" jdbcType="INTEGER" />
     <result column="avgscore" property="avgscore" />
@@ -24,7 +24,7 @@
     end_time, paper_status,type_id,time)
     values (#{paperName,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIMESTAMP},
     #{endTime,jdbcType=TIMESTAMP},
-    #{paperStatus,jdbcType=INTEGER},#{typeId,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP})
+    #{paperStatus,jdbcType=INTEGER},#{typeId,jdbcType=INTEGER}, #{time,jdbcType=INTEGER})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.Paper">
     update t_paper
@@ -46,7 +46,7 @@
         type_id = #{typeId,jdbcType=INTEGER},
       </if>
       <if test="time != null">
-        time = #{time,jdbcType=TIMESTAMP},
+        time = #{time,jdbcType=INTEGER},
       </if>
     </trim>
     where paper_id = #{paperId,jdbcType=INTEGER}
@@ -77,6 +77,11 @@
     update t_paper set paper_status = 1 where type_id = #{typeId}
   </update>
 
+  <select id="selectVo" resultType="QuestionVo">
+  select paper_id paperId,paper_name paperName,begin_time beginTime,end_time endTime,time as time ,type_name typeName
+  from t_paper p ,t_type  t
+  where p.type_id = t.type_id
+  </select>
 
 
 </mapper>

@@ -1,21 +1,21 @@
 package com.qf.examonline;
 
-import com.qf.examonline.dao.BooleanQuestionsDao;
-import com.qf.examonline.dao.SelectQuestionsDao;
-import com.qf.examonline.dao.SketchQuestionsDao;
-import com.qf.examonline.dao.UserDao;
+import com.qf.examonline.dao.*;
 import com.qf.examonline.entity.SelectQuestions;
 import com.qf.examonline.entity.SketchQuestions;
 import com.qf.examonline.entity.User;
 import com.qf.examonline.utils.ImportExcelUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -31,8 +31,14 @@ public class test {
     @Resource
     BooleanQuestionsDao booleanQuestionsDao;
 
+    @Autowired
+    RedisTemplate myRedisTemplate;
+
     @Resource
     SketchQuestionsDao sketchQuestionsDao;
+
+    @Resource
+    UserAnswersDao userAnswersDao;
 
 
 
@@ -61,8 +67,11 @@ public class test {
 
     @Test
     public void test3(){
-        String s = String.valueOf(1) + String.valueOf(2);
-        System.out.println(String.valueOf(1)+String.valueOf(2)+"asd");
+        Map map =(Map) myRedisTemplate.opsForValue().get("1");
+        map.put("uid",1);
+        map.put("paperId",1);
+        int i = userAnswersDao.insertMap(map);
+        System.out.println(i);
     }
 
     @Test

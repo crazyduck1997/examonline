@@ -2,6 +2,7 @@ package com.qf.examonline.service;
 
 import com.github.pagehelper.PageInfo;
 import com.qf.examonline.entity.Paper;
+import com.qf.examonline.entity.QuestionVo;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,11 +24,13 @@ public interface PaperService {
 
     List<Paper> allPapers();
 
+    List<QuestionVo> selectVo();
+
 
     //获取状态信息
-    public Map examStatus(Integer paperId);
+     Map examStatus(Integer paperId);
 
-    public Map selectPaper(Integer paperId);
+     Map selectPaper(Integer paperId);
 
 
 
