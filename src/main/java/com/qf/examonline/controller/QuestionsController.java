@@ -9,10 +9,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.poi.hssf.usermodel.HSSFName;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.spring.web.json.Json;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -131,6 +133,13 @@ public class QuestionsController {
         return new JsonBean(ErrorCode.SUCCESS, codeMsg.getExecteSuccess());
     }
 
+    @PostMapping("/saveQuestion.do")
+    public JsonBean saveQuestion(Integer questionId,String answer,Integer questionType){
+        userAnswerService.commitSelect(questionId,answer,questionType);
+        return new JsonBean(0,"保存成功");
+    }
+
+
     @ApiOperation(value = "题目类型")
     @GetMapping("/questionTypeList.do")
     public JsonBean questionTypeList() {
@@ -138,5 +147,12 @@ public class QuestionsController {
         return new JsonBean(ErrorCode.SUCCESS, list);
     }
 
+
+    @ApiOperation(value = "试题管理")
+    @GetMapping("/findAllQuertions.do")
+    public JsonBean findAllQuertions(){
+        List<QuestionVo> allQuertions = questionTypeService.findAllQuertions();
+        return new JsonBean(ErrorCode.SUCCESS,allQuertions);
+    }
 
 }

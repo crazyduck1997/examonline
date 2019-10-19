@@ -25,11 +25,7 @@ public interface PaperService {
 
 
     //获取状态信息
-    public List<Paper> examStatus();
-
-    //更新静态页面的路径url
-    public void updatePaperTypeUrlByPaperid(Integer typeId, String url);
-
+    public Map examStatus(Integer paperId);
 
     public Map selectPaper(Integer paperId);
 

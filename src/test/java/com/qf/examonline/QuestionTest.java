@@ -1,14 +1,19 @@
 package com.qf.examonline;
 
+import com.qf.examonline.dao.QuestionTypeDao;
 import com.qf.examonline.dao.QuestionsPaperDao;
+import com.qf.examonline.entity.QuestionVo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -16,6 +21,9 @@ public class QuestionTest {
 
     @Resource
     QuestionsPaperDao questionsPaperDao;
+
+    @Resource
+    QuestionTypeDao questionTypeDao;
 
     @Test
     public void test1(){
@@ -28,5 +36,11 @@ public class QuestionTest {
         System.out.println(i);
     }
 
-
+    @Test
+    public void test2(){
+        List<QuestionVo> allQuertions = questionTypeDao.findAllQuertions();
+        for(QuestionVo questionVo : allQuertions){
+            System.out.println(questionVo);
+        }
+    }
 }

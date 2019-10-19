@@ -22,8 +22,7 @@ public class Paper {
 
     private Integer typeId;
 
-    private String paperUrl;
-
+    private Date time;
 
     private Integer avgscore;
 

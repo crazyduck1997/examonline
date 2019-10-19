@@ -79,12 +79,20 @@ public class PaperConreoller {
         return new JsonBean(0,list);
     }
 
+    @ApiOperation(value ="开始考试" )
     @PostMapping("/getPaper.do")
     public JsonBean getPaper(Integer paperId){
-        System.out.println(paperId);
+        Map map = paperService.examStatus(paperId);
+        return new JsonBean(0,map);
+    }
+
+    @ApiOperation(value ="开始测试" )
+    @PostMapping("/bigenTest.do")
+    public JsonBean bigenTest(Integer paperId){
         Map map = paperService.selectPaper(paperId);
         return new JsonBean(0,map);
     }
+
 
 
 }

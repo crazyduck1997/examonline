@@ -1,6 +1,48 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.qf.examonline.dao.QuestionTypeDao" >
+
+
+  <resultMap id="MMap" type="com.qf.examonline.entity.QuestionType" >
+    <id column="qt_id" property="qtId" jdbcType="INTEGER" />
+    <result column="question_type" property="questionType" jdbcType="VARCHAR" />
+
+    <collection property="selectQuestions" resultMap="com.qf.examonline.entity.SelectQuestions" >
+      <id column="sq_id" property="sqId" jdbcType="INTEGER" />
+      <result column="question_type" property="questionType" jdbcType="INTEGER" />
+      <result column="paper_type" property="paperType" jdbcType="INTEGER" />
+      <result column="sq_desc" property="sqDesc" jdbcType="LONGVARCHAR" />
+      <result column="select_a" property="selectA" jdbcType="LONGVARCHAR" />
+      <result column="select_b" property="selectB" jdbcType="LONGVARCHAR" />
+      <result column="select_c" property="selectC" jdbcType="LONGVARCHAR" />
+      <result column="select_d" property="selectD" jdbcType="LONGVARCHAR" />
+      <result column="select_answer" property="selectAnswer" jdbcType="LONGVARCHAR" />
+      <result column="select_score" property="selectScore" jdbcType="INTEGER"  />
+    </collection>
+
+    <collection property="booleanQuestionsDao" resultMap="com.qf.examonline.entity.BooleanQuestions" >
+      <id column="boo_id" property="booId" jdbcType="INTEGER" />
+      <result column="question_type" property="questionType" jdbcType="INTEGER" />
+      <result column="paper_type" property="paperType" jdbcType="INTEGER" />
+      <result column="boo_desc" property="booDesc" jdbcType="LONGVARCHAR" />
+      <result column="boo_answer" property="booAnswer" jdbcType="LONGVARCHAR" />
+      <result column="boo_score" property="booScore" jdbcType="INTEGER" />
+    </collection>
+
+    <collection property="sketchQuestions" resultMap="com.qf.examonline.entity.SketchQuestions" >
+      <id column="ske_id" property="skeId" jdbcType="INTEGER" />
+      <result column="ske_answer" property="skeAnswer" jdbcType="VARCHAR" />
+      <result column="question_type" property="questionType" jdbcType="INTEGER" />
+      <result column="paper_type" property="paperType" jdbcType="INTEGER" />
+      <result column="ske_desc" property="skeDesc" jdbcType="LONGVARCHAR" />
+      <result column="ske_score" property="skeScore" jdbcType="INTEGER"/>
+    </collection>
+
+  </resultMap>
+
+
+
+
   <resultMap id="BaseResultMap" type="com.qf.examonline.entity.QuestionType" >
     <id column="qt_id" property="qtId" jdbcType="INTEGER" />
     <result column="question_type" property="questionType" jdbcType="VARCHAR" />
@@ -27,4 +69,17 @@
     select qt_id, question_type
     from t_question_type
   </select>
+
+  <!--试题管理-->
+  <select id="findAllQuertions" resultType="QuestionVo" >
+        SELECT sq_desc sqDesc,t.question_type questionType
+        from t_select_questions s , t_question_type t where s.question_type = t.qt_id
+        UNION ALL
+        SELECT boo_desc ,t.question_type
+        from t_boolean_questions b , t_question_type t where b.question_type = t.qt_id
+        UNION ALL
+        SELECT ske_desc ,t.question_type
+        from t_sketch_questions q , t_question_type t where q.question_type = t.qt_id
+  </select>
+
 </mapper>

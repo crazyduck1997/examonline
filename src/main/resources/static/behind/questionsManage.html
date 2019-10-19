@@ -6,30 +6,31 @@
   <title>layui在线调试</title>
    <link rel="stylesheet" href="../layui/css/layui.css">
    <script src="../layui/layui.js"></script>
-  <style>
-    body{margin: 10px;}
-    .demo-carousel{height: 200px; line-height: 200px; text-align: center;}
-  </style>
-  <style>
-    body{margin: 10px;}
-    .demo-carousel{height: 200px; line-height: 200px; text-align: center;}
-  </style>
+      <style>
+        body{margin: 10px;}
+        .demo-carousel{height: 200px; line-height: 200px; text-align: center;}
+      </style>
+      <style>
+        body{margin: 10px;}
+        .demo-carousel{height: 200px; line-height: 200px; text-align: center;}
+      </style>
 </head>
+
 	<body>
 		
-		
 		<table class="layui-hide" id="demo" lay-filter="test"></table>
-		<script type="text/html" id="barDemo">
-					<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="add">添加</a>	
-<!-- <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>-->
-  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-</script>
+            <script type="text/html" id="barDemo">
+                <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="add">添加</a>
+                <!-- <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>-->
+                <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+            </script>
 		<div class="layui-tab-item">
-      <div id="pageDemo"></div>
-    </div>
+            <div id="pageDemo"></div>
+        </div>
 		
 	</body>
+
 	<script>layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element', 'slider'], function() {
 	var laydate=layui.laydate //日期
 	, laypage=layui.laypage //分页
@@ -38,14 +39,14 @@
 	, upload=layui.upload //上传
 	, element=layui.element //元素操作
 
-  //监听Tab切换
-  element.on('tab(demo)', function(data){
-    layer.tips('切换了 '+ data.index +'：'+ this.innerHTML, this, {
-      tips: 1
-    });
-  });
+      //监听Tab切换
+      element.on('tab(demo)', function(data){
+        layer.tips('切换了 '+ data.index +'：'+ this.innerHTML, this, {
+          tips: 1
+        });
+      });
 
- //监听头工具栏事件
+    //监听头工具栏事件
   table.on('toolbar(test)', function(obj){
     var checkStatus = table.checkStatus(obj.config.id)
     ,data = checkStatus.data; //获取选中的数据
@@ -107,8 +108,8 @@
   
 //执行一个 table 实例
 table.render( {
-	elem: '#demo', height: 750, url: 'questions.json' //数据接口
-	, title: '用户表', page: true //开启分页
+	elem: '#demo', height: 750, url: '../questions/findAllQuertions.do' //数据接口
+	, title: '试题表', page: true //开启分页
 //	, toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
 	, totalRow: true //开启合计行
 	, cols: [ [ //表头
@@ -116,16 +117,16 @@ table.render( {
 		type: 'checkbox', fixed: 'left'
 	}
 	, {
-		field: 'id', title: 'ID',align : 'center', width: 200, sort: true, fixed: 'left', totalRowText: '合计：'
+		field: 'xuhao', title: '序号',align : 'center',type:"numbers", width: 100, sort: true, fixed: 'left'
 	}
 	, {
-		field: 'username', title: '学科', width: 400,align : 'center'
+		field: 'sqDesc', title: '试题', width: 500,align : 'center'
 	}
+	// , {
+	// 	field: 'role', title: '测试阶段', width: 400,align : 'center'
+	// }
 	, {
-		field: 'role', title: '测试阶段', width: 400,align : 'center'
-	}
-	, {
-		field: 'questions', title: '试题', width: 300,align : 'center'
+		field: 'questionType', title: '试题类型', width: 200,align : 'center'
 	}
 	, {
 		fixed: 'right', width: 328, align: 'center', toolbar: '#barDemo'
@@ -135,18 +136,19 @@ table.render( {
 
 );
 	
-	//分页
-  laypage.render({
-    elem: 'pageDemo' //分页容器的id
-    ,count: 100 //总页数
-    ,skin: '#1E9FFF' //自定义选中色值
-    //,skip: true //开启跳页
-    ,jump: function(obj, first){
-      if(!first){
-        layer.msg('第'+ obj.curr +'页', {offset: 'b'});
-      }
-    }
-  });
+        //分页
+      laypage.render({
+        elem: 'pageDemo' //分页容器的id
+        ,count: 100 //总页数
+        ,skin: '#1E9FFF' //自定义选中色值
+        //,skip: true //开启跳页
+        ,jump: function(obj, first){
+          if(!first){
+            layer.msg('第'+ obj.curr +'页', {offset: 'b'});
+          }
+        }
+      });
+
    });
 	</script>
 	
