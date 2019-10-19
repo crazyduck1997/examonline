@@ -13,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserAnswerServiceImpl implements UserAnswerService {
@@ -39,21 +41,28 @@ public class UserAnswerServiceImpl implements UserAnswerService {
 
     /**
      * 自动判卷，选择题/判断题
-     * @param list
+     * @param paperId
      */
     @Override
-    public void commitPaper(List<UserAnswers> list) {
+    public void commitPaper(Integer paperId) {
         Subject subject = SecurityUtils.getSubject();
         String username = (String)subject.getPrincipal();
-        User user = userDao.selectByUsername(username);
-        UserAnswers answers = list.get(0);
-        String s = String.valueOf(user.getUid())+answers.getPaperId();
+
+        User user = userDao.findUserByName(username);
+        System.out.println(user);
+        String s = String.valueOf(user.getUid())+paperId;
         Score score = scoreDao.selectByCommit(s);
+
+        System.out.println("22");
+
+        Map<String,Object> redisMap =(Map) myRedisTemplate.opsForValue().get(String.valueOf(user.getUid()));
+        redisMap.put("uid",user.getUid());
+        redisMap.put("paperId",paperId);
         if(score!=null){
             throw new RuntimeException(codeMsg.getCommitRepeat());
         }
-        userAnswersDao.insert(list);
-        amqpTemplate.convertAndSend("queue.commit", list);
+        userAnswersDao.insertMap(redisMap);
+        amqpTemplate.convertAndSend("queue.commit", redisMap);
 
     }
 

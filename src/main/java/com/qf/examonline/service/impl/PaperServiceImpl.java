@@ -78,7 +78,18 @@ public class PaperServiceImpl implements PaperService {
         return all;
     }
 
+    @Override
+    public List<QuestionVo> selectVo() {
+        List<QuestionVo> list = paperDao.selectVo();
+        return list;
+    }
 
+
+    /**
+     * 开始考试
+     * @param paperId
+     * @return
+     */
     @Override
     public Map examStatus(Integer paperId) {
         Paper paper = paperDao.selectByPrimaryKey(paperId);
@@ -94,7 +105,11 @@ public class PaperServiceImpl implements PaperService {
                     throw new RuntimeException("考试已结束");
                 }
         }
-        Subject subject = SecurityUtils.getSubject();
+
+            System.out.println("111");
+
+
+            Subject subject = SecurityUtils.getSubject();
         String username =(String) subject.getPrincipal();
         User user = userDao.findUserByName(username);
         HashMap map = (HashMap)myRedisTemplate.opsForValue().get(String.valueOf(user.getUid()));
@@ -111,6 +126,9 @@ public class PaperServiceImpl implements PaperService {
         ArrayList<SketchQuestions> sketchList = new ArrayList<>();
         HashMap<String, Object> hashMap = new HashMap<>();
         List<QuestionsPaper> list = questionsPaperDao.selectByPaperId(paperId);
+
+        System.out.println("222");
+
         for(QuestionsPaper q : list){
             String s = q.getQuestionType();
             if(s.trim().equals("1")){
@@ -131,28 +149,27 @@ public class PaperServiceImpl implements PaperService {
         hashMap.put("selectList",selectList);
         hashMap.put("booleanList",booleanList);
         hashMap.put("sketchList",sketchList);
+
+        System.out.println("--------");
+
         myRedisTemplate.opsForValue().set(String.valueOf(user.getUid()),hashMap);
         myRedisTemplate.expire(String.valueOf(user.getUid()),125, TimeUnit.MINUTES);
+
+        System.out.println("+++++--------");
+
         return hashMap;
 
 
     }
 
 
+    /**
+     * 考试测试
+     * @param paperId
+     * @return
+     */
     @Override
     public Map selectPaper(Integer paperId) {
-        Subject subject = SecurityUtils.getSubject();
-        String username =(String) subject.getPrincipal();
-        User user = userDao.findUserByName(username);
-        HashMap map = (HashMap)myRedisTemplate.opsForValue().get(String.valueOf(user.getUid()));
-        if(map!=null){
-            //判断是否正在进行
-            Paper paper1 = (Paper)map.get("paper");
-            if(!paper1.getPaperId().equals(paperId)){
-                throw new RuntimeException("请返回考试");
-            }
-            return map;
-        }
         Paper paper = paperDao.selectByPrimaryKey(paperId);
         ArrayList<SelectQuestions> selectList = new ArrayList<>();
         ArrayList<BooleanQuestions> booleanList = new ArrayList<>();
@@ -163,15 +180,12 @@ public class PaperServiceImpl implements PaperService {
             String s = q.getQuestionType();
             if(s.trim().equals("1")){
                 SelectQuestions selectQuestions = selectQuestionsDao.selectByPrimaryKey(q.getQuestionId());
-                selectQuestions.setSelectAnswer(null);
                 selectList.add(selectQuestions);
             }else if(s.trim().equals("2")){
                 BooleanQuestions booleanQuestions = booleanQuestionsDao.selectByPrimaryKey(q.getQuestionId());
-                booleanQuestions.setBooAnswer(null);
                 booleanList.add(booleanQuestions);
             }else {
                 SketchQuestions sketchQuestions = sketchQuestionsDao.selectByPrimaryKey(q.getQuestionId());
-                sketchQuestions.setSkeAnswer(null);
                 sketchList.add(sketchQuestions);
             }
         }
@@ -179,8 +193,6 @@ public class PaperServiceImpl implements PaperService {
         hashMap.put("selectList",selectList);
         hashMap.put("booleanList",booleanList);
         hashMap.put("sketchList",sketchList);
-        myRedisTemplate.opsForValue().set(String.valueOf(user.getUid()),hashMap);
-        myRedisTemplate.expire(String.valueOf(user.getUid()),125, TimeUnit.MINUTES);
         return hashMap;
     }
 

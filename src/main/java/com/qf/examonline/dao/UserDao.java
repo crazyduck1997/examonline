@@ -15,8 +15,6 @@ public interface UserDao {
 
     int updateByPrimaryKey(User record);
 
-    User selectByUsername(String username);
-
     User findById(Integer uid);
     //通过名字查询用户
     User findUserByName(String userName);

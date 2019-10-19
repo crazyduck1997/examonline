@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<span id="test">
+
+</span>
+
+
+<script type="text/javascript" src="../js/jquery-1.12.2.min.js"></script>
+</body>
+<script>
+    $(function () {
+        var paperId = window.location.search.substring(9)
+        $.ajax({
+            type: "post",
+            url: "/paper/getPaper.do",
+            data: {"paperId": paperId},
+            dataType: "json",
+            success: function (data) {
+                if (data.code == 0) {
+                    var test = $("#test");
+                    var selectList = data.data['selectList'];
+                    var booleanList = data.data['booleanList'];
+                    var sketchList = data.data['sketchList'];
+                    var op = "";
+                    $.each(selectList, function (index, item) {
+                        if (item.selectAnswer != null) {
+                            var answer = item.selectAnswer;
+                            if (answer == "A") {
+                                op += '<form id="' + item.sqId + item.questionType + '" onsubmit="return false">' +
+                                    '<label class="layui-form-label">单选</label>' +
+                                    '    <div class="layui-input-block">' +
+                                    '<div><input readonly name="questionId" hidden value="' + item.sqId + '">' + index + ':' + item.sqDesc + '</input></div>' +
+                                    '<div><input type="radio" name="answer" value="A" checked="checked">' + item.selectA + '</div>' +
+                                    '<div><input type="radio" name="answer" value="B">' + item.selectB + '</div>' +
+                                    '<div><input type="radio" name="answer" value="C">' + item.selectC + '</div>' +
+                                    '<div><input type="radio" name="answer" value="D">' + item.selectD + '</div>' +
+                                    '<div><input type="text" hidden name="questionType" value="' + item.questionType + '"></div>' +
+                                    '<div><button value="' + item.sqId + '" name="' + item.questionType + '" onclick="save(this.value,this.name)">保存</button></div>' +
+                                    '    </div>' +
+                                    '</form>';
+                            } else if (answer == "B") {
+                                op += '<form id="' + item.sqId + item.questionType + '" onsubmit="return false">' +
+                                    '<label class="layui-form-label">单选</label>' +
+                                    '    <div class="layui-input-block">' +
+                                    '<div><input readonly name="questionId" hidden value="' + item.sqId + '">' + index + ':' + item.sqDesc + '</input></div>' +
+                                    '<div><input type="radio" name="answer" value="A" >' + item.selectA + '</div>' +
+                                    '<div><input type="radio" name="answer" value="B" checked="checked"> ' + item.selectB + '</div>' +
+                                    '<div><input type="radio" name="answer" value="C">' + item.selectC + '</div>' +
+                                    '<div><input type="radio" name="answer" value="D">' + item.selectD + '</div>' +
+                                    '<div><input type="text" hidden name="questionType" value="' + item.questionType + '"></div>' +
+                                    '<div><button value="' + item.sqId + '" name="' + item.questionType + '" onclick="save(this.value,this.name)">保存</button></div>' +
+                                    '    </div>' +
+                                    '</form>';
+                            } else if (answer == "C") {
+                                op += '<form id="' + item.sqId + item.questionType + '" onsubmit="return false">' +
+                                    '<label class="layui-form-label">单选</label>' +
+                                    '    <div class="layui-input-block">' +
+                                    '<div><input readonly name="questionId" hidden value="' + item.sqId + '">' + index + ':' + item.sqDesc + '</input></div>' +
+                                    '<div><input type="radio" name="answer" value="A" >' + item.selectA + '</div>' +
+                                    '<div><input type="radio" name="answer" value="B" > ' + item.selectB + '</div>' +
+                                    '<div><input type="radio" name="answer" value="C" checked="checked">' + item.selectC + '</div>' +
+                                    '<div><input type="radio" name="answer" value="D">' + item.selectD + '</div>' +
+                                    '<div><input type="text" hidden name="questionType" value="' + item.questionType + '"></div>' +
+                                    '<div><button value="' + item.sqId + '" name="' + item.questionType + '" onclick="save(this.value,this.name)">保存</button></div>' +
+                                    '    </div>' +
+                                    '</form>';
+                            } else if (answer == "D") {
+                                op += '<form id="' + item.sqId + item.questionType + '" onsubmit="return false">' +
+                                    '<label class="layui-form-label">单选</label>' +
+                                    '    <div class="layui-input-block">' +
+                                    '<div><input readonly name="questionId" hidden value="' + item.sqId + '">' + index + ':' + item.sqDesc + '</input></div>' +
+                                    '<div><input type="radio" name="answer" value="A" >' + item.selectA + '</div>' +
+                                    '<div><input type="radio" name="answer" value="B"> ' + item.selectB + '</div>' +
+                                    '<div><input type="radio" name="answer" value="C">' + item.selectC + '</div>' +
+                                    '<div><input type="radio" name="answer" value="D" checked="checked">' + item.selectD + '</div>' +
+                                    '<div><input type="text" hidden name="questionType" value="' + item.questionType + '"></div>' +
+                                    '<div><button value="' + item.sqId + '" name="' + item.questionType + '" onclick="save(this.value,this.name)">保存</button></div>' +
+                                    '    </div>' +
+                                    '</form>';
+                            }
+                        } else {
+                            op += '<form id="' + item.sqId + item.questionType + '" onsubmit="return false">' +
+                                '<label class="layui-form-label">单选</label>' +
+                                '    <div class="layui-input-block">' +
+                                '<div><input readonly name="questionId" hidden value="' + item.sqId + '">' + index + ':' + item.sqDesc + '</input></div>' +
+                                '<div><input type="radio" name="answer" value="A">' + item.selectA + '</div>' +
+                                '<div><input type="radio" name="answer" value="B">' + item.selectB + '</div>' +
+                                '<div><input type="radio" name="answer" value="C">' + item.selectC + '</div>' +
+                                '<div><input type="radio" name="answer" value="D">' + item.selectD + '</div>' +
+                                '<div><input type="text" hidden name="questionType" value="' + item.questionType + '"></div>' +
+                                '<div><button value="' + item.sqId + '" name="' + item.questionType + '" onclick="save(this.value,this.name)">保存</button></div>' +
+                                '    </div>' +
+                                '</form>';
+                        }
+
+                    });
+                    $.each(booleanList, function (index, item) {
+                        if (item.booAnswer != null) {
+                            var asnwer = item.booAnswer;
+                            if (asnwer == "对") {
+                                op += '<form id="' + item.booId + item.questionType + '" onsubmit="return false">' +
+                                    '<label class="layui-form-label">判断</label>' +
+                                    '    <div class="layui-input-block">' +
+                                    '<div><input readonly name="questionId" hidden value="' + item.booId + '">' + index + ':' + item.booDesc + '</input></div>' +
+                                    '<div><input type="radio" checked="true" name="answer" value="对">对</div>' +
+                                    '<div><input type="radio" name="answer" value="错">错</div>' +
+                                    '<div><input type="text" hidden name="questionType" value="' + item.questionType + '"></div>' +
+                                    '<div><button value="' + item.booId + '" name= "' + item.questionType + '" onclick="save(this.value,this.name)">保存</button></div>' +
+                                    '    </div>' +
+                                    '</form>';
+                            } else {
+                                op += '<form id="' + item.booId + item.questionType + '" onsubmit="return false">' +
+                                    '<label class="layui-form-label">判断</label>' +
+                                    '    <div class="layui-input-block">' +
+                                    '<div><input readonly name="questionId" hidden value="' + item.booId + '">' + index + ':' + item.booDesc + '</input></div>' +
+                                    '<div><input type="radio"  name="answer" value="对">对</div>' +
+                                    '<div><input type="radio"  checked="true" name="answer" value="错">错</div>' +
+                                    '<div><input type="text" hidden name="questionType" value="' + item.questionType + '"></div>' +
+                                    '<div><button value="' + item.booId + '" name= "' + item.questionType + '" onclick="save(this.value,this.name)">保存</button></div>' +
+                                    '    </div>' +
+                                    '</form>';
+                            }
+                        } else {
+                            op += '<form id="' + item.booId + item.questionType + '" onsubmit="return false">' +
+                                '<label class="layui-form-label">判断</label>' +
+                                '    <div class="layui-input-block">' +
+                                '<div><input readonly name="questionId" hidden value="' + item.booId + '">' + index + ':' + item.booDesc + '</input></div>' +
+                                '<div><input type="radio" name="answer" value="对">对</div>' +
+                                '<div><input type="radio" name="answer" value="错">错</div>' +
+                                '<div><input type="text" hidden name="questionType" value="' + item.questionType + '"></div>' +
+                                '<div><button value="' + item.booId + '" name= "' + item.questionType + '" onclick="save(this.value,this.name)">保存</button></div>' +
+                                '    </div>' +
+                                '</form>';
+                        }
+                    });
+                    $.each(sketchList, function (index, item) {
+                        if (item.skeAnswer != null) {
+                            op += '<form id="' + item.skeId + item.questionType + '" onsubmit="return false">' +
+                                '<label class="layui-form-label">简答</label>' +
+                                '    <div class="layui-input-block">' +
+                                '<div><input readonly name="questionId" hidden value="' + item.skeId + '">' + index + ':' + item.skeDesc + '</input></div>' +
+                                '<div><input type="text" name="answer" value="' + item.skeAnswer + '"></div>' +
+                                '<div><input type="text" hidden name="questionType" value="' + item.questionType + '"></div>' +
+                                '<div><button value="' + item.skeId + '" name="' + item.questionType + '" onclick="save(this.value,this.name)">保存</button></div>' +
+                                '    </div>' +
+                                '</form>';
+                        } else {
+                            op += '<form id="' + item.skeId + item.questionType + '" onsubmit="return false">' +
+                                '<label class="layui-form-label">简答</label>' +
+                                '    <div class="layui-input-block">' +
+                                '<div><input readonly name="questionId" hidden value="' + item.skeId + '">' + index + ':' + item.skeDesc + '</input></div>' +
+                                '<div><input type="text" name="answer"></div>' +
+                                '<div><input type="text" hidden name="questionType" value="' + item.questionType + '"></div>' +
+                                '<div><button value="' + item.skeId + '" name="' + item.questionType + '" onclick="save(this.value,this.name)">保存</button></div>' +
+                                '    </div>' +
+                                '</form>';
+                        }
+                    });
+                    op += '<div><button id="commit" value="' + paperId + '" onclick="commit(this.value)">提交</div>'
+                    test.append(op);
+                } else {
+                    alert(data.data)
+                }
+
+            }
+        });
+        return false;
+    });
+
+    function commit(paperId) {
+        var b = confirm("提交前请确认所有题目已保存");
+        if (b) {
+            $.ajax({
+                type: "post",
+                data: {"paperId": paperId},
+                url: "/questions/commitPaper.do",
+                dataType: "json",
+                success: function (data) {
+                    alert(data.data)
+                }
+            });
+        }
+    }
+
+        function save(questionId, questionType) {
+            var form = $("#" + questionId + questionType + "");
+            $.ajax({
+                type: "post",
+                data: form.serialize(),
+                url: "/questions/saveQuestion.do",
+                dataType: "json",
+                success: function (data) {
+                    alert(data.data)
+                }
+
+            });
+
+    }
+
+
+</script>
+
+
+</html>

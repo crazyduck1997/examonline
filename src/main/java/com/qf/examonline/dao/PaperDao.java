@@ -1,6 +1,7 @@
 package com.qf.examonline.dao;
 
 import com.qf.examonline.entity.Paper;
+import com.qf.examonline.entity.QuestionVo;
 import io.lettuce.core.dynamic.annotation.Param;
 
 import java.util.List;
@@ -15,6 +16,8 @@ public interface PaperDao {
     List<Paper> selectAll();
 
     int updateByPrimaryKey(Paper record);
+
+    List<QuestionVo> selectVo();
 
 
 

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -108,10 +109,12 @@ public class QuestionPaperServiceImpl implements QuestionPaperService {
      * @param paperName
      */
     @Override
-    public void insertAutoMakePaper(Integer selectNum, Integer booleanNum, Integer sketchNum, Integer typeId,String paperName) {
+    public void insertAutoMakePaper(Integer selectNum, Integer booleanNum, Integer sketchNum, Integer typeId, String paperName, Date beginTime, Date endTime) {
         Paper paper = new Paper();
         paper.setPaperName(paperName);
         paper.setTypeId(typeId);
+        paper.setBeginTime(beginTime);
+        paper.setEndTime(endTime);
         paperDao.insert(paper);
         if(selectNum!=0 && selectNum!=null){
             List<SelectQuestions> selectQuestionsList = selectQuestionsDao.findSelectQuestionsByRandom(typeId, selectNum);
