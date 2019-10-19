@@ -72,13 +72,13 @@
 
   <!--试题管理-->
   <select id="findAllQuertions" resultType="QuestionVo" >
-        SELECT sq_desc sqDesc,t.question_type questionType
+        SELECT sq_id sqId,sq_desc sqDesc,t.question_type questionType
         from t_select_questions s , t_question_type t where s.question_type = t.qt_id
         UNION ALL
-        SELECT boo_desc ,t.question_type
+        SELECT boo_id, boo_desc ,t.question_type
         from t_boolean_questions b , t_question_type t where b.question_type = t.qt_id
         UNION ALL
-        SELECT ske_desc ,t.question_type
+        SELECT ske_id,ske_desc ,t.question_type
         from t_sketch_questions q , t_question_type t where q.question_type = t.qt_id
   </select>
 

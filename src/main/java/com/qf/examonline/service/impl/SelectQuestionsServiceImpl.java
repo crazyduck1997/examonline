@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public class SelectQuestionsServiceImpl implements SelectQuestionsService {
 
-    @Autowired
+    @Autowired(required = false)
     SelectQuestionsDao selectQuestionsDao;
 
     @Autowired
@@ -51,5 +51,17 @@ public class SelectQuestionsServiceImpl implements SelectQuestionsService {
     public int insertSelect(SelectQuestions selectQuestions) {
         selectQuestionsDao.addSelect(selectQuestions);
         return 0;
+    }
+
+    @Override
+    public int updateSelect(SelectQuestions selectQuestions) {
+        selectQuestionsDao.updateByPrimaryKey(selectQuestions);
+        return 0;
+    }
+
+    @Override
+    public SelectQuestions findById(Integer sqId) {
+        SelectQuestions selectQuestions = selectQuestionsDao.selectByPrimaryKey(sqId);
+        return selectQuestions;
     }
 }

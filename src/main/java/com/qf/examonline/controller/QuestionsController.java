@@ -154,5 +154,11 @@ public class QuestionsController {
         List<QuestionVo> allQuertions = questionTypeService.findAllQuertions();
         return new JsonBean(ErrorCode.SUCCESS,allQuertions);
     }
-
+    @ApiOperation(value = "修改选择题")
+    @PostMapping("/updateSelectQuestions.do")
+    public JsonBean updateSelectQuestions(SelectQuestions selectQuestions){
+        selectQuestionsService.updateSelect(selectQuestions);
+        System.out.println("修改成功"+selectQuestions);
+        return new JsonBean(ErrorCode.SUCCESS,codeMsg.getExecteSuccess());
+    }
 }

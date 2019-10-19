@@ -21,7 +21,7 @@ public class BooleanQuestionsServiceImpl implements BooleanQuestionService {
     @Autowired
     CodeMsg codeMsg;
 
-    @Autowired
+    @Autowired(required = false)
     BooleanQuestionsDao booleanQuestionsDao;
 
     @Override
@@ -58,6 +58,18 @@ public class BooleanQuestionsServiceImpl implements BooleanQuestionService {
     public int insertBoolean(BooleanQuestions booleanQuestions) {
         booleanQuestionsDao.insertBoolean(booleanQuestions);
         return 0;
+    }
+
+    @Override
+    public int updateBoolean(BooleanQuestions booleanQuestions) {
+        booleanQuestionsDao.updateByPrimaryKey(booleanQuestions);
+        return 0;
+    }
+
+    @Override
+    public BooleanQuestions findById(Integer booId) {
+        BooleanQuestions booleanQuestions = booleanQuestionsDao.selectByPrimaryKey(booId);
+        return booleanQuestions;
     }
 
 }

@@ -2,7 +2,14 @@ package com.qf.examonline;
 
 import com.qf.examonline.dao.QuestionTypeDao;
 import com.qf.examonline.dao.QuestionsPaperDao;
+import com.qf.examonline.dao.SelectQuestionsDao;
+import com.qf.examonline.entity.BooleanQuestions;
 import com.qf.examonline.entity.QuestionVo;
+import com.qf.examonline.entity.SelectQuestions;
+import com.qf.examonline.entity.SketchQuestions;
+import com.qf.examonline.service.BooleanQuestionService;
+import com.qf.examonline.service.SelectQuestionsService;
+import com.qf.examonline.service.SketchQuestionsService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +32,15 @@ public class QuestionTest {
     @Resource
     QuestionTypeDao questionTypeDao;
 
+    @Resource
+    SelectQuestionsService selectQuestionsService;
+
+    @Resource
+    SketchQuestionsService sketchQuestionsService;
+
+    @Resource
+    BooleanQuestionService booleanQuestionService;
+
     @Test
     public void test1(){
         ArrayList<Integer> list = new ArrayList<>();
@@ -42,5 +58,14 @@ public class QuestionTest {
         for(QuestionVo questionVo : allQuertions){
             System.out.println(questionVo);
         }
+    }
+
+    @Test
+    public void test3(){
+        BooleanQuestions booleanQuestions = new BooleanQuestions();
+        booleanQuestions.setBooId(24);
+        booleanQuestions.setBooAnswer("错");
+        booleanQuestionService.updateBoolean(booleanQuestions);
+        System.out.println(booleanQuestions);
     }
 }

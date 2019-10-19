@@ -29,7 +29,7 @@
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.SelectQuestions" >
     update t_select_questions
-    set question_type = #{questionType,jdbcType=INTEGER},
+    set question_type = 1,
       paper_type = #{paperType,jdbcType=INTEGER},
       sq_desc = #{sqDesc,jdbcType=LONGVARCHAR},
       select_a = #{selectA,jdbcType=LONGVARCHAR},
@@ -39,6 +39,40 @@
       select_answer = #{selectAnswer,jdbcType=LONGVARCHAR},
       select_score = #{selectScore,jdbcType=INTEGER }
     where sq_id = #{sqId,jdbcType=INTEGER}
+
+<!--    update t_select_questions-->
+<!--    set-->
+<!--    <trim suffixOverrides=",">-->
+<!--      <if test="questionType != null">-->
+<!--        question_type = #{questionType,jdbcType=INTEGER},-->
+<!--      </if>-->
+<!--      <if test="paperType != null">-->
+<!--        paper_type = #{paperType,jdbcType=INTEGER},-->
+<!--      </if>-->
+<!--      <if test="sqDesc != null">-->
+<!--        sq_desc = #{sqDesc,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="selectA != null">-->
+<!--        select_a = #{selectA,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="selectB != null">-->
+<!--        select_b = #{selectB,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="selectC != null">-->
+<!--        select_c = #{selectC,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="selectD != null">-->
+<!--        select_d = #{selectD,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="selectAnswer != null">-->
+<!--        select_answer = #{selectAnswer,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="selectScore != null">-->
+<!--        select_score = #{selectScore,jdbcType=INTEGER},-->
+<!--      </if>-->
+<!--    </trim>-->
+<!--    where sq_id = #{sqId,jdbcType=INTEGER}-->
+
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select sq_id, question_type, paper_type, sq_desc, select_a, select_b, select_c, select_d,

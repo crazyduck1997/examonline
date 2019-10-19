@@ -26,7 +26,7 @@
   <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.SketchQuestions" >
     update t_sketch_questions
     set ske_answer = #{skeAnswer,jdbcType=VARCHAR},
-      question_type = #{questionType,jdbcType=INTEGER},
+      question_type = 3,
       paper_type = #{paperType,jdbcType=INTEGER},
       ske_desc = #{skeDesc,jdbcType=LONGVARCHAR},
       ske_score = #{skeScore,jdbcType=INTEGER}
