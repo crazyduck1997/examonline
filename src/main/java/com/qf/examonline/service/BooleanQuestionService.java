@@ -13,4 +13,10 @@ public interface BooleanQuestionService {
     int addBooleanQuestion(List<BooleanQuestions> list);
 
     int insertBoolean(BooleanQuestions booleanQuestions);
+
+    //修改判断题试题
+    int updateBoolean(BooleanQuestions booleanQuestions);
+
+    //id查询
+    BooleanQuestions findById(Integer booId);
 }

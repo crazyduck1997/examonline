@@ -14,6 +14,10 @@ public interface SelectQuestionsService {
 
     int insertSelect(SelectQuestions selectQuestions);
 
+    //修改选择题试题
+    int updateSelect(SelectQuestions selectQuestions);
 
+    //id查询
+    SelectQuestions findById(Integer sqId);
 
 }

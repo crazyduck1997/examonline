@@ -16,7 +16,7 @@ import java.util.List;
 public class SketchQuestionsServiceImpl implements SketchQuestionsService {
 
 
-    @Autowired
+    @Autowired(required = false)
     SketchQuestionsDao sketchQuestionsDao;
 
     @Autowired
@@ -56,6 +56,18 @@ public class SketchQuestionsServiceImpl implements SketchQuestionsService {
     public int insertSketch(SketchQuestions sketchQuestions) {
         sketchQuestionsDao.insertSketch(sketchQuestions);
         return 0;
+    }
+
+    @Override
+    public int updateSketchQuestion(SketchQuestions sketchQuestions) {
+        sketchQuestionsDao.updateByPrimaryKey(sketchQuestions);
+        return 0;
+    }
+
+    @Override
+    public SketchQuestions findById(Integer skeId) {
+        SketchQuestions sketchQuestions = sketchQuestionsDao.selectByPrimaryKey(skeId);
+        return sketchQuestions;
     }
 
 

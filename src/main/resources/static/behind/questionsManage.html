@@ -131,14 +131,32 @@
         //向服务端发送删除指令
       });
     } else if(layEvent === 'edit'){
-      layer.msg('编辑操作');
-      layer.open({
-                        type: 2 //此处以iframe举例
-                        , title: '修改试题'
-                        , area: ['720px', '620px']
-                        , content: 'addQuestionsManage.html'
-                    });
-    }
+            layer.msg('编辑操作');
+        var type = data.questionType;
+            if (type=="选择题"){
+                layer.open({
+                    type: 2 //此处以iframe举例
+                    , title: '修改试题'
+                    , area: ['720px', '620px']
+                    , content: 'updateQuestionsManage.html?id='+data.sqId
+                });
+            }else if(type=="判断题"){
+                layer.open({
+                    type: 2 //此处以iframe举例
+                    , title: '修改试题'
+                    , area: ['720px', '620px']
+                    , content: 'updateQuestionsManageB.html?id='+data.sqId
+                });
+            }else if(type=="简答题"){
+                layer.open({
+                    type: 2 //此处以iframe举例
+                    , title: '修改试题'
+                    , area: ['720px', '620px']
+                    , content: 'updateQuestionsManageC.html?id='+data.sqId
+                });
+            }
+
+        }
   });
 
   

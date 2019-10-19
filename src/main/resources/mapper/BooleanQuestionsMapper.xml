@@ -25,7 +25,7 @@
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.BooleanQuestions" >
     update t_boolean_questions
-    set question_type = #{questionType,jdbcType=INTEGER},
+    set question_type = 2,
       paper_type = #{paperType,jdbcType=INTEGER},
       boo_desc = #{booDesc,jdbcType=LONGVARCHAR},
       boo_answer = #{booAnswer,jdbcType=LONGVARCHAR},

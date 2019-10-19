@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>试卷类型增加</title>
+    <link rel="stylesheet" type="text/css" href="../layui/css/layui.css">
+    <script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+
+<form class="layui-form" id="add-form" lay-filter="example">
+    <input type="text" name="skeId" id="skeId" hidden value="">
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">选择框</label>
+        <div class="layui-input-block">
+            <select name="paperType" id="ske" lay-filter="aihao">
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">题目</label>
+        <div class="layui-input-block">
+            <input type="text" style="width:400px;" name="skeDesc" id="skeDesc" lay-verify="title" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div hidden class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input type="text" style="width:400px;" name="questionType" id="questionType" value="3" lay-verify="title" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">答案</label>
+        <div class="layui-input-block">
+            <input type="text" style="width:400px;" name="skeAnswer" id="skeAnswer" lay-verify="title" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">分值</label>
+        <div class="layui-input-block">
+            <input type="text" style="width:400px;" name="skeScore" id="skeScore" lay-verify="title" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+
+
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">立即提交</button>
+        </div>
+    </div>
+</form>
+<!--    <form class="layui-form" id="add-form" lay-filter="example">
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>-->
+</body>
+<script type="text/javascript" src="../js/jquery-1.12.2.min.js"></script>
+<script>
+
+    $(function () {
+        $.ajax({
+            type: "post",
+            url: "/type/allType.do",
+            dataType: "json",
+            success: function (data) {
+                var ske = $("#ske");
+                var typeList = data.data;
+                var op = "";
+                ske.empty();
+                $.each(typeList, function (index, item) {
+                    op += '<option value="' + item.typeId + '">' + item.typeName + '</option>';
+                });
+                ske.append(op)
+            }
+        });
+
+
+        var skeId = window.location.search.substring(4);
+        $.ajax({
+            type: "post",
+            url: "/questions/findQu.do",
+            data: {"questionId":skeId,"questionType":3},
+            dataType: "json",
+            success: function (data) {
+                var question = data.data;
+
+                $("#skeDesc").val(question.skeDesc);
+                $("#skeAnswer").val(question.skeAnswer);
+
+                $("#skeScore").val(question.skeScore)
+                $("#skeId").val(skeId);
+
+                layui.use(['form', 'laydate', 'layer'], function () {
+                    var form = layui.form
+                        , laydate = layui.laydate
+                        , layer = layui.layer
+                        , $ = layui.jquery;
+                    var index = parent.layer.getFrameIndex(window.name);
+
+
+                    //监听提交
+                    form.on('submit(formDemo)', function (data) {
+                        $.ajax({
+                            type: "post",
+                            url: "/questions/updateSketchQuestions.do",
+                            data: data.field,
+                            dataType: "json",
+                            /* contentType : 'application/json',*/
+                            success: function (data) {
+                                if (data.code == 0) {
+                                    layer.msg("修改成功", {icon: 6, time: 1000},
+                                        function () {
+                                            var t = parent.layui.table;
+                                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                            parent.layer.close(index); //再执行关闭
+                                            t.reload('CourseTable');
+                                        });
+                                } else {
+                                    alert(data.data);
+                                }
+                            }
+                        });
+                        return false;
+                    });
+                });
+            }
+        })
+    })
+
+
+</script>
+</html>

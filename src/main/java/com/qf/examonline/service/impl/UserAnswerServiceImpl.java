@@ -9,11 +9,12 @@ import com.qf.examonline.service.UserAnswerService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,10 @@ public class UserAnswerServiceImpl implements UserAnswerService {
     UserAnswersDao userAnswersDao;
 
     @Autowired
-    private AmqpTemplate amqpTemplate;
+    private AmqpTemplate myRabbitmq;
+
+    /*@Autowired
+    private AmqpTemplate amqpTemplate;*/
 
     @Autowired
     ScoreDao scoreDao;
@@ -62,7 +66,7 @@ public class UserAnswerServiceImpl implements UserAnswerService {
             throw new RuntimeException(codeMsg.getCommitRepeat());
         }
         userAnswersDao.insertMap(redisMap);
-        amqpTemplate.convertAndSend("queue.commit", redisMap);
+        myRabbitmq.convertAndSend("queue.commit",user.getUid());
 
     }
 

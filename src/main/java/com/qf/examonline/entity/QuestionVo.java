@@ -11,6 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class QuestionVo {
 
+    private Integer sqId;
     private String sqDesc;
     private String questionType;
 

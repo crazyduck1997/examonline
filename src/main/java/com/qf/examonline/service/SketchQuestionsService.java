@@ -12,4 +12,10 @@ public interface SketchQuestionsService {
     int addSketchQuestion(List<SketchQuestions> list);
 
     int insertSketch(SketchQuestions sketchQuestions);
+
+    //修改简单题试题
+    int updateSketchQuestion(SketchQuestions sketchQuestions);
+
+    //id查询
+    SketchQuestions findById(Integer skeId);
 }
