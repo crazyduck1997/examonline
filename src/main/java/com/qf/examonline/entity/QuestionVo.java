@@ -22,4 +22,11 @@ public class QuestionVo {
     private Integer time;
     private String typeName;
 
+    //examinee模块
+    private String name;
+    private String examType;
+   //private String paperName;
+    private Date examTime;
+    private String score;
+
 }

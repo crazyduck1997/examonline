@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.examonline.dao.ExamineeDao">
+  <resultMap id="BaseResultMap" type="com.qf.examonline.entity.Examinee">
+    <id column="examinee_id" jdbcType="INTEGER" property="examineeId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="idcard" jdbcType="VARCHAR" property="idcard" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="enroll_time" jdbcType="TIMESTAMP" property="enrollTime" />
+    <result column="exam_type_id" jdbcType="INTEGER" property="examTypeId" />
+    <result column="exam_time" jdbcType="TIMESTAMP" property="examTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_examinee
+    where examinee_id = #{examineeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qf.examonline.entity.Examinee">
+    insert into t_examinee (examinee_id, name, idcard, 
+      phone, address, description, 
+      enroll_time, exam_type_id,exam_time,uid)
+    values (#{examineeId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{enrollTime,jdbcType=TIMESTAMP}, #{examTypeId,jdbcType=INTEGER},#{examTime,jdbcType=TIMESTAMP},,#{uid,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.qf.examonline.entity.Examinee">
+    update t_examinee
+    set name = #{name,jdbcType=VARCHAR},
+      idcard = #{idcard,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      enroll_time = #{enrollTime,jdbcType=TIMESTAMP},
+      exam_type_id = #{examTypeId,jdbcType=INTEGER},
+      exam_time = #{examTime,jdbcType=TIMESTAMP}),
+      uid = #{uid,jdbcType=INTEGER})
+    where examinee_id = #{examineeId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select examinee_id, name, idcard, phone, address, description, enroll_time, exam_type_id,exam_time,uid
+    from t_examinee
+    where examinee_id = #{examineeId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select examinee_id, name, idcard, phone, address, description, enroll_time, exam_type_id,exam_time,uid
+    from t_examinee
+  </select>
+  <select id="selectByVo" resultType="QuestionVo">
+    select e.name,t.type_name examType,p.paper_name paperName,e.exam_time examTime,us.c_score score from t_examinee e
+    left join t_type t on e.exam_type_id = t.type_id
+    left join t_user_answers us on e.uid = us.uid
+    left join t_paper p on us.paper_id = p.paper_id
+    <where>
+      <if test="start !=null" >
+        e.exam_time > #{param1}
+      </if>
+      <if test="end !=null" >
+        and e.exam_time &lt; #{param2}
+      </if>
+      <if test="idcard !=null and idcard !=''" >
+        and idcard = #{param3}
+      </if>
+      <if test="examTypeId !=null" >
+        and t.type_id = #{param4}
+      </if>
+    </where>
+  </select>
+</mapper>

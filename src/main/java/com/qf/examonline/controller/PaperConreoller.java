@@ -3,7 +3,6 @@ package com.qf.examonline.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.qf.examonline.common.CodeMsg;
-import com.qf.examonline.common.ErrorCode;
 import com.qf.examonline.common.JsonBean;
 import com.qf.examonline.entity.Paper;
 import com.qf.examonline.entity.QuestionVo;
@@ -14,7 +13,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
