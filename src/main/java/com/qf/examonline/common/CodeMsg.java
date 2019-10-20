@@ -36,4 +36,14 @@ public class CodeMsg {
 
     @Value("${commitRepeat}")
     private String commitRepeat;
+
+    @Value("${commitOver}")
+    private String commitOver;
+
+    @Value("${examNotSart}")
+    private String examNotSart;
+
+    @Value("${examOver}")
+    private String examOver;
+
 }

@@ -15,19 +15,20 @@
         .demo-carousel{height: 200px; line-height: 200px; text-align: center;}
     </style>
 </head>
-<form class="layui-form layui-form-pane" action="">
-    <div class="layui-form-item">
-        <label class="layui-form-label">请选择学科</label>
+<form class="layui-form" id="zq_search">
+    <div class="layui-form-item" style="margin: 5px">
+        <label class="layui-form-label">试卷名</label>
         <div class="layui-input-inline">
-            <select name="quiz1" id="quiz1">
-            </select>
+            <input type="text" name="paperName" id="paperName" placeholder="请输入试卷名" autocomplete="off" class="layui-input">
         </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">试卷名称</label>
-        <div class="layui-input-inline">
-            <input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+        <div class="layui-form-item">
+            <label class="layui-form-label" >试卷类型</label>
+            <div class="layui-input-block">
+                <select name="typeId" id="sel" lay-filter="aihao">
+                </select>
+            </div>
         </div>
+        <button id="search" class="layui-btn"  lay-submit="" lay-filter="search"><i class="layui-icon" >&#xe615;</i></button>
     </div>
 </form>
 
@@ -51,14 +52,19 @@
             type:'post',
             success:function (data) {
                 if (data.code == 0){
-                    var quiz1 = $("#quiz1");
+                    var sel = $("#sel");
                     var typeList = data.data;
                     var op = '<option value="">全部</option>n';
-                    quiz1.empty();
+                    sel.empty();
                     $.each(typeList,function (index, item) {
                         op +='<option value="'+item.typeId+'">'+item.typeName+'</option>';
                     })
-                    quiz1.append(op)
+                    sel.append(op)
+
+
+
+
+
 
                     layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element', 'slider'], function() {
                         var laydate=layui.laydate //日期
@@ -67,6 +73,7 @@
                             , table=layui.table //表格
                             , upload=layui.upload //上传
                             , element=layui.element //元素操作
+                            , form=layui.form //元素操作
 
                         //监听Tab切换
                         element.on('tab(demo)', function(data){
@@ -74,6 +81,32 @@
                                 tips: 1
                             });
                         });
+
+
+                        form.on('submit(search)', function(data){
+                           /* layer.msg(JSON.stringify(data.field));*///表格数据序列化
+                            var formData = data.field;
+                            console.debug(formData);
+                            var paperName = formData.paperName;
+                            var typeId = formData.typeId;
+                            //数据表格重载
+                            table.reload('testReload', {
+                                page: {
+                                    curr: 1 //重新从第 1 页开始
+                                }
+                                , where: {//这里传参  向后台
+                                    "paperName": paperName,
+                                    "typeId": typeId
+                                }
+                                , url: '/paper/allPaper.do'//后台做模糊搜索接口路径
+                                , page: true
+                                , limit: 10
+                                , method: 'get'
+                            });
+                            return false;//false：阻止表单跳转  true：表单跳转
+                        });
+
+
 
                         table.on('tool(test)', function(obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
                             var data = obj.data //获得当前行数据
@@ -92,18 +125,38 @@
                         //执行一个 table 实例
                         table.render( {
                                 elem: '#demo', height: 750, url: '/paper/allPaper.do' //数据接口
-                                , title: '用户表', page: false //开启分页
+                                , title: '用户表', page: true //开启分页
                                 , totalRow: true //开启合计行
                                 , cols: [[ //表头
                                     {field:'xuhao', title:'序号',  fixed: 'left', width: 60, type: 'numbers'},
                                     {field: 'paperName', title: '试卷名', width: 450,align : 'center'},
-                                    {field: 'type', title: '试卷名', width: 450,align : 'center'},
+                                    {field: 'typeName', title: '试卷类型', width: 450,align : 'center'},
                                     // {field: 'role', title: '角色', width: 450,align : 'center'},
                                     {fixed: 'right', width: 428, align: 'center', toolbar: '#barDemo'}
                                 ]]
+                            ,id: 'testReload'
                             }
-
                         );
+
+                        var $ = layui.$, active = {
+                            reload: function(){
+                                var paperName = $('#paperName');
+                                var sel = $('#sel');
+
+                                //执行重载
+                                table.reload('testReload', {
+                                    page: {
+                                        curr: 1 //重新从第 1 页开始
+                                    }
+                                    ,where: {
+                                        paperName: paperName.val(),
+                                        typeId:sel.val()
+                                    }
+                                }, 'data');
+                            }
+                        }
+
+
                     });
                 }else{
                     layer.msg(data.info);

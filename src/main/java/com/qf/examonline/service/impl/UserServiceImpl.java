@@ -65,7 +65,6 @@ public class UserServiceImpl implements UserService {
         }
 
         String s = updatePassword(record.getPassword());
-        System.out.println("修改后加密的密码"+s);
         record.setPassword(s);
         userDao.updateByPrimaryKey(record);
     }

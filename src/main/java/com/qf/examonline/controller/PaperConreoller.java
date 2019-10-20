@@ -3,13 +3,16 @@ package com.qf.examonline.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.qf.examonline.common.CodeMsg;
+import com.qf.examonline.common.ErrorCode;
 import com.qf.examonline.common.JsonBean;
 import com.qf.examonline.entity.Paper;
 import com.qf.examonline.entity.QuestionVo;
 import com.qf.examonline.service.PaperService;
 import com.qf.examonline.service.TypeService;
+import com.qf.examonline.service.UserAnswerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +30,9 @@ public class PaperConreoller {
     private CodeMsg codeMsg;
     @Autowired
     private PaperService paperService;
+
+    @Autowired
+    UserAnswerService userAnswerService;
 
     @ApiOperation(value = "查看所有考试试卷")
     @PostMapping("/selectAll.do")
@@ -73,8 +79,8 @@ public class PaperConreoller {
 
     @ApiOperation(value = "所有测试卷子")
     @GetMapping("/allPaper.do")
-    public JsonBean allPaper(){
-        List<Paper> list = paperService.allPapers();
+    public JsonBean allPaper(String paperName,Integer typeId, Integer page, Integer limit){
+        List<QuestionVo> list = paperService.selectTests(paperName,typeId,page,limit);
         return new JsonBean(0,list);
     }
 
@@ -89,7 +95,6 @@ public class PaperConreoller {
     @ApiOperation(value ="开始考试" )
     @PostMapping("/getPaper.do")
     public JsonBean getPaper(Integer paperId){
-        System.out.println(paperId);
         Map map = paperService.examStatus(paperId);
         return new JsonBean(0,map);
     }
@@ -99,6 +104,25 @@ public class PaperConreoller {
     public JsonBean bigenTest(Integer paperId){
         Map map = paperService.selectPaper(paperId);
         return new JsonBean(0,map);
+    }
+
+
+    @ApiOperation(value = "查看考试剩余时间")
+    @PostMapping("checkTime.do")
+    public JsonBean checkTime(Integer paperId){
+        Map map = paperService.checkTime(paperId);
+        if(map.get("status")!=null){
+            userAnswerService.commitPaper(paperId);
+            return new JsonBean(ErrorCode.ERROR,codeMsg.getExamOver());
+        }
+        return new JsonBean(ErrorCode.SUCCESS,map);
+    }
+
+
+    @GetMapping("/lookMyPapers.do")
+    public JsonBean lookMyPapers(String paperName,Integer typeId, Integer page, Integer limit){
+        List<QuestionVo> list = paperService.selectMyPapers(paperName,typeId,page,limit);
+        return new JsonBean(ErrorCode.SUCCESS,list);
     }
 
 

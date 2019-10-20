@@ -115,6 +115,8 @@ public class QuestionPaperServiceImpl implements QuestionPaperService {
         paper.setTypeId(typeId);
         paper.setBeginTime(beginTime);
         paper.setEndTime(endTime);
+        int time = (int)((endTime.getTime() - beginTime.getTime())/1000/60);
+        paper.setTime(time);
         paperDao.insert(paper);
         if(selectNum!=0 && selectNum!=null){
             List<SelectQuestions> selectQuestionsList = selectQuestionsDao.findSelectQuestionsByRandom(typeId, selectNum);

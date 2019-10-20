@@ -24,13 +24,19 @@ public interface PaperService {
 
     List<Paper> allPapers();
 
+    List<QuestionVo> selectTests(String paperName,Integer typeId, Integer page, Integer limit);
+
     List<QuestionVo> selectVo();
+
+    List<QuestionVo> selectMyPapers(String paperName,Integer typeId,Integer page,Integer limit);
 
 
     //获取状态信息
      Map examStatus(Integer paperId);
 
      Map selectPaper(Integer paperId);
+
+     Map checkTime(Integer paperId);
 
 
 

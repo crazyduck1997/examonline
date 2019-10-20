@@ -1,6 +1,7 @@
 package com.qf.examonline;
 
 import com.qf.examonline.dao.*;
+import com.qf.examonline.entity.Paper;
 import com.qf.examonline.entity.SelectQuestions;
 import com.qf.examonline.entity.SketchQuestions;
 import com.qf.examonline.entity.User;
@@ -14,6 +15,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,11 +70,19 @@ public class test {
 
     @Test
     public void test3(){
-        Map map =(Map) myRedisTemplate.opsForValue().get("1");
-        map.put("uid",1);
-        map.put("paperId",1);
-        int i = userAnswersDao.insertMap(map);
-        System.out.println(i);
+        Paper paper =(Paper) myRedisTemplate.opsForValue().get("57");
+        Date endTime = paper.getEndTime();
+        Date currentTime = new Date();
+        long interval = endTime.getTime() - currentTime.getTime();
+        System.out.println(interval);
+        long h = interval / 1000 / 60 / 60;
+        long m = (interval / 1000 / 60) - (h * 60);
+        long s = (interval / 1000) - (h * 60 * 60)-(m*60);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("hours",h);
+        map.put("minute",m);
+        map.put("second",s);
+        System.out.println(h+"---"+m+"--"+s);
     }
 
     @Test
@@ -79,5 +90,6 @@ public class test {
         User userByName = userDao.findUserByName("1");
         System.out.println(userByName);
     }
+
 
 }

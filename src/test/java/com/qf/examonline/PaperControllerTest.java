@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
@@ -67,8 +68,20 @@ public class PaperControllerTest {
     }
     @Test
     public void findAvgScore(){
-        List<Paper> avgScore = paperDao.findAvgScore(8);
-        System.out.println(avgScore);
+        /*List<Paper> avgScore = paperDao.findAvgScore(8);
+        System.out.println(avgScore);*/
+
+        Paper paper = paperDao.selectByPrimaryKey(1);
+        Date endTime = paper.getEndTime();
+        Date currentTime = new Date();
+        long interval = endTime.getTime() - currentTime.getTime();
+        System.out.println(interval);
+        long h = interval / 1000 / 60 / 60;
+        long m = (interval / 1000 / 60) - (h * 60);
+        long s = (interval / 1000) - (h * 60 * 60)-(m*60);
+        System.out.println(s);
+
+
     }
 
     @Test

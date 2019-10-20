@@ -44,7 +44,6 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public int updateByPrimaryKey(Role record) {
         Role role = roleDao.selectRoleByName(record.getRname());
-        System.out.println("---------"+role);
         if (role != null){
             throw new RuntimeException("名字重复");
         }

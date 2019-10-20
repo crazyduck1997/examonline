@@ -22,6 +22,11 @@ public class QuestionVo {
     private Date endTime;
     private Integer time;
     private String typeName;
+    private Date commitTime;
+    private Date updateTime;
+    //待修改
+    private String paperStaus;
+
 
     //examinee模块
     private String name;

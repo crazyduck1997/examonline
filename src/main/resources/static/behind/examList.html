@@ -27,6 +27,10 @@
 </body>
 <script type="text/javascript" src="../js/jquery-1.12.2.min.js"></script>
 <script>
+    var hours = 0;
+    var minute = 0;
+    var second = 0;
+    var paperId = 0;
 
     $(function () {
         $.ajax({
@@ -63,7 +67,7 @@
                             var data = obj.data //获得当前行数据
                                 , layEvent = obj.event; //获得 lay-event 对应的值
                             if (layEvent === 'begin') {
-                                var paperId = data.paperId;
+                                paperId = data.paperId;
                                 $.ajax({
                                     type: "post",
                                     url: "/paper/getPaper.do",
@@ -77,7 +81,35 @@
                                                 , title: '考试开始'
                                                 , area: ['720px', '620px']
                                                 , content: 'beginExam.html?paperId='+paperId
-                                            });
+                                                //弹出回调
+                                                ,success:function (layero, index) {
+                                                    //循环获取时间
+                                                    var timer = setInterval(function checkTime(){
+                                                        $.ajax({
+                                                            url: '/paper/checkTime.do',
+                                                            type:'post',
+                                                            data:{"paperId": paperId},
+                                                            dataType: 'json',
+                                                            // async:true,
+                                                            success: function (data) {
+                                                                if (data.code == 0) {
+                                                                    hours = data.data['hours'];
+                                                                    minute = data.data['minute'];
+                                                                    second = data.data['second'];
+                                                                    //获取弹出层的标题
+                                                                    $(".layui-layer-title")[0].innerText ='考试开始:剩余时间'+hours+'小时'+minute+'分'+second+'秒'
+
+                                                                } else {
+                                                                    alert(data.data);
+                                                                    clearInterval(timer);
+                                                                    layer.closeAll('iframe');
+                                                                }
+                                                            }
+                                                        })
+                                                    },500)
+                                                }
+
+                                        });
                                         }else {
                                             layer.msg(data.data)
                                         }

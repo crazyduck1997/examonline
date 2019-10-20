@@ -19,6 +19,10 @@ public interface PaperDao {
 
     List<QuestionVo> selectVo();
 
+    List<QuestionVo> selectAllTest(@Param("paperName")String paperName,@Param("typeId")Integer typeId);
+
+
+    List<QuestionVo> selectMyPapers(@Param("uid")Integer uid,@Param("paperName")String paperName,@Param("typeId")Integer typeId);
 
 
     // 更新生成的静态页面的url

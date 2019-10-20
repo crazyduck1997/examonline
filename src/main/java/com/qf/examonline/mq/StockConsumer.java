@@ -81,6 +81,7 @@ public class StockConsumer {
         score.setStuId(uid);
         score.setCommitRepeat(String.valueOf(uid)+paperId);
         scoreDao.insert(score);
+        myRedisTemplate.delete(String.valueOf(uid));
     }
 }
 

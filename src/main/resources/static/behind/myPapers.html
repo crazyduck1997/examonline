@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>layui在线调试</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <script src="../layui/layui.js"></script>
+    <style>
+        body{margin: 10px;}
+        .demo-carousel{height: 200px; line-height: 200px; text-align: center;}
+    </style>
+    <style>
+        body{margin: 10px;}
+        .demo-carousel{height: 200px; line-height: 200px; text-align: center;}
+    </style>
+</head>
+<body>
+
+
+<form class="layui-form" id="zq_search">
+    <div class="layui-form-item" style="margin: 5px">
+        <label class="layui-form-label">试卷名</label>
+        <div class="layui-input-inline">
+            <input type="text" name="paperName" id="paperName" placeholder="请输入试卷名" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" >试卷类型</label>
+            <div class="layui-input-block">
+                <select name="typeId" id="sel" lay-filter="aihao">
+                </select>
+            </div>
+        </div>
+        <button id="search" class="layui-btn"  lay-submit="" lay-filter="search"><i class="layui-icon" >&#xe615;</i></button>
+    </div>
+</form>
+
+<table class="layui-hide" id="demo" lay-filter="test"></table>
+<!--<script type="text/html" id="barDemo">
+    <a  class="layui-btn layui-btn-primary layui-btn-xs" lay-event="add">添加</a>
+    &lt;!&ndash; <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>&ndash;&gt;
+    <a class="layui-btn layui-btn-xs" lay-event="edit">密码重置</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>-->
+<div class="layui-tab-item">
+    <div id="pageDemo"></div>
+</div>
+
+</body>
+<script type="text/javascript" src="../js/jquery-1.12.2.min.js"></script>
+<script>
+    $(function () {
+        $.ajax({
+            type: "post",
+            url: "/type/allType.do",
+            dataType: "json",
+            success: function (data) {
+                var sel = $("#sel");
+                var typeList = data.data;
+                sel.empty();
+                var op = '<option disabled selected value="">' +"全部" + '</option>';
+                $.each(typeList, function (index, item) {
+                    op += '<option value="' + item.typeId + '">' + item.typeName + '</option>';
+                })
+                sel.append(op)
+
+                layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element', 'slider'], function() {
+                    var laydate=layui.laydate //日期
+                        , laypage=layui.laypage //分页
+                        , layer=layui.layer //弹层
+                        , table=layui.table //表格
+                        , upload=layui.upload //上传
+                        , element=layui.element //元素操作
+                        ,form = layui.form
+
+
+
+
+                    form.on('submit(search)', function(data){
+                        /*layer.msg(JSON.stringify(data.field));*///表格数据序列化
+                        var formData = data.field;
+                        console.debug(formData);
+                        var paperName = formData.paperName;
+                        var typeId = formData.typeId;
+                        //数据表格重载
+                        table.reload('testReload', {
+                            page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                            , where: {//这里传参  向后台
+                                "paperName": paperName,
+                                "typeId": typeId
+                            }
+                            , url: '/paper/lookMyPapers.do'//后台做模糊搜索接口路径
+                            , page: true
+                            , limit: 10
+                            , method: 'get'
+                        });
+                        return false;//false：阻止表单跳转  true：表单跳转
+                    });
+
+//执行一个 table 实例
+                    table.render( {
+                            elem: '#demo', height: 550,
+                            url: '/paper/lookMyPapers.do'//数据接口
+                            , title: '成绩表', page: true //开启分页
+//	, toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+                            , totalRow: true //开启合计行
+                            , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                                ,curr: 1 //设定初始在第 5 页
+                                ,groups: 5 //只显示 1 个连续页码
+                                , first: false //不显示首页
+                                , last: false //不显示尾页
+                                , limits: [5, 10, 20]
+
+                            } //开启分页
+                            , cols: [[ //表头
+                                {type: 'checkbox', fixed: 'left'},
+                                {field:'xuhao', title:'序号',  fixed: 'left', width: 60, type: 'numbers'},
+                                {field: 'paperName', title: '试卷名', align : 'center'},
+                                {field: 'score', title: '分数', align : 'center'},
+                                {field: 'typeName', title: '试卷类型', align : 'center'},
+                                {field: 'commitTime', title: '提交时间', align : 'center'},
+                                {field: 'paperStaus', title: '试卷状态', align : 'center'},
+                                // {field: 'role', title: '角色', width: 450,align : 'center'},
+                                {fixed: 'right', width: 428, align: 'center', toolbar: '#barDemo'}
+                            ]]
+                            ,id: 'testReload'
+                        }
+
+                    );
+                    var $ = layui.$, active = {
+                        reload: function(){
+                            var paperName = $('#paperName');
+                            var sel = $('#sel');
+
+                            //执行重载
+                            table.reload('testReload', {
+                                page: {
+                                    curr: 1 //重新从第 1 页开始
+                                }
+                                ,where: {
+                                    paperName: paperName.val(),
+                                    typeId:sel.val()
+                                }
+                            }, 'data');
+                        }
+                    };
+                    $('.demoTable .layui-btn').on('click', function(){
+                        var type = $(this).data('type');
+                        active[type] ? active[type].call(this) : '';
+                    });
+
+                });
+
+            }
+        });
+    })
+
+
+</script>
+
+</html>

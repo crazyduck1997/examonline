@@ -15,7 +15,7 @@ public class TimeUtil {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        throw new RuntimeException("装换异常");
+        throw new RuntimeException("转换异常");
     }
 
 }

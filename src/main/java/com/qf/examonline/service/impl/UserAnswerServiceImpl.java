@@ -1,11 +1,13 @@
 package com.qf.examonline.service.impl;
 
 import com.qf.examonline.common.CodeMsg;
+import com.qf.examonline.common.ErrorCode;
 import com.qf.examonline.dao.ScoreDao;
 import com.qf.examonline.dao.UserAnswersDao;
 import com.qf.examonline.dao.UserDao;
 import com.qf.examonline.entity.*;
 import com.qf.examonline.service.UserAnswerService;
+import com.qf.examonline.utils.UserUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -49,32 +51,30 @@ public class UserAnswerServiceImpl implements UserAnswerService {
      */
     @Override
     public void commitPaper(Integer paperId) {
-        Subject subject = SecurityUtils.getSubject();
-        String username = (String)subject.getPrincipal();
-
-        User user = userDao.findUserByName(username);
-        System.out.println(user);
+        User user = UserUtil.getUser();
         String s = String.valueOf(user.getUid())+paperId;
         Score score = scoreDao.selectByCommit(s);
-
-        System.out.println("22");
+        if(score!=null){
+            throw new RuntimeException(codeMsg.getCommitRepeat());
+        }
 
         Map<String,Object> redisMap =(Map) myRedisTemplate.opsForValue().get(String.valueOf(user.getUid()));
         redisMap.put("uid",user.getUid());
         redisMap.put("paperId",paperId);
-        if(score!=null){
-            throw new RuntimeException(codeMsg.getCommitRepeat());
-        }
         userAnswersDao.insertMap(redisMap);
         myRabbitmq.convertAndSend("queue.commit",user.getUid());
 
     }
 
+    /**
+     * 保存答案
+     * @param questionId
+     * @param answer
+     * @param questionType
+     */
     @Override
     public void commitSelect(Integer questionId,String answer,Integer questionType) {
-        Subject subject = SecurityUtils.getSubject();
-        String username =(String) subject.getPrincipal();
-        User user = userDao.findUserByName(username);
+        User user = UserUtil.getUser();
         HashMap map =(HashMap) myRedisTemplate.opsForValue().get(String.valueOf(user.getUid()));
         if(questionType==1){
             List<SelectQuestions> selectList =(List) map.get("selectList");

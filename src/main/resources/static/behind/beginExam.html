@@ -13,6 +13,13 @@
 <script type="text/javascript" src="../js/jquery-1.12.2.min.js"></script>
 </body>
 <script>
+
+
+
+
+
+
+
     $(function () {
         var paperId = window.location.search.substring(9)
         $.ajax({
@@ -163,6 +170,7 @@
                     });
                     op += '<div><button id="commit" value="' + paperId + '" onclick="commit(this.value)">提交</div>'
                     test.append(op);
+
                 } else {
                     alert(data.data)
                 }
@@ -171,6 +179,13 @@
         });
         return false;
     });
+
+
+    function f() {
+
+    };
+
+
 
     function commit(paperId) {
         var b = confirm("提交前请确认所有题目已保存");
@@ -181,7 +196,11 @@
                 url: "/questions/commitPaper.do",
                 dataType: "json",
                 success: function (data) {
-                    alert(data.data)
+                    if(data.code==0){
+                        alert("提交成功")
+                    }else {
+                        alert(data.data);
+                    }
                 }
             });
         }

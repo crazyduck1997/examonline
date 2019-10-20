@@ -19,10 +19,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by xiaofeng.he on 2018/06/22
- * <p>
- * 参考：JML(http://blog.csdn.net/jml1437710575/article/details/52051278)
- * </p>
  * poi 实现 excel 导入 工具类
  */
 public class ImportExcelUtil {

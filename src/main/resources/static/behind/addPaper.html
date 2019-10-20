@@ -9,13 +9,27 @@
 
 </head>
 <body>
-<blockquote class="layui-elem-quote quoteBox">
-    <form class="layui-form">
-        <div class="layui-inline">
-            <a class="layui-btn layui-btn-normal addVideo_btn" id="addVideo">自动生成试卷</a>
+
+
+<form class="layui-form" id="zq_search">
+    <div class="layui-form-item" style="margin: 5px">
+        <label class="layui-form-label">试卷名</label>
+        <div class="layui-input-inline">
+            <input type="text" name="paperName" id="paperName" placeholder="请输入试卷名" autocomplete="off" class="layui-input">
         </div>
-    </form>
-</blockquote>
+        <div class="layui-form-item">
+            <label class="layui-form-label" >试卷类型</label>
+            <div class="layui-input-block">
+                <select name="typeId" id="sel" lay-filter="aihao">
+                </select>
+            </div>
+        </div>
+        <button id="search" class="layui-btn"  lay-submit="" lay-filter="search"><i class="layui-icon" >&#xe615;</i></button>
+    </div>
+    <div class="layui-inline">
+        <a class="layui-btn layui-btn-normal addVideo_btn" id="addpaper">自动生成试卷</a>
+    </div>
+</form>
 
 <table class="layui-hide" id="demo" lay-filter="test" align="center"></table>
 
@@ -26,100 +40,131 @@
 
 
 <script type="text/javascript">
-    layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element', 'slider'], function () {
-        var laydate = layui.laydate //日期
-            /*, laypage = layui.laypage //分页*/
-            , layer = layui.layer //弹层
-            , table = layui.table //表格
-            , element = layui.element //元素操作
-            , index = layer.load(0);
+
+    $(function () {
+        $.ajax({
+            url:'/type/allType.do',
+            dataType:'json',
+            type:'post',
+            success:function (data) {
+                if (data.code == 0){
+                    var sel = $("#sel");
+                    var typeList = data.data;
+                    var op = '<option value="">全部</option>n';
+                    sel.empty();
+                    $.each(typeList,function (index, item) {
+                        op +='<option value="'+item.typeId+'">'+item.typeName+'</option>';
+                    })
+                    sel.append(op)
 
 
-        //执行一个 table 实例
-        table.render({
-            elem: '#demo'
-            , id: "CourseTable"
-            /*, height: 420*/
-            , url: '/role/selectAllRoles.do' //数据接口
-            , title: '课程表'
-            // , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
-            //     layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
-            //     ,curr: 1 //设定初始在第 5 页
-            //     ,groups: 5 //只显示 1 个连续页码
-            //     , first: false //不显示首页
-            //     , last: false //不显示尾页
-            //     , limits: [5, 10, 20]
-            //
-            // } //开启分页
-            //, toolbar: 'default'//开启工具栏，此处显示默认图标，可以自定义模板，详见文档
-            , cols: [[ //表头
-                //{checkbox: true, align: 'center', LAY_CHECKED: false, filter: 'test', fixed: 'left'}
-                {field:'xuhao', title:'序号',  fixed: 'left', type:"numbers"}
-                , {field: 'rname', title: '角色', width: 440, sort: true, align: "center"}
-                , {fixed: 'right', width: 330, align: 'center', toolbar: '#barDemo'}
-            ]]
-            , done: function (res) {   //返回数据执行回调函数
-                layer.close(index); //返回数据关闭loading
-            }
-        });
 
-        //绑定按钮事件
-        $(document).on('click', '#addVideo', function () {
-            layer.open({
-                type: 2,
-                title: '自动生成试卷',
-                shadeClose: true,
-                shade: 0.8,
-                area: ['800px', '600px'],
-                content: 'autoAddPaper.html'
-            });
-        });
+                    //绑定按钮事件
+                    $(document).on('click', '#addpaper', function () {
+                        layer.open({
+                            type: 2,
+                            title: '自动生成试卷',
+                            shadeClose: true,
+                            shade: 0.8,
+                            area: ['800px', '600px'],
+                            content: 'autoAddPaper.html'
+                        });
+                    });
+
+                    layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element', 'slider'], function() {
+                        var laydate=layui.laydate //日期
+                            , laypage=layui.laypage //分页
+                            , layer=layui.layer //弹层
+                            , table=layui.table //表格
+                            , upload=layui.upload //上传
+                            , element=layui.element //元素操作
+                            , form=layui.form //元素操作
+
+                        //监听Tab切换
+                        element.on('tab(demo)', function(data){
+                            layer.tips('切换了 '+ data.index +'：'+ this.innerHTML, this, {
+                                tips: 1
+                            });
+                        });
 
 
-        //监听行工具事件
-        table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
-            var data = obj.data //获得当前行数据
-                , layEvent = obj.event; //获得 lay-event 对应的值
-            switch (layEvent) {
-
-                case 'del':
-                    layer.confirm('删除 [角色]：' + data.rname, function (index) {
-                        obj.del();
-                        layer.close(index);
-                        //发送请求到后台
-                        $.ajax({
-                            type: "post",
-                            url: "/role/deleteOneRole.do",
-                            data: {rid: data.rid},
-                            dataType: "json",
-                            success: function (data) {
-                                if (data.code == 0) {
-                                    layer.msg("删除成功!", {
-                                        icon: 6,
-                                        time: 500
-                                    }, function () {
-                                        table.reload('demo');// 重新加载页面,demo 表示父窗体table标签的id值
-                                    });
-                                } else {
-                                    alert(data.info)
+                        form.on('submit(search)', function(data){
+                            /* layer.msg(JSON.stringify(data.field));*///表格数据序列化
+                            var formData = data.field;
+                            console.debug(formData);
+                            var paperName = formData.paperName;
+                            var typeId = formData.typeId;
+                            //数据表格重载
+                            table.reload('testReload', {
+                                page: {
+                                    curr: 1 //重新从第 1 页开始
                                 }
+                                , where: {//这里传参  向后台
+                                    "paperName": paperName,
+                                    "typeId": typeId
+                                }
+                                , url: '/paper/allPaper.do'//后台做模糊搜索接口路径
+                                , page: true
+                                , limit: 10
+                                , method: 'get'
+                            });
+                            return false;//false：阻止表单跳转  true：表单跳转
+                        });
+
+
+
+                        //执行一个 table 实例
+                        table.render( {
+                                elem: '#demo', height: 750, url: '/paper/allPaper.do' //数据接口
+                                , title: '用户表', page: true //开启分页
+                                , totalRow: true //开启合计行
+                                , cols: [[ //表头
+                                    {field:'xuhao', title:'序号',  fixed: 'left', width: 60, type: 'numbers'},
+                                    {field: 'paperName', title: '试卷名', width: 450,align : 'center'},
+                                    {field: 'typeName', title: '试卷类型', width: 450,align : 'center'},
+                                    {fixed: 'right', width: 428, align: 'center', toolbar: '#barDemo'}
+                                ]]
+                                ,id: 'testReload'
                             }
-                        })
+                        );
+
+                        var $ = layui.$, active = {
+                            reload: function(){
+                                var paperName = $('#paperName');
+                                var sel = $('#sel');
+
+                                //执行重载
+                                table.reload('testReload', {
+                                    page: {
+                                        curr: 1 //重新从第 1 页开始
+                                    }
+                                    ,where: {
+                                        paperName: paperName.val(),
+                                        typeId:sel.val()
+                                    }
+                                }, 'data');
+                            }
+                        }
+
+
                     });
-                    break;
-                case 'edit':
-                    layer.open({
-                        type: 2,
-                        title: '修改角色',
-                        shadeClose: true,
-                        shade: 0.8,
-                        area: ['400px', '50%'],
-                        content: 'updateRole.html?rid=' + data.rid
-                    });
-                    break;
+                }else{
+                    layer.msg(data.info);
+                }
             }
-        });
+        })
     })
+
+
+
+
+
+
+
+
+
+
+
 </script>
 </body>
 </html>
