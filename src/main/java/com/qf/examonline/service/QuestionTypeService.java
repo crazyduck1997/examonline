@@ -10,6 +10,6 @@ public interface QuestionTypeService {
     List<QuestionType> selectAll();
 
     //试题管理
-    List<QuestionVo> findAllQuertions();
+    List<QuestionVo> findAllQuertions(Integer page, Integer limit);
 
 }

@@ -1,5 +1,6 @@
 package com.qf.examonline.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.qf.examonline.dao.QuestionTypeDao;
 import com.qf.examonline.entity.QuestionType;
 import com.qf.examonline.entity.QuestionVo;
@@ -22,7 +23,8 @@ public class QuestionTypeServiceImpl implements QuestionTypeService {
     }
 
     @Override
-    public List<QuestionVo> findAllQuertions() {
+    public List<QuestionVo> findAllQuertions(Integer page, Integer limit) {
+        PageHelper.startPage(page,limit);
         List<QuestionVo> allQuertions = questionTypeDao.findAllQuertions();
         return allQuertions;
     }

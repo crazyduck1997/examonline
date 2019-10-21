@@ -1,5 +1,6 @@
 package com.qf.examonline.controller;
 
+import com.github.pagehelper.Page;
 import com.qf.examonline.common.CodeMsg;
 import com.qf.examonline.common.ErrorCode;
 import com.qf.examonline.common.JsonBean;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -154,10 +156,15 @@ public class QuestionsController {
 
     @ApiOperation(value = "试题管理")
     @GetMapping("/findAllQuertions.do")
-    public JsonBean findAllQuertions(){
-        List<QuestionVo> allQuertions = questionTypeService.findAllQuertions();
-        return new JsonBean(ErrorCode.SUCCESS,allQuertions);
+    public Map findAllQuertions(Integer page, Integer limit){
+        List<QuestionVo> allQuertions = questionTypeService.findAllQuertions(page, limit);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("code",ErrorCode.SUCCESS);
+        map.put("count",((Page)allQuertions).getTotal());
+        map.put("data",allQuertions);
+        return map;
     }
+
     @ApiOperation(value = "修改选择题")
     @PostMapping("/updateSelectQuestions.do")
     public JsonBean updateSelectQuestions(SelectQuestions selectQuestions){
