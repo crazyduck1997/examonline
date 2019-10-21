@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>layui在线调试</title>
+   <link rel="stylesheet" href="../layui/css/layui.css">
+   <script src="../layui/layui.js"></script>
+  <style>
+    body{margin: 10px;}
+    .demo-carousel{height: 200px; line-height: 200px; text-align: center;}
+  </style>
+  <style>
+    body{margin: 10px;}
+    .demo-carousel{height: 200px; line-height: 200px; text-align: center;}
+
+
+
+</style>
+
+
+</head>
+	<body>
+
+
+	<table class="layui-hide" id="demo" lay-filter="user"></table>
+<script src="../layui/layui.js" charset="utf-8"></script>、
+    <script type="text/html" id="barDemo">
+        <a  class="layui-btn layui-btn-primary layui-btn-xs" lay-event="add">添加</a>
+<!--         <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>-->
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+    <div class="layui-tab-item">
+        <div id="pageDemo"></div>
+    </div>
+
+	<script>layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element', 'slider'], function() {
+	var laydate=layui.laydate //日期
+	, laypage=layui.laypage //分页
+	, layer=layui.layer //弹层
+	, table=layui.table //表格
+	, upload=layui.upload //上传
+	, element=layui.element //元素操作
+        // 监听Tab切换
+  element.on('tab(demo)', function(data){
+    layer.tips('切换了 '+ data.index +'：'+ this.innerHTML, this, {
+      tips: 1
+    });
+  });
+        //监听头工具栏事件
+        table.on('toolbar(test)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id)
+                ,data = checkStatus.data; //获取选中的数据
+            switch(obj.event){
+                case 'update':
+                    if(data.length === 0){
+                        layer.msg('请选择一行');
+                    } else if(data.length > 1){
+                        layer.msg('只能同时编辑一个');
+                    } else {
+                        layer.alert('编辑 [id]：'+ checkStatus.data[0].id);
+                    }
+                    break;
+                case 'delete':
+                    if(data.length === 0){
+                        layer.msg('请选择一行');
+                    } else {
+                        layer.msg('删除');
+                    }
+                    break;
+            };
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                ,layEvent = obj.event; //获得 lay-event 对应的值
+            if(layEvent === 'add'){
+                layer.msg('添加操作');
+                layer.open({
+                    type: 2 //此处以iframe举例
+                    , title: '添加科目'
+                    , area: ['720px', '620px']
+                    , content: 'addType.html'
+                });
+            } else if(layEvent === 'del'){
+                layer.confirm('删除学生的分数', function(index){
+                    $.ajax({
+                        type: "post",
+                        url: "../score/deleteBySid.do",
+                        data: {typeId: data.typeId},
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.code == 0) {
+                                layer.msg("删除成功!", {
+                                    icon: 6,
+                                    time: 500
+                                }, function () {
+                                    table.reload('#demo');// 重新加载页面,demo 表示父窗体table标签的id值
+                                });
+                            } else {
+                                alert(data.info)
+                            }
+                        }
+                    })
+                    obj.del(); //删除对应行（tr）的DOM结构
+                    layer.close(index);
+                    //向服务端发送删除指令
+                });
+            } else if(layEvent === 'edit'){
+                layer.msg('编辑操作');
+                layer.open({
+                    type: 2 //此处以iframe举例
+                    , title: '修改用户'
+                    , area: ['720px', '620px']
+                    , content: 'updateType.html?typeId='+data.typeId
+                });
+            }
+        });
+        table.render( {
+                elem: '#demo', height: 750,
+                url: '/uservo/selectAll.do' //数据接口
+                , title: '用户表', page: false //开启分页
+                , totalRow: true //开启合计行
+            ,page:{//支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                ,curr: 1 //设定初始在第 5 页
+                ,groups: 5 //只显示 1 个连续页码
+                , first: false //不显示首页
+                , last: false //不显示尾页
+                , limits: [5, 10, 20]
+
+            } //开启分页
+               , cols: [[ //表头
+                    {field:'id', title:'序号',  fixed: 'left', width: 60, type: 'numbers'},
+                    {field: 'username', title: '姓名', width: 300,align : 'center'},
+                    {field: 'typeName', title: '学科', width: 350,align : 'center'},
+                    {field: 'paperName', title: '测试阶段', width: 350,align : 'center'},
+                    {field: 'score', title: '成绩', width: 300,align : 'center'},
+                {fixed: 'right', width: 328, align: 'center', toolbar: '#barDemo'}
+
+                ]]
+            ,id: 'testReload'
+            }
+
+        );
+        var $ = layui.$, active = {
+            reload: function(){
+                var demoReload = $('#id');
+
+                //执行重载
+                table.reload('testReload', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                        id: demoReload.val()
+                    }
+                }, 'data');
+            }
+        };
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+
+	// 分页
+  // laypage.render({
+  //   elem: 'pageDemo' //分页容器的id
+  //   ,count: 100 //总页数
+  //   ,skin: '#1E9FFF' //自定义选中色值
+  //   //,skip: true //开启跳页
+  //   ,jump: function(obj, first){
+  //     if(!first){
+  //       layer.msg('第'+ obj.curr +'页', {offset: 'b'});
+  //     }
+  //   }
+  // });
+
+	</script>
+    </body>
+</html>
+
+

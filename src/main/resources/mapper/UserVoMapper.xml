@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qf.examonline.dao.UserVoDao">
+
+    <resultMap id="UserVo" type="com.qf.examonline.entity.UserVo">
+        <id column="uid" property="uid"></id>
+        <result column="username" property="username"/>
+        <result column="type_name typeName" property="typeName"/>
+        <result column="paper_name paperName" property="paperName"/>
+        <result column="score" property="score"/>
+    </resultMap>
+
+
+    <!--  学生查看自己的分数-->
+    <select id="selectByUid" resultType="UserVo">
+    select * from uservo where uservo.uid=#{uid}
+  </select>
+
+
+    <!--  老师查看自己学生的分数信息-->
+    <select id="selectByParentId" resultType="UserVo">
+    select * from user_vo where parent_id=#{parent_id}
+  </select>
+
+
+    <!--  删除学生分数-->
+<!--    <delete id="deleteByUid" parameterType="java.lang.Integer">-->
+<!--    delete from t_score-->
+<!--    where sid = #{sid}-->
+<!--  </delete>-->
+
+    <select id="selectAll" resultType="UserVo" >
+select u.uid, username,type_name typeName,paper_name paperName,score
+from t_user u LEFT JOIN t_role_user ur on u.uid = ur.uid
+LEFT JOIN t_score s on s.stu_id = u.uid
+LEFT JOIN t_paper p on s.paper_id = p.paper_id
+LEFT JOIN t_type t on t.type_id = p.type_id
+where ur.rid = 3
+
+  </select>
+</mapper>
