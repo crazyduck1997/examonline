@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!--    <script type="application/javascript" src="js/echarts.common.min.js"></script>-->
+    <!--    <script type="application/javascript" src="js/echarts.js"></script>-->
+
+    <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+    <title>平均分</title>
+</head>
+<script>
+    $(function () {
+        $.ajax({
+            url: '/type/allType.do',
+            dataType: 'json',
+            type: 'post',
+            success: function (data) {
+                if (data.code == 0) {
+                    var sel = $("#sel");
+                    var typeList = data.data;
+                    var op = '<option value="">全部</option>n';
+                    sel.empty();
+                    $.each(typeList, function (index, item) {
+                        op += '<option value="' + item.typeId + '">' + item.typeName + '</option>';
+                    })
+                    sel.append(op)
+                }
+            }
+        })
+    })
+</script>
+
+<script type="text/javascript">
+    var option;
+    var myChart;
+
+    $(function () {
+        initChart();
+        //基于准备好的dom，初始化echarts实例
+        myChart = echarts.init(document.getElementById('main'));
+        //myChart.setOption(option)
+    });
+    var val;
+    function showWeight() {
+        var id = document.getElementById("sel").value;
+        val = $("#sel option:selected").text();
+        $.ajax({
+            type: "POST",
+            url: "/type/findAvgScore.do?typeId="+id,
+            dataType:"json",
+            data: {},
+            success: function (r) {
+                var str = r.data;
+                //console.log(r)
+                initChart()
+                //option.title.text = r.username+"的体重"
+                option.legend.data[0] = this.val;
+                //option.legend.data[0] = str[0]['paperName']
+                option.series[0] = {"name": str[0]['paperName'], "type": "line", "data": []}
+                // option.legend.data[0] = r.username
+                // option.series[0] = {"name": r.username, "type": "line", "data": []}
+
+                //option.series[0].name = r.username
+                //option.series[0].type = 'line'
+                // for (var i in r.weights) {
+                //     option.series[0].data[i] = r.weights[i].weight
+                //     option.xAxis[0].data[i] = r.weights[i].wdate
+                // }
+                for (var i in r.data) {
+                    option.series[0].data[i] = r.data[i].avgscore
+                    option.xAxis[0].data[i] = r.data[i].paperName
+                }
+
+
+                //option.series[1] = {"name": r.username, "type": "line", "data": [1,2,8,12,21,9]}
+                myChart.setOption(option)
+            }
+        });
+    }
+
+    function initChart() {
+        option = {
+            title: {
+                text: val +"各阶段平均分趋势表",
+                x: "center"
+            },
+            tooltip: {
+                trigger: "item",
+                formatter: "{a} <br/>{b} : {c}分"
+            },
+            legend: {
+                x: 'left',
+                data: []
+            },
+            xAxis: [
+                {
+                    type: "category",
+                    name: "科目",
+                    splitLine: {show: false},
+                    data: []
+                }
+            ],
+            yAxis: [
+                {
+                    type: "value",
+                    axisLabel: {
+                        formatter: '{value} 分'
+                    },
+                    name: "平均分",
+                    max: 100,
+                    min: 0,
+                    splitNumber: 10
+                }
+            ],
+            toolbox: {
+                show: true,
+                feature: {
+                    mark: {
+                        show: true
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: true
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    }
+                }
+            },
+            calculable: true,
+            series: []
+        };
+    }
+
+</script>
+<body>
+
+<div class="layui-form-item" style="color: #00FFFF">
+    <label class="layui-form-label" >科目类型</label>
+    <div class="layui-input-block">
+        <select name="typeId" id="sel" lay-filter="aihao">
+        </select>
+    </div>
+</div>
+
+<h1 style="text-align: center">平均分查看页面</h1>
+<button onclick="showWeight()"
+        style="text-decoration: none;margin-left: 140px">查看平均分</button>
+<div id="main" style="height:460px;width: 85%;margin: 20px auto 0"></div>
+
+</body>
+</html>
