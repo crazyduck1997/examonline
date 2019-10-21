@@ -41,17 +41,17 @@ public class ScoreController  {
         return new JsonBean(0,"修改成功");
     }
 
-    @ApiOperation("学生查询分数信息")
-    @PostMapping("/selectByUid.do")
-    public JsonBean selectByUid(Integer uid){
-        List<User> users = scoreService.selectByUid(uid);
-        return new JsonBean(0,users);
-    }
-
-    @ApiOperation("老师查询学生分数信息")
-    @PostMapping("/selectByTeacher.do")
-    public JsonBean selectByTeacher(Integer paperId){
-        List<User> users = scoreService.selectByTeacher(paperId);
-        return  new JsonBean(0,users);
-    }
+//    @ApiOperation("学生查询分数信息")
+//    @PostMapping("/selectByUid.do")
+//    public JsonBean selectByUid(Integer uid){
+//        List<User> users = scoreService.selectByUid(uid);
+//        return new JsonBean(0,users);
+//    }
+//
+//    @ApiOperation("老师查询学生分数信息")
+//    @PostMapping("/selectByTeacher.do")
+//    public JsonBean selectByTeacher(Integer paperId){
+//        List<User> users = scoreService.selectByTeacher(paperId);
+//        return  new JsonBean(0,users);
+//    }
 }
